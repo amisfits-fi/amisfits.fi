@@ -78,12 +78,26 @@ const ONE_PAGER_QUERY = /* groq */ `
 `
 
 /**
+ * Tyhjä fallback-dokumentti, jota käytetään kun Sanity-datasetissä
+ * ei vielä ole sisältöä (esim. ensimmäinen build ennen sisällön lisäystä).
+ */
+function emptyOnePager(language: Language): OnePager {
+  return {
+    _id:          `onePager-${language}`,
+    language,
+    sections:     [],
+    faq:          [],
+    partnerLogos: [],
+  }
+}
+
+/**
  * Hakee oikean one-pager-dokumentin kielen perusteella.
  * Audience-ehtologiikka hoidetaan frontendin komponenteissa,
  * jotta molemmat versiot buildataan samasta datasta.
+ * Palauttaa tyhjän placeholderin jos dokumenttia ei vielä löydy.
  */
 export async function getOnePager(language: Language): Promise<OnePager> {
-  const data = await client.fetch<OnePager>(ONE_PAGER_QUERY, { language })
-  if (!data) throw new Error(`One-pager not found for language: ${language}`)
-  return data
+  const data = await client.fetch<OnePager | null>(ONE_PAGER_QUERY, { language })
+  return data ?? emptyOnePager(language)
 }
