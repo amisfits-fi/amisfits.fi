@@ -6,7 +6,7 @@ import { schemaTypes }   from './schemas'
 export default defineConfig({
   // ── Projektin tunnistetiedot ─────────────────────────────────
   // Täytä nämä Sanity-projektin luonnin jälkeen (sanity.io/manage)
-  projectId: process.env.SANITY_STUDIO_PROJECT_ID ?? 'TÄYTÄ_TÄHÄN',
+  projectId: process.env.SANITY_STUDIO_PROJECT_ID ?? 'l442zg5l',
   dataset:   'production',
   name:      'amisfits',
   title:     'amisfits.fi – Sisällönhallinta',
