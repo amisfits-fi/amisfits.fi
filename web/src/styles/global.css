@@ -1,0 +1,204 @@
+/* ============================================================
+   amisfits.fi – Global CSS
+   Sampsa Voutilainen täyttää tähän visuaalisen suunnitelman.
+   Tässä on rakenne ja placeholder-arvot kehitystä varten.
+   ============================================================ */
+
+/* ── Design tokens – Sampsa korvaa nämä brändiarvoilla ──────── */
+:root {
+  /* Värit – placeholderit, täytetään Sampsan designin mukaan */
+  --color-pink:   #F5A89A;   /* Sektio 1 tausta */
+  --color-yellow: #F5D47A;   /* Sektio 2 tausta */
+  --color-blue:   #A8C8D8;   /* Sektio 3 tausta */
+  --color-navy:   #1A2E4A;   /* Teksti, navigaatio */
+  --color-white:  #FFFFFF;
+  --color-faq-bg: #D8E8F0;   /* FAQ-osion tausta */
+
+  /* Typografia – Sampsa korvaa fonteilla */
+  --font-display: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-body:    'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  /* Asettelu */
+  --max-width:    900px;
+  --section-pad:  clamp(2rem, 6vw, 5rem);
+}
+
+/* ── Reset ───────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+img, video, iframe     { max-width: 100%; display: block; }
+ul[role="list"]        { list-style: none; }
+
+body {
+  font-family: var(--font-body);
+  color:       var(--color-navy);
+  background:  var(--color-white);
+}
+
+/* ── Navigaatio ──────────────────────────────────────────────── */
+.nav {
+  display:         flex;
+  justify-content: space-between;
+  align-items:     center;
+  background:      var(--color-navy);
+  padding:         0.75rem 1.5rem;
+  position:        sticky;
+  top:             0;
+  z-index:         100;
+}
+
+.nav__audiences { display: flex; gap: 1rem; }
+.nav__languages { display: flex; gap: 0.5rem; }
+
+.nav__audience,
+.nav__lang {
+  color:           var(--color-white);
+  text-decoration: none;
+  font-size:       0.875rem;
+  opacity:         0.6;
+  transition:      opacity 0.2s;
+}
+.nav__audience--active,
+.nav__lang--active,
+.nav__audience:hover,
+.nav__lang:hover { opacity: 1; }
+
+/* ── Sektiot ─────────────────────────────────────────────────── */
+.section { padding: var(--section-pad) 1.5rem; }
+.section--pink   { background: var(--color-pink);   }
+.section--yellow { background: var(--color-yellow); }
+.section--blue   { background: var(--color-blue);   }
+
+.section__inner {
+  max-width: var(--max-width);
+  margin:    0 auto;
+}
+
+.section__headline {
+  font-family: var(--font-display);
+  font-size:   clamp(2rem, 6vw, 4rem);
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+}
+
+/* Video */
+.section__video {
+  position:       relative;
+  padding-bottom: 56.25%; /* 16:9 */
+  height:         0;
+  overflow:       hidden;
+  margin-bottom:  1.5rem;
+}
+.section__video iframe {
+  position: absolute;
+  inset:    0;
+  width:    100%;
+  height:   100%;
+  border:   0;
+}
+
+/* Tiivistelmäteksti */
+.section__summary { margin-bottom: 1.5rem; line-height: 1.6; }
+.section__summary p + p { margin-top: 0.75rem; }
+
+/* ── Haitari (details/summary) ───────────────────────────────── */
+.section__details {
+  border-top:    2px dashed var(--color-navy);
+  margin-bottom: 1.5rem;
+}
+
+.section__cta {
+  display:     inline-flex;
+  align-items: center;
+  gap:         0.5rem;
+  cursor:      pointer;
+  font-weight: 700;
+  padding:     0.75rem 1.5rem;
+  margin-top:  1rem;
+  background:  var(--color-navy);
+  color:       var(--color-white);
+  list-style:  none; /* Piilottaa oletuskolmion */
+  user-select: none;
+}
+.section__cta::-webkit-details-marker { display: none; }
+
+.section__expanded {
+  padding:    1.5rem 0;
+  line-height: 1.6;
+}
+.section__expanded p + p { margin-top: 0.75rem; }
+
+/* Testi-CTA */
+.section__test-cta  { margin-top: 1rem; font-weight: 700; }
+.section__test-link {
+  text-decoration: underline;
+  color:           var(--color-navy);
+}
+.section__test-link--placeholder {
+  opacity: 0.4;
+  cursor:  not-allowed;
+}
+
+/* ── FAQ ─────────────────────────────────────────────────────── */
+.faq {
+  background: var(--color-faq-bg);
+  padding:    var(--section-pad) 1.5rem;
+}
+.faq__inner   { max-width: var(--max-width); margin: 0 auto; }
+.faq__heading { font-size: clamp(1.5rem, 4vw, 2.5rem); margin-bottom: 1.5rem; }
+.faq__list    { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.faq__item {
+  background:    var(--color-white);
+  border-radius: 4px;
+  overflow:      hidden;
+}
+
+.faq__question {
+  display:         flex;
+  justify-content: space-between;
+  align-items:     center;
+  padding:         1rem 1.25rem;
+  cursor:          pointer;
+  font-weight:     600;
+  list-style:      none;
+  user-select:     none;
+}
+.faq__question::-webkit-details-marker { display: none; }
+
+.faq__icon {
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+details[open] .faq__icon { transform: rotate(180deg); }
+
+.faq__answer {
+  padding:     0 1.25rem 1rem;
+  line-height: 1.6;
+  border-top:  1px solid var(--color-faq-bg);
+}
+
+/* ── Kumppanilogot ───────────────────────────────────────────── */
+.partners {
+  background: var(--color-white);
+  padding:    var(--section-pad) 1.5rem;
+}
+.partners__inner { max-width: var(--max-width); margin: 0 auto; }
+.partners__grid  {
+  display:               grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap:                   2rem;
+  align-items:           center;
+  justify-items:         center;
+}
+.partners__item img {
+  object-fit: contain;
+  filter:     grayscale(100%);
+  opacity:    0.7;
+  transition: opacity 0.2s, filter 0.2s;
+}
+.partners__item img:hover { opacity: 1; filter: none; }
+
+/* ── Responsiivisuus ─────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .nav { flex-direction: column; gap: 0.5rem; align-items: flex-start; }
+}

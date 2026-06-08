@@ -1,0 +1,63 @@
+---
+import { toHTML } from '@portabletext/to-html'
+import type { Section, Audience } from '@/lib/queries'
+
+interface Props {
+  section:  Section
+  audience: Audience
+}
+
+const { section, audience } = Astro.props
+
+// ── Audience-ehtologiikka – valitaan oikea sisältö ───────────────────────────
+const summary  = audience === 'nuoret' ? section.summaryYouth  : section.summaryAdult
+const expanded = audience === 'nuoret' ? section.expandedYouth : section.expandedAdult
+
+const summaryHTML  = summary?.length  ? toHTML(summary)  : ''
+const expandedHTML = expanded?.length ? toHTML(expanded) : ''
+
+// Taustaväri CSS-luokkana
+const bgClass = `section--${section.backgroundColor}` // section--pink / section--yellow / section--blue
+---
+
+<section class={`section ${bgClass}`}>
+  <div class="section__inner">
+
+    {/* Iso otsikko – Sampsa tyylittää tämän */}
+    <h2 class="section__headline">{section.headline}</h2>
+
+    {/* YouTube-video (valinnainen) */}
+    {section.video && (
+      <div class="section__video">
+        <iframe
+          src={section.video.replace('watch?v=', 'embed/')}
+          title={section.headline}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          loading="lazy"
+        />
+      </div>
+    )}
+
+    {/* Tiivistelmä – aina näkyvissä */}
+    <div class="section__summary" set:html={summaryHTML} />
+
+    {/* Laajennettu sisältö – haitari, natiivi HTML, ei JavaScriptiä */}
+    {expandedHTML && (
+      <details class="section__details">
+        <summary class="section__cta">Lue lisää</summary>
+        <div class="section__expanded" set:html={expandedHTML} />
+      </details>
+    )}
+
+    {/* AMISFITS-testi CTA – placeholder toistaiseksi */}
+    <p class="section__test-cta">
+      Sopiiko amis sinulle?{' '}
+      {section.testCtaUrl
+        ? <a href={section.testCtaUrl} class="section__test-link">Tee 2 min AMISFITS-testi!</a>
+        : <span class="section__test-link section__test-link--placeholder">Tee 2 min AMISFITS-testi!</span>
+      }
+    </p>
+
+  </div>
+</section>

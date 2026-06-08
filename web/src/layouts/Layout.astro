@@ -1,0 +1,62 @@
+---
+import type { Language, Audience } from '@/lib/queries'
+
+interface Props {
+  lang:     Language
+  audience: Audience
+  title?:   string
+}
+
+const { lang, audience, title = 'amisfits.fi' } = Astro.props
+
+// Linkit kohderyhmävaihtoehtoihin (sama kieli, eri kohderyhmä)
+const otherAudience      = audience === 'nuoret' ? 'aikuiset' : 'nuoret'
+const otherAudienceLabel = audience === 'nuoret' ? 'Aikuisopiskelijat' : 'Peruskoulunuoret'
+const currentLabel       = audience === 'nuoret' ? 'Peruskoulunuoret'  : 'Aikuisopiskelijat'
+
+// Kielivalitsin
+const languages: { code: Language; label: string }[] = [
+  { code: 'fi', label: 'FI' },
+  { code: 'se', label: 'SE' },
+  { code: 'en', label: 'EN' },
+]
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content="Amisfits – ammatillinen tutkinto antaa etumatkaa" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/styles/global.css" />
+  </head>
+
+  <body>
+    <!-- Navigaatio -->
+    <nav class="nav">
+      <div class="nav__audiences">
+        <span class="nav__audience nav__audience--active">{currentLabel}</span>
+        <a
+          class="nav__audience"
+          href={`/${lang}/${otherAudience}`}
+        >{otherAudienceLabel}</a>
+      </div>
+
+      <div class="nav__languages">
+        {languages.map(l => (
+          <a
+            class:list={['nav__lang', { 'nav__lang--active': l.code === lang }]}
+            href={`/${l.code}/${audience}`}
+          >{l.label}</a>
+        ))}
+      </div>
+    </nav>
+
+    <!-- Sisältö -->
+    <main>
+      <slot />
+    </main>
+  </body>
+</html>

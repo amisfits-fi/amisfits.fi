@@ -1,0 +1,38 @@
+---
+import { toHTML } from '@portabletext/to-html'
+import type { FaqItem, Audience } from '@/lib/queries'
+
+interface Props {
+  items:    FaqItem[]
+  audience: Audience
+}
+
+const { items, audience } = Astro.props
+---
+
+<section class="faq">
+  <div class="faq__inner">
+    <h2 class="faq__heading">Usein kysyttyä amiksesta</h2>
+
+    <div class="faq__list">
+      {items.map((item) => {
+        // Audience-ehtologiikka: valitaan oikea vastaus
+        const answerBlocks = audience === 'nuoret' ? item.answerYouth : item.answerAdult
+        const answerHTML   = answerBlocks?.length ? toHTML(answerBlocks) : ''
+
+        return (
+          // Natiivi HTML details/summary – toimii ilman JavaScriptiä
+          <details class="faq__item">
+            <summary class="faq__question">
+              <span>{item.question}</span>
+              {/* Nuoli animoitavissa CSS:llä */}
+              <span class="faq__icon" aria-hidden="true">▾</span>
+            </summary>
+            <div class="faq__answer" set:html={answerHTML} />
+          </details>
+        )
+      })}
+    </div>
+
+  </div>
+</section>

@@ -1,0 +1,43 @@
+---
+import Layout        from '@/layouts/Layout.astro'
+import Section       from '@/components/Section.astro'
+import FaqAccordion  from '@/components/FaqAccordion.astro'
+import PartnerLogos  from '@/components/PartnerLogos.astro'
+import { getOnePager } from '@/lib/queries'
+import type { Language, Audience } from '@/lib/queries'
+
+// ── Staattinen reittilistaus – generoi kaikki 6 sivua build-aikana ────────────
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'fi', audience: 'nuoret'   } },
+    { params: { lang: 'fi', audience: 'aikuiset' } },
+    { params: { lang: 'se', audience: 'nuoret'   } },
+    { params: { lang: 'se', audience: 'aikuiset' } },
+    { params: { lang: 'en', audience: 'nuoret'   } },
+    { params: { lang: 'en', audience: 'aikuiset' } },
+  ]
+}
+
+// ── Hae Sanitystä oikea dokumentti ───────────────────────────────────────────
+const { lang, audience } = Astro.params as { lang: Language; audience: Audience }
+const page = await getOnePager(lang)
+---
+
+<Layout lang={lang} audience={audience}>
+
+  {/* Sektiot – audience-ehtologiikka tapahtuu Section-komponentissa */}
+  {page.sections.map((section) => (
+    <Section section={section} audience={audience} />
+  ))}
+
+  {/* FAQ-haitari */}
+  {page.faq?.length > 0 && (
+    <FaqAccordion items={page.faq} audience={audience} />
+  )}
+
+  {/* Kumppanilogot */}
+  {page.partnerLogos?.length > 0 && (
+    <PartnerLogos logos={page.partnerLogos} />
+  )}
+
+</Layout>

@@ -1,0 +1,36 @@
+# ── Netlify build-konfiguraatio ───────────────────────────────────────────────
+# Dokumentaatio: https://docs.netlify.com/configure-builds/file-based-configuration/
+
+[build]
+  # Mistä hakemistosta build ajetaan
+  base    = "web"
+  # Build-komento
+  command = "npm install && npm run build"
+  # Mistä hakemistosta valmis sivusto löytyy
+  publish = "dist"
+
+# ── Ympäristömuuttujat (arvot asetetaan Netlify UI:ssa, ei tähän tiedostoon) ──
+# Muista lisätä nämä Netlify → Site configuration → Environment variables:
+#   PUBLIC_SANITY_PROJECT_ID   = sanity-projektin id
+#   PUBLIC_SANITY_DATASET      = production
+#   PUBLIC_SANITY_API_VERSION  = 2024-01-01
+
+# ── Uudelleenohjaukset ────────────────────────────────────────────────────────
+[[redirects]]
+  # Juurisivu → suomenkielinen nuorten sivu
+  from   = "/"
+  to     = "/fi/nuoret"
+  status = 301
+
+# ── HTTP-otsakeet (tietoturva) ────────────────────────────────────────────────
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options        = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy        = "strict-origin-when-cross-origin"
+    Permissions-Policy     = "camera=(), microphone=(), geolocation=()"
+
+# ── Node.js-versio ────────────────────────────────────────────────────────────
+[build.environment]
+  NODE_VERSION = "20"
