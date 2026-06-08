@@ -11,18 +11,18 @@ export interface SanityBlock {
 }
 
 export interface Section {
-  _key:            string
-  headline:        string
-  backgroundColor: 'pink' | 'yellow' | 'blue'
-  video?:          string
+  _key:             string
+  displayHeadline?: string          // iso koristeellinen teksti ennen sektiota
+  headline:         string
+  backgroundColor:  'pink' | 'yellow' | 'blue'
+  video?:           string
+  testCtaUrl?:      string          // siirretty pois onePager-tasolta
   // Sisältö nuorille
-  summaryYouth:    SanityBlock[]
-  expandedYouth:   SanityBlock[]
+  summaryYouth:     SanityBlock[]
+  expandedYouth:    SanityBlock[]
   // Sisältö aikuisopiskelijoille
-  summaryAdult:    SanityBlock[]
-  expandedAdult:   SanityBlock[]
-  // CTA – AMISFITS-testi (lisätään myöhemmin)
-  testCtaUrl?:     string
+  summaryAdult:     SanityBlock[]
+  expandedAdult:    SanityBlock[]
 }
 
 export interface FaqItem {
@@ -54,14 +54,15 @@ const ONE_PAGER_QUERY = /* groq */ `
     language,
     sections[] {
       _key,
+      displayHeadline,
       headline,
       backgroundColor,
       video,
+      testCtaUrl,
       summaryYouth,
       expandedYouth,
       summaryAdult,
-      expandedAdult,
-      testCtaUrl
+      expandedAdult
     },
     faq[] {
       _key,

@@ -57,12 +57,6 @@ export default defineType({
       description: 'Logot näkyvät sivun alaosassa ruudukkona.',
     }),
 
-    defineField({
-      name:        'testCtaUrl',
-      title:       'AMISFITS-testi URL',
-      type:        'url',
-      description: 'Täytetään kun testi-toteutustapa on päätetty. Jätetään tyhjäksi toistaiseksi.',
-    }),
   ],
 
   preview: {

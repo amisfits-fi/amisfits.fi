@@ -18,44 +18,71 @@ const expandedHTML = expanded?.length ? toHTML(expanded) : ''
 
 // Taustaväri CSS-luokkana
 const bgClass = `section--${section.backgroundColor}` // section--pink / section--yellow / section--blue
+
+// YouTube-URL embed-muotoon: tukee sekä watch?v=ID että youtu.be/ID
+function toEmbed(url: string): string {
+  const ytMatch = url.match(/(?:v=|youtu\.be\/)([A-Za-z0-9_-]{11})/)
+  return ytMatch ? `https://www.youtube.com/embed/${ytMatch[1]}` : url
+}
 ---
 
+{/* ── Koristeellinen näyttöotsikko valkoinen tausta ───────────── */}
+{section.displayHeadline && (
+  <div class="display-section">
+    <p class="display-section__headline">{section.displayHeadline}</p>
+  </div>
+)}
+
+{/* ── Värillinen sektio ─────────────────────────────────────── */}
 <section class={`section ${bgClass}`}>
   <div class="section__inner">
 
-    {/* Iso otsikko – Sampsa tyylittää tämän */}
-    <h2 class="section__headline">{section.headline}</h2>
-
     {/* YouTube-video (valinnainen) */}
     {section.video && (
-      <div class="section__video">
-        <iframe
-          src={section.video.replace('watch?v=', 'embed/')}
-          title={section.headline}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-          loading="lazy"
-        />
+      <div class="section__video-area">
+        <div class="section__video">
+          <iframe
+            src={toEmbed(section.video)}
+            title={section.headline}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            loading="lazy"
+          />
+        </div>
       </div>
     )}
 
+    {!section.video && (
+      <div class="section__video-area">
+        <div class="section__video-placeholder">Video tulossa</div>
+      </div>
+    )}
+
+    {/* Iso sisältöotsikko */}
+    <h2 class="section__headline">{section.headline}</h2>
+
     {/* Tiivistelmä – aina näkyvissä */}
-    <div class="section__summary" set:html={summaryHTML} />
+    {summaryHTML && (
+      <div class="section__summary" set:html={summaryHTML} />
+    )}
 
     {/* Laajennettu sisältö – haitari, natiivi HTML, ei JavaScriptiä */}
     {expandedHTML && (
       <details class="section__details">
-        <summary class="section__cta">Lue lisää</summary>
+        <summary class="section__cta">
+          Lue lisää
+          <i class="section__cta-icon" aria-hidden="true">▾</i>
+        </summary>
         <div class="section__expanded" set:html={expandedHTML} />
       </details>
     )}
 
-    {/* AMISFITS-testi CTA – placeholder toistaiseksi */}
+    {/* AMISFITS-testi CTA */}
     <p class="section__test-cta">
       Sopiiko amis sinulle?{' '}
       {section.testCtaUrl
-        ? <a href={section.testCtaUrl} class="section__test-link">Tee 2 min AMISFITS-testi!</a>
-        : <span class="section__test-link section__test-link--placeholder">Tee 2 min AMISFITS-testi!</span>
+        ? <a href={section.testCtaUrl} class="section__test-link">Tee 2 min AMISFITS-testi →</a>
+        : <span class="section__test-link section__test-link--placeholder">Tee 2 min AMISFITS-testi →</span>
       }
     </p>
 

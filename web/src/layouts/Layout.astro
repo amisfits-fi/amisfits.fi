@@ -34,7 +34,7 @@ const languages: { code: Language; label: string }[] = [
   </head>
 
   <body>
-    <!-- Navigaatio -->
+    <!-- ── Navigaatio ───────────────────────────────────────── -->
     <nav class="nav">
       <div class="nav__audiences">
         <span class="nav__audience nav__audience--active">{currentLabel}</span>
@@ -54,9 +54,27 @@ const languages: { code: Language; label: string }[] = [
       </div>
     </nav>
 
-    <!-- Sisältö -->
+    <!-- ── Pääsisältö ───────────────────────────────────────── -->
     <main>
       <slot />
     </main>
+
+    <!-- ── Footer ───────────────────────────────────────────── -->
+    <footer class="footer">
+      <div class="footer__inner">
+        <div>
+          <p class="footer__wordmark">amisfits</p>
+        </div>
+        <div>
+          <p class="footer__text">
+            Sivustoa ylläpitää{' '}
+            <a href="https://www.sivista.fi" target="_blank" rel="noopener noreferrer" style="color: inherit;">
+              Sivistysala ry (Sivista)
+            </a>
+            {' '}– ammatillisen koulutuksen työnantaja- ja toimialajärjestö.
+          </p>
+        </div>
+      </div>
+    </footer>
   </body>
 </html>
