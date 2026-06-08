@@ -1,5 +1,6 @@
 ---
 import type { Language, Audience } from '@/lib/queries'
+import '@/styles/global.css'
 
 interface Props {
   lang:     Language
@@ -30,7 +31,7 @@ const languages: { code: Language; label: string }[] = [
     <title>{title}</title>
     <meta name="description" content="Amisfits – ammatillinen tutkinto antaa etumatkaa" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="stylesheet" href="/styles/global.css" />
+    <!-- CSS injected by Astro via import in frontmatter -->
   </head>
 
   <body>
