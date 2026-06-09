@@ -17,8 +17,9 @@
      Sharp Grotesk ladataan @font-face-lohkoissa kun lisenssi
      on varmistettu Sampsalta. Toistaiseksi käytetään fallbackia.
      Rubik on tilattavissa ilmaiseksi Google Fontsista.          */
-  --font-display: 'Sharp Grotesk', 'Barlow', 'DM Sans', system-ui, sans-serif;
-  --font-body:    'Rubik', 'Barlow', 'DM Sans', system-ui, sans-serif;
+  /* Sharp Grotesk on vektoroitu SVG-headingeihin — ei tarvitse ladata */
+  --font-display: 'Rubik', system-ui, sans-serif;
+  --font-body:    'Rubik', system-ui, sans-serif;
 
   /* ── Asettelu ──────────────────────────────────────────────── */
   --max-width:   1200px;
@@ -30,7 +31,7 @@
    Lisää Sharp Grotesk -tiedostot hakemistoon web/public/fonts/
    ja poista kommentit kun Sampsa on toimittanut lisenssitiedostot.
    Rubik Google Fonts -linkki kommentoitu esimerkkiä varten.     */
-/* @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap');
 
 /* ── Reset ───────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
