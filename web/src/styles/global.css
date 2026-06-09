@@ -113,6 +113,7 @@ body {
   padding-right:  var(--pad-content);
   clip-path:      polygon(0 var(--skew-h), 100% 0, 100% 100%, 0 100%);
   margin-top:     calc(-1 * var(--skew-h));
+  overflow-x:     clip; /* sallii SVG-grafiikoiden vuodon sivureunoja yli */
 }
 
 /* Ensimmäinen sektio: suora yläreunus, normaali yläpadding */
@@ -128,21 +129,18 @@ body {
 
 /* ── Näyttöotsikko SVG sektiön sisällä ───────────────────────── */
 .section__display-graphic {
-  /* 15% leveämpi kuin tekstipalsta — "vuotaa" reunojen yli */
-  width:          100%;
-  max-width:      calc(var(--max-content) * 1.15);
-  margin:         0 auto;
-  padding-top:    1rem;
+  /* Vuotaa molemmille puolille, max 115% section__innerin leveydestä */
+  position:       relative;
+  left:           50%;
+  transform:      translateX(-50%);
+  width:          min(calc(var(--max-width) * 1.15), calc(100% + 6rem));
   padding-bottom: 2.5rem;
 }
 
 .section__display-img {
-  width:      100%;
-  height:     auto;
-  display:    block;
-  max-height: 22vw; /* rajoittaa korkeuden suurilla näytöillä */
-  object-fit: contain;
-  object-position: left center;
+  width:   100%;
+  height:  auto; /* skaalautuu luonnollisesti kuvasuhteen mukaan */
+  display: block;
 }
 
 .section__inner {
@@ -451,10 +449,6 @@ details[open] .faq__icon { transform: rotate(180deg); }
     height:         auto;
     padding:        0.75rem var(--pad-content);
     gap:            0.5rem;
-  }
-
-  .section__display-img {
-    max-height: none; /* mobiilissa näytetään täysikokoisena */
   }
 
   .section__cta {
