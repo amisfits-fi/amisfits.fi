@@ -23,6 +23,7 @@
 
   /* ── Asettelu ──────────────────────────────────────────────── */
   --max-width:   1200px;
+  --max-content: 640px;  /* tekstipalstan leveys – desktop kasvaa alla */
   --pad-section: clamp(4rem, 8vw, 7rem);
   --pad-content: clamp(1.5rem, 5vw, 4rem);
 }
@@ -190,13 +191,13 @@ body {
   letter-spacing: 0.01em;
   text-transform: uppercase;
   color:          var(--color-navy);
-  max-width:      680px;
+  max-width:      var(--max-content);
   margin-bottom:  2rem;
 }
 
 /* Tiivistelmäteksti */
 .section__summary {
-  max-width:     640px;
+  max-width:     var(--max-content);
   font-family:   var(--font-body);
   font-size:     clamp(1rem, 1.5vw, 1.125rem);
   line-height:   1.65;
@@ -431,6 +432,14 @@ details[open] .faq__icon { transform: rotate(180deg); }
   line-height: 1.7;
   color:       rgba(182, 218, 231, 0.7);
   max-width:   600px;
+}
+
+/* ── Desktop: leveämpi palsta + isommat sivumarginaalit ─────── */
+@media (min-width: 641px) {
+  :root {
+    --max-content: 800px;                    /* tekstipalsta 640→800px */
+    --pad-content: clamp(3rem, 6vw, 6rem);   /* reilummat sivumarginaalit */
+  }
 }
 
 /* ── Responsiivisuus ─────────────────────────────────────────── */
