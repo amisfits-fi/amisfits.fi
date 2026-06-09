@@ -91,8 +91,10 @@ function toEmbed(url: string): string {
       </div>
     )}
 
-    {/* Iso sisältöotsikko */}
-    <h2 class="section__headline">{section.headline}</h2>
+    {/* Iso sisältöotsikko – piilotetaan jos tyhjä */}
+    {section.headline && (
+      <h2 class="section__headline">{section.headline}</h2>
+    )}
 
     {/* Tiivistelmä – aina näkyvissä */}
     {summaryHTML && (
