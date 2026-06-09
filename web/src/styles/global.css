@@ -128,12 +128,12 @@ body {
 
 /* ── Näyttöotsikko SVG sektiön sisällä ───────────────────────── */
 .section__display-graphic {
-  width:         100%;
-  padding:       0 var(--pad-content);
-  padding-top:   1rem;
+  /* 15% leveämpi kuin tekstipalsta — "vuotaa" reunojen yli */
+  width:          100%;
+  max-width:      calc(var(--max-content) * 1.15);
+  margin:         0 auto;
+  padding-top:    1rem;
   padding-bottom: 2.5rem;
-  max-width:     1400px;
-  margin:        0 auto;
 }
 
 .section__display-img {
