@@ -27,8 +27,7 @@ export default defineType({
       name:        'headline',
       title:       'Sisältöotsikko',
       type:        'string',
-      description: 'Informatiivinen otsikko värillisen osion sisällä (esim. "KÄYTÄNNÖN KOKEMUS JA TYÖELÄMÄTAIDOT OVAT TODELLINEN KILPAILUETU.")',
-      validation:  (R) => R.required(),
+      description: 'Informatiivinen otsikko värillisen osion sisällä. Jätä tyhjäksi jos otsikko on SVG-grafiikassa.',
     }),
 
     defineField({
