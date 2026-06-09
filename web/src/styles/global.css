@@ -437,8 +437,8 @@ details[open] .faq__icon { transform: rotate(180deg); }
 /* ── Desktop: leveämpi palsta + isommat sivumarginaalit ─────── */
 @media (min-width: 641px) {
   :root {
-    --max-content: 800px;                    /* tekstipalsta 640→800px */
-    --pad-content: clamp(3rem, 6vw, 6rem);   /* reilummat sivumarginaalit */
+    --max-content: 1000px;                    /* tekstipalsta */
+    --pad-content: clamp(3rem, 7vw, 10rem);  /* sivumarginaalit */
   }
 }
 
