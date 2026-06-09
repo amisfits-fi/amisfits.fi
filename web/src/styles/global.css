@@ -98,7 +98,7 @@ body {
 
 /* ── Värilliset sektiot (diagonal-leikkauksilla) ─────────────── */
 :root {
-  --skew-h: 5vw; /* diagonaalin korkeus */
+  --skew-h: 14vw; /* diagonaalin korkeus — kulma ~8° täsmää SVG-alleviivoihin */
 }
 
 .section {
@@ -429,7 +429,7 @@ details[open] .faq__icon { transform: rotate(180deg); }
 
 /* ── Responsiivisuus ─────────────────────────────────────────── */
 @media (max-width: 640px) {
-  :root { --skew-h: 8vw; }
+  /* --skew-h pysyy 14vw — kulma säilyy samana kaikilla näytöillä */
 
   .nav {
     flex-direction: column;
