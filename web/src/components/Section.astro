@@ -19,6 +19,16 @@ const expandedHTML = expanded?.length ? toHTML(expanded) : ''
 // Taustaväri CSS-luokkana
 const bgClass = `section--${section.backgroundColor}` // section--pink / section--yellow / section--blue
 
+// Näyttöotsikko SVG -tiedostomapping
+const displayGraphicMap: Record<string, string> = {
+  pink:   '/images/Amis-antaa-etumatkaa.svg',
+  yellow: '/images/Amis-avaa-ovia.svg',
+  blue:   '/images/Amis-aktivoi-unelmasi.svg',
+}
+const displayGraphicSrc = section.backgroundColor
+  ? displayGraphicMap[section.backgroundColor]
+  : undefined
+
 // YouTube-URL embed-muotoon: tukee sekä watch?v=ID että youtu.be/ID
 function toEmbed(url: string): string {
   const ytMatch = url.match(/(?:v=|youtu\.be\/)([A-Za-z0-9_-]{11})/)
@@ -26,15 +36,22 @@ function toEmbed(url: string): string {
 }
 ---
 
-{/* ── Koristeellinen näyttöotsikko valkoinen tausta ───────────── */}
-{section.displayHeadline && (
-  <div class="display-section">
-    <p class="display-section__headline">{section.displayHeadline}</p>
-  </div>
-)}
-
 {/* ── Värillinen sektio ─────────────────────────────────────── */}
 <section class={`section ${bgClass}`}>
+
+  {/* Näyttöotsikko SVG – sektiön yläosassa */}
+  {displayGraphicSrc && (
+    <div class="section__display-graphic">
+      <img
+        src={displayGraphicSrc}
+        alt={section.displayHeadline ?? ''}
+        class="section__display-img"
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+  )}
+
   <div class="section__inner">
 
     {/* YouTube-video (valinnainen) */}
@@ -70,8 +87,10 @@ function toEmbed(url: string): string {
     {expandedHTML && (
       <details class="section__details">
         <summary class="section__cta">
-          Lue lisää
-          <i class="section__cta-icon" aria-hidden="true">▾</i>
+          <span class="section__cta-pill">
+            LUE LISÄÄ
+            <i class="section__cta-icon" aria-hidden="true">▾</i>
+          </span>
         </summary>
         <div class="section__expanded" set:html={expandedHTML} />
       </details>

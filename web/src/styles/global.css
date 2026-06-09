@@ -96,31 +96,49 @@ body {
 .nav__lang--active { opacity: 1; }
 .nav__lang:hover   { opacity: 0.85; }
 
-/* ── Näyttöotsikko-osio (displayHeadline ennen värillistä sektiota) ── */
-.display-section {
-  background: var(--color-white);
-  padding:    var(--pad-section) var(--pad-content);
-  text-align: center;
+/* ── Värilliset sektiot (diagonal-leikkauksilla) ─────────────── */
+:root {
+  --skew-h: 5vw; /* diagonaalin korkeus */
 }
 
-.display-section__headline {
-  font-family:    var(--font-display);
-  font-size:      clamp(4.5rem, 14vw, 11rem);
-  font-weight:    900;
-  line-height:    0.9;
-  letter-spacing: -0.02em;
-  color:          var(--color-navy);
-  text-transform: uppercase;
-  word-break:     break-word;
-}
-
-/* ── Värilliset sektiot ──────────────────────────────────────── */
 .section {
-  padding: var(--pad-section) var(--pad-content);
+  position:       relative;
+  padding:        var(--pad-section) var(--pad-content);
+  /* Diagonaali: seuraava sektio alkaa kulmassa */
+  clip-path:      polygon(0 var(--skew-h), 100% 0, 100% 100%, 0 100%);
+  padding-top:    calc(var(--pad-section) + var(--skew-h));
+  margin-top:     calc(-1 * var(--skew-h));
 }
+
+/* Ensimmäinen sektio: suora yläreunus, ei diagonaalia ylhäällä */
+.section:first-of-type {
+  clip-path:   none;
+  padding-top: var(--pad-section);
+  margin-top:  0;
+}
+
 .section--pink   { background: var(--color-coral);  }
 .section--yellow { background: var(--color-yellow); }
 .section--blue   { background: var(--color-blue);   }
+
+/* ── Näyttöotsikko SVG sektiön sisällä ───────────────────────── */
+.section__display-graphic {
+  width:         100%;
+  padding:       0 var(--pad-content);
+  padding-top:   1rem;
+  padding-bottom: 2.5rem;
+  max-width:     1400px;
+  margin:        0 auto;
+}
+
+.section__display-img {
+  width:      100%;
+  height:     auto;
+  display:    block;
+  max-height: 22vw; /* rajoittaa korkeuden suurilla näytöillä */
+  object-fit: contain;
+  object-position: left center;
+}
 
 .section__inner {
   max-width: var(--max-width);
@@ -183,57 +201,59 @@ body {
 }
 .section__summary p + p { margin-top: 0.75rem; }
 
-/* "Lue lisää" -haitari */
+/* "LUE LISÄÄ" -haitari – viivat molemmin puolin pill-nappia ── */
 .section__details {
-  border-top:    2px solid var(--color-navy);
-  margin-top:    1.5rem;
-  margin-bottom: 1.5rem;
+  margin-top:    2rem;
+  margin-bottom: 0;
 }
 
-.section__cta-toggle {
-  display:        inline-flex;
-  align-items:    center;
-  gap:            0.75rem;
-  cursor:         pointer;
-  font-family:    var(--font-display);
-  font-size:      0.875rem;
-  font-weight:    700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  padding:        0.875rem 1.5rem;
-  background:     var(--color-navy);
-  color:          var(--color-white);
-  list-style:     none;
-  user-select:    none;
-  margin-top:     1.5rem;
-}
-.section__cta-toggle::-webkit-details-marker { display: none; }
-
-/* Alias vanhalle luokkanimelle – yhteensopivuus Section.astron kanssa */
+/* summary = koko rivi: viiva — PILL — viiva */
 .section__cta {
-  display:        inline-flex;
-  align-items:    center;
-  gap:            0.75rem;
-  cursor:         pointer;
-  font-family:    var(--font-display);
-  font-size:      0.875rem;
-  font-weight:    700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  padding:        0.875rem 1.5rem;
-  background:     var(--color-navy);
-  color:          var(--color-white);
-  list-style:     none;
-  user-select:    none;
-  margin-top:     1.5rem;
+  display:    flex;
+  align-items: center;
+  gap:         1.25rem;
+  max-width:   640px;
+  cursor:      pointer;
+  list-style:  none;
+  user-select: none;
+  padding:     0;
+  margin-top:  0;
 }
 .section__cta::-webkit-details-marker { display: none; }
+
+/* Viivat molemmin puolin */
+.section__cta::before,
+.section__cta::after {
+  content:    '';
+  flex:       1;
+  border-top: 2px dashed var(--color-navy);
+  opacity:    0.6;
+}
+
+/* Navy pill -nappi */
+.section__cta-pill {
+  display:        inline-flex;
+  align-items:    center;
+  gap:            0.5rem;
+  flex-shrink:    0;
+  background:     var(--color-navy);
+  color:          var(--color-white);
+  border-radius:  999px;
+  padding:        0.75rem 1.75rem;
+  font-family:    var(--font-display);
+  font-size:      0.8rem;
+  font-weight:    700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space:    nowrap;
+}
 
 .section__cta-icon,
 .section__icon {
   transition:  transform 0.25s;
   flex-shrink: 0;
   font-style:  normal;
+  font-size:   0.9em;
 }
 details[open] .section__cta-icon,
 details[open] .section__icon { transform: rotate(180deg); }
@@ -268,10 +288,13 @@ details[open] .section__icon { transform: rotate(180deg); }
   pointer-events: none;
 }
 
-/* ── FAQ-osio ────────────────────────────────────────────────── */
+/* ── FAQ-osio (diagonaali ylhäällä) ─────────────────────────── */
 .faq {
-  background: var(--color-navy);
-  padding:    var(--pad-section) var(--pad-content);
+  background:  var(--color-navy);
+  padding:     var(--pad-section) var(--pad-content);
+  clip-path:   polygon(0 var(--skew-h), 100% 0, 100% 100%, 0 100%);
+  padding-top: calc(var(--pad-section) + var(--skew-h));
+  margin-top:  calc(-1 * var(--skew-h));
 }
 
 .faq__inner {
@@ -406,6 +429,8 @@ details[open] .faq__icon { transform: rotate(180deg); }
 
 /* ── Responsiivisuus ─────────────────────────────────────────── */
 @media (max-width: 640px) {
+  :root { --skew-h: 8vw; }
+
   .nav {
     flex-direction: column;
     height:         auto;
@@ -413,8 +438,12 @@ details[open] .faq__icon { transform: rotate(180deg); }
     gap:            0.5rem;
   }
 
-  .display-section__headline {
-    font-size: clamp(3.5rem, 18vw, 6rem);
+  .section__display-img {
+    max-height: none; /* mobiilissa näytetään täysikokoisena */
+  }
+
+  .section__cta {
+    max-width: 100%;
   }
 
   .footer__inner { flex-direction: column; }
