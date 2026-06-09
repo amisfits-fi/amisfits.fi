@@ -103,18 +103,21 @@ body {
 
 .section {
   position:       relative;
-  padding:        var(--pad-section) var(--pad-content);
-  /* Diagonaali: seuraava sektio alkaa kulmassa */
+  /* Ylhäällä: vain diagonaalin clearance + pieni hengitysväli ennen SVG-grafiikkaa */
+  padding-top:    calc(var(--skew-h) + 1.5rem);
+  /* Alhaalla: reipas tila ennen seuraavan sektiön diagonaalia */
+  padding-bottom: clamp(5rem, 10vw, 9rem);
+  padding-left:   var(--pad-content);
+  padding-right:  var(--pad-content);
   clip-path:      polygon(0 var(--skew-h), 100% 0, 100% 100%, 0 100%);
-  padding-top:    calc(var(--pad-section) + var(--skew-h));
   margin-top:     calc(-1 * var(--skew-h));
 }
 
-/* Ensimmäinen sektio: suora yläreunus, ei diagonaalia ylhäällä */
+/* Ensimmäinen sektio: suora yläreunus, normaali yläpadding */
 .section:first-of-type {
-  clip-path:   none;
-  padding-top: var(--pad-section);
-  margin-top:  0;
+  clip-path:      none;
+  padding-top:    var(--pad-section);
+  margin-top:     0;
 }
 
 .section--pink   { background: var(--color-coral);  }
@@ -290,11 +293,13 @@ details[open] .section__icon { transform: rotate(180deg); }
 
 /* ── FAQ-osio (diagonaali ylhäällä) ─────────────────────────── */
 .faq {
-  background:  var(--color-navy);
-  padding:     var(--pad-section) var(--pad-content);
-  clip-path:   polygon(0 var(--skew-h), 100% 0, 100% 100%, 0 100%);
-  padding-top: calc(var(--pad-section) + var(--skew-h));
-  margin-top:  calc(-1 * var(--skew-h));
+  background:     var(--color-navy);
+  padding-top:    calc(var(--skew-h) + var(--pad-section));
+  padding-bottom: var(--pad-section);
+  padding-left:   var(--pad-content);
+  padding-right:  var(--pad-content);
+  clip-path:      polygon(0 var(--skew-h), 100% 0, 100% 100%, 0 100%);
+  margin-top:     calc(-1 * var(--skew-h));
 }
 
 .faq__inner {
