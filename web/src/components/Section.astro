@@ -20,12 +20,13 @@ const expandedHTML = expanded?.length ? toHTML(expanded) : ''
 const bgClass = `section--${section.backgroundColor}` // section--pink / section--yellow / section--blue
 
 // Näyttöotsikko SVG -tiedostomapping
-const displayGraphicMap: Record<string, string> = {
-  pink:   '/images/Amis-antaa-etumatkaa.svg',
-  yellow: '/images/Amis-avaa-ovia.svg',
-  blue:   '/images/Amis-aktivoi-unelmasi.svg',
+// mobile: valinnainen — jos määritelty, käytetään <picture> + <source media>
+const displayGraphicMap: Record<string, { desktop: string; mobile?: string }> = {
+  pink:   { desktop: '/images/Teema1_desktop.svg', mobile: '/images/Teema1_mobiili.svg' },
+  yellow: { desktop: '/images/Amis-avaa-ovia.svg' },
+  blue:   { desktop: '/images/Amis-aktivoi-unelmasi.svg' },
 }
-const displayGraphicSrc = section.backgroundColor
+const graphic = section.backgroundColor
   ? displayGraphicMap[section.backgroundColor]
   : undefined
 
@@ -40,15 +41,30 @@ function toEmbed(url: string): string {
 <section class={`section ${bgClass}`}>
 
   {/* Näyttöotsikko SVG – sektiön yläosassa */}
-  {displayGraphicSrc && (
+  {graphic && (
     <div class="section__display-graphic">
-      <img
-        src={displayGraphicSrc}
-        alt={section.displayHeadline ?? ''}
-        class="section__display-img"
-        loading="lazy"
-        decoding="async"
-      />
+      {graphic.mobile ? (
+        /* Desktop + mobiili eri kuva — <picture> lataa vain tarvittavan */
+        <picture>
+          <source media="(min-width: 641px)" srcset={graphic.desktop} />
+          <img
+            src={graphic.mobile}
+            alt={section.displayHeadline ?? ''}
+            class="section__display-img"
+            loading="lazy"
+            decoding="async"
+          />
+        </picture>
+      ) : (
+        /* Yksi kuva kaikille näytöille */
+        <img
+          src={graphic.desktop}
+          alt={section.displayHeadline ?? ''}
+          class="section__display-img"
+          loading="lazy"
+          decoding="async"
+        />
+      )}
     </div>
   )}
 
