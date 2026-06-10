@@ -30,24 +30,55 @@ const block = (text, bold = false) => ({
 })
 
 // ── Sisältö leiskasta ─────────────────────────────────────────────────────────
+// Lisätäytteenä käytetään standardia Lorem Ipsum -tekstiä (julkista, vapaasti
+// käytettävää placeholder-latinaa), jotta tekstilohkot vastaavat paremmin
+// todellisen sisällön pituutta layoutin testausta varten.
+const fillerA = block('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.')
+
+const fillerB = block('Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.')
+
+const fillerC = block('Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.')
+
+const fillerD = block('Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.')
+
+const fillerE = block('At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.')
+
+const fillerF = block('Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est.')
+
+const fillerG = block('Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet.')
+
 const summaryText = [
   block('Lorem ipsum dolor', true),
   block('Vent aute simolor emquatur, evelessiti que offici aute doles in pro dolorpo rectia etuscipsam corpores cepedi alignatur?'),
+  fillerA,
+  fillerB,
+  fillerC,
 ]
 
 const expandedShort = [
   block('Lorem ipsum dolor sit amet', true),
   block('Te velique voluptatium aut maximus sit unt ditas maxim cuptatus dolorum voloruntorio eosa dere etur aut et volectem quam laborate nobis es prae nonsecum et arum volupta vollaccum.'),
+  fillerA,
+  fillerB,
+  fillerC,
+  fillerD,
 ]
 
 const expandedLong = [
   ...expandedShort,
   block('Lorem ipsum', true),
   block('Ut eossum re archillorum eosam voluptatassi derero tet resti dus quatum intus solori delest pressim dempos de pro deligent, comnihi llendist labo.'),
+  fillerE,
+  fillerF,
+  fillerG,
 ]
 
 const faqAnswer = [
   block('Dellatem veni corio cus dolupta sperspicipis erisim quam sitatecum faccab intoreptat remquam dolestiam, velesed moluptia dolupta ssimagnis cor mo idipsum quam sim con rem voluptatem sequi officiet dendaest.'),
+  fillerA,
+  fillerB,
+  fillerC,
+  fillerD,
 ]
 
 // ── Dokumentti ───────────────────────────────────────────────────────────────
