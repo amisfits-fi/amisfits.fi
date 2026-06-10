@@ -72,7 +72,7 @@ const doc = {
       _type:           'section',
       _key:            'sec-yellow',
       displayHeadline: 'avaa ovia',
-      headline:        'AMMATILLINEN TUTKINTO ANTAA SAMAN JATKO-OPINTOKELPOISUUDEN KUIN LUKIO.',
+      headline:        '',   // SVG-grafiikassa — ei näytetä tekstinä
       backgroundColor: 'yellow',
       summaryYouth:    summaryText,
       expandedYouth:   expandedLong,
@@ -83,7 +83,7 @@ const doc = {
       _type:           'section',
       _key:            'sec-blue',
       displayHeadline: 'AKTIVOI UNELMASI',
-      headline:        'KURKISTUSKURSSIT, VÄYLÄOPINNOT JA AVOIN AMK TUOVAT VARMUUTTA VALINTAAN.',
+      headline:        '',   // SVG-grafiikassa — ei näytetä tekstinä
       backgroundColor: 'blue',
       summaryYouth:    summaryText,
       expandedYouth:   expandedLong,
