@@ -23,8 +23,8 @@ const bgClass = `section--${section.backgroundColor}` // section--pink / section
 // mobile: valinnainen — jos määritelty, käytetään <picture> + <source media>
 const displayGraphicMap: Record<string, { desktop: string; mobile?: string }> = {
   pink:   { desktop: '/images/Teema1_desktop.svg', mobile: '/images/mobiili_teema1_animoitu.svg' },
-  yellow: { desktop: '/images/Amis-avaa-ovia.svg',      mobile: '/images/mobiili_teema2_animoitu.svg' },
-  blue:   { desktop: '/images/Amis-aktivoi-unelmasi.svg', mobile: '/images/mobiili_teema3_animoitu.svg' },
+  yellow: { desktop: '/images/Amis-avaa-ovia.svg',      mobile: '/images/mobiili_teema3_animoitu.svg' },
+  blue:   { desktop: '/images/Amis-aktivoi-unelmasi.svg', mobile: '/images/mobiili_teema2_animoitu.svg' },
 }
 const graphic = section.backgroundColor
   ? displayGraphicMap[section.backgroundColor]
