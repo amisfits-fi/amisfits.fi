@@ -22,8 +22,8 @@
   --font-body:    'Rubik', system-ui, sans-serif;
 
   /* ── Asettelu ──────────────────────────────────────────────── */
-  --max-width:   1200px;
-  --max-content: 640px;  /* tekstipalstan leveys – desktop kasvaa alla */
+  --max-width:   960px;   /* koko sisältölohko (video+teksti) — n. 20% kapeampi (oli 1200px) */
+  --max-content: 512px;  /* tekstipalstan leveys – desktop kasvaa alla (oli 640px) */
   --pad-section: clamp(4rem, 8vw, 7rem);
   --pad-content: clamp(1.5rem, 5vw, 4rem);
 }
@@ -100,15 +100,16 @@ body {
 
 /* ── Värilliset sektiot (diagonal-leikkauksilla) ─────────────── */
 :root {
-  --skew-h: 14vw; /* diagonaalin korkeus — kulma ~8° täsmää SVG-alleviivoihin */
+  --skew-h: 18vw; /* diagonaalin korkeus — kulma ~10° (alkup. 14vw ≈ 8°, +2°) */
 }
 
 .section {
   position:       relative;
   /* Ylhäällä: vain diagonaalin clearance + pieni hengitysväli ennen SVG-grafiikkaa */
   padding-top:    calc(var(--skew-h) + 1.5rem);
-  /* Alhaalla: reipas tila ennen seuraavan sektiön diagonaalia */
-  padding-bottom: clamp(5rem, 10vw, 9rem);
+  /* Alhaalla: reipas tila ennen seuraavan sektiön diagonaalia (divider)
+     min 8rem = mobiilin arvo (säilyy), vw + max kasvattavat vain desktopia */
+  padding-bottom: clamp(8rem, 20vw, 22rem);
   padding-left:   var(--pad-content);
   padding-right:  var(--pad-content);
   clip-path:      polygon(0 var(--skew-h), 100% 0, 100% 100%, 0 100%);
@@ -148,8 +149,11 @@ body {
   margin:    0 auto;
 }
 
-/* Valinnainen video-alue */
-.section__video-area { margin-bottom: 2.5rem; }
+/* Valinnainen video-alue — yksi rivi lisää tyhjää ylä- ja alapuolelle */
+.section__video-area {
+  margin-top:    1.5rem;
+  margin-bottom: 4rem;
+}
 
 .section__video-placeholder {
   background:      var(--color-navy);
@@ -204,34 +208,25 @@ body {
 }
 .section__summary p + p { margin-top: 0.75rem; }
 
-/* "LUE LISÄÄ" -haitari – viivat molemmin puolin pill-nappia ── */
+/* "LUE LISÄÄ" -haitari – pill-nappi vasemmalle tasattuna ── */
 .section__details {
   margin-top:    2rem;
   margin-bottom: 0;
 }
 
-/* summary = koko rivi: viiva — PILL — viiva */
+/* summary = vasemmalle tasattu pill-nappi (ei katkoviivoja) */
 .section__cta {
-  display:    flex;
-  align-items: center;
-  gap:         1.25rem;
-  max-width:   640px;
-  cursor:      pointer;
-  list-style:  none;
-  user-select: none;
-  padding:     0;
-  margin-top:  0;
+  display:         flex;
+  align-items:     center;
+  justify-content: flex-start;
+  max-width:       var(--max-content);
+  cursor:          pointer;
+  list-style:      none;
+  user-select:     none;
+  padding:         0;
+  margin-top:      0;
 }
 .section__cta::-webkit-details-marker { display: none; }
-
-/* Viivat molemmin puolin */
-.section__cta::before,
-.section__cta::after {
-  content:    '';
-  flex:       1;
-  border-top: 2px dashed var(--color-navy);
-  opacity:    0.6;
-}
 
 /* Navy pill -nappi */
 .section__cta-pill {
@@ -263,7 +258,7 @@ details[open] .section__icon { transform: rotate(180deg); }
 
 .section__expanded {
   padding:     1.5rem 0;
-  max-width:   640px;
+  max-width:   var(--max-content);
   font-size:   clamp(1.1rem, 1.75vw, 1.3rem);
   line-height: 1.65;
 }
@@ -435,7 +430,7 @@ details[open] .faq__icon { transform: rotate(180deg); }
 /* ── Desktop: leveämpi palsta + isommat sivumarginaalit ─────── */
 @media (min-width: 641px) {
   :root {
-    --max-content: 1000px;                    /* tekstipalsta */
+    --max-content: 800px;                    /* tekstipalsta (oli 1000px, ~20% kapeampi) */
     --pad-content: clamp(3rem, 7vw, 10rem);  /* sivumarginaalit */
   }
 }
@@ -453,6 +448,13 @@ details[open] .faq__icon { transform: rotate(180deg); }
 
   .section__cta {
     max-width: 100%;
+  }
+
+  /* Mobiilissa SVG-grafiikka mahtuu näkymään — ei reunojen yli vuotoa */
+  .section__display-graphic {
+    width:     100%;
+    left:      auto;
+    transform: none;
   }
 
   .footer__inner { flex-direction: column; }
