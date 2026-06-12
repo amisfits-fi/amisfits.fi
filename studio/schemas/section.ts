@@ -1,13 +1,42 @@
 import { defineType, defineField } from 'sanity'
 
-// Porttitekstikenttä – käytetään molemmissa audience-varianteissa
+// ── Rikastekstikenttä – tukee lihavointia, kursiivia, linkkejä,
+//    sekä tekstin sisään upotettavia KUVIA ja TIEDOSTOLIITTEITÄ ───────────────
 const bodyField = (name: string, title: string) =>
   defineField({
     name,
     title,
     type:  'array',
-    of:    [{ type: 'block' }],
-    description: 'Rikastekstikenttä – tukee lihavoitua, kursiivia ja linkkejä.',
+    of: [
+      { type: 'block' },
+      // Kuva tekstin sisään
+      {
+        type:    'image',
+        options: { hotspot: true },
+        fields:  [
+          defineField({
+            name:  'alt',
+            title: 'Vaihtoehtoinen teksti (saavutettavuus)',
+            type:  'string',
+          }),
+        ],
+      },
+      // Tiedostoliite (PDF tms.) tekstin sisään
+      {
+        type:   'object',
+        name:   'fileAttachment',
+        title:  'Tiedostoliite',
+        fields: [
+          defineField({ name: 'file',  title: 'Tiedosto',      type: 'file'   }),
+          defineField({ name: 'title', title: 'Linkin teksti', type: 'string' }),
+        ],
+        preview: {
+          select:  { title: 'title', fname: 'file.asset.originalFilename' },
+          prepare: ({ title, fname }) => ({ title: title || fname || '📎 Tiedosto' }),
+        },
+      },
+    ],
+    description: 'Rikastekstikenttä – tukee lihavointia, kursiivia, linkkejä, kuvia ja tiedostoliitteitä.',
   })
 
 export default defineType({
@@ -56,16 +85,57 @@ export default defineType({
       name:        'testCtaUrl',
       title:       'AMISFITS-testi URL',
       type:        'url',
-      description: 'Linkki AMISFITS-testiin (näkyy tämän sekstion lopussa). Jätetään tyhjäksi toistaiseksi.',
+      description: 'Linkki AMISFITS-testiin (näkyy tämän sektion lopussa). Jätetään tyhjäksi toistaiseksi.',
     }),
 
-    // ── Nuorten sisältö (top-level, ei sisäkkäinen object) ───────
-    bodyField('summaryYouth',  '👦 Tiivistelmä – Peruskoulunuoret (aina näkyvissä)'),
-    bodyField('expandedYouth', '👦 Laajennettu – Peruskoulunuoret (avautuu "Lue lisää" -painikkeesta)'),
+    // ── Nuorten sisältö ──────────────────────────────────────────
+    bodyField('summaryYouth',     '👦 Tiivistelmä – Peruskoulunuoret (aina näkyvissä)'),
+    bodyField('expandedYouth',    '👦 Polku ammattikorkeakouluun – Peruskoulunuoret (painike "Ammattikorkeakouluun")'),
+    bodyField('expandedYouthUni', '👦 Polku yliopistoon – Peruskoulunuoret (painike "Yliopistoon")'),
 
     // ── Aikuisopiskelijoiden sisältö ─────────────────────────────
-    bodyField('summaryAdult',  '🎓 Tiivistelmä – Aikuisopiskelijat (aina näkyvissä)'),
-    bodyField('expandedAdult', '🎓 Laajennettu – Aikuisopiskelijat (avautuu "Lue lisää" -painikkeesta)'),
+    bodyField('summaryAdult',     '🎓 Tiivistelmä – Aikuisopiskelijat (aina näkyvissä)'),
+    bodyField('expandedAdult',    '🎓 Polku ammattikorkeakouluun – Aikuisopiskelijat (painike "Ammattikorkeakouluun")'),
+    bodyField('expandedAdultUni', '🎓 Polku yliopistoon – Aikuisopiskelijat (painike "Yliopistoon")'),
+
+    // ── Erilliset kuva- ja tiedostokentät (näkyvät osion lopussa) ─
+    defineField({
+      name:    'images',
+      title:   'Kuvat (osion lopussa)',
+      type:    'array',
+      of: [{
+        type:    'image',
+        options: { hotspot: true },
+        fields:  [
+          defineField({
+            name:  'alt',
+            title: 'Vaihtoehtoinen teksti (saavutettavuus)',
+            type:  'string',
+          }),
+        ],
+      }],
+      description: 'Kuvat näytetään osion lopussa, ennen testipainiketta.',
+    }),
+
+    defineField({
+      name:    'attachments',
+      title:   'Tiedostoliitteet (osion lopussa)',
+      type:    'array',
+      of: [{
+        type:   'object',
+        name:   'attachment',
+        title:  'Tiedosto',
+        fields: [
+          defineField({ name: 'title', title: 'Linkin teksti', type: 'string' }),
+          defineField({ name: 'file',  title: 'Tiedosto',      type: 'file', validation: (R) => R.required() }),
+        ],
+        preview: {
+          select:  { title: 'title', fname: 'file.asset.originalFilename' },
+          prepare: ({ title, fname }) => ({ title: title || fname || '📎 Tiedosto' }),
+        },
+      }],
+      description: 'Ladattavat tiedostot (esim. PDF) näytetään osion lopussa.',
+    }),
   ],
 
   preview: {

@@ -277,9 +277,88 @@ details[open] .section__icon { transform: rotate(180deg); }
 }
 .section__expanded p + p { margin-top: 0.75rem; }
 
-/* AMISFITS-testi -CTA */
-.section__test-cta {
+/* ── Polkupainikkeet (AMK / yliopisto) – pinotaan pystyyn ───── */
+.section__paths {
+  display:        flex;
+  flex-direction: column;
+  gap:            1rem;
   margin-top:     2rem;
+  max-width:      var(--max-content);
+}
+.section__paths .section__details { margin-top: 0; }
+
+/* ── Rikastekstin sisäiset kuvat ja tiedostot ──────────────── */
+.rt-image,
+.section__image {
+  margin:    1.5rem 0;
+  max-width: var(--max-content);
+}
+.rt-image img,
+.section__image img {
+  display:       block;
+  width:         100%;
+  height:        auto;
+  border-radius: 12px;
+}
+.rt-image__caption,
+.section__image-caption {
+  margin-top: 0.4rem;
+  font-size:  0.85rem;
+  opacity:    0.7;
+  color:      var(--color-navy);
+}
+
+/* Erilliset kuvat -kontti */
+.section__images { max-width: var(--max-content); }
+
+/* Tiedostolinkki rikastekstissä */
+.rt-file {
+  display:               inline-flex;
+  align-items:           center;
+  gap:                   0.4rem;
+  color:                 var(--color-navy);
+  font-weight:           600;
+  text-decoration:       underline;
+  text-underline-offset: 3px;
+}
+
+/* Erilliset tiedostoliitteet -lista */
+.section__attachments {
+  list-style:     none;
+  padding:        0;
+  margin:         1.5rem 0;
+  max-width:      var(--max-content);
+  display:        flex;
+  flex-direction: column;
+  gap:            0.5rem;
+}
+.section__attachment {
+  display:         inline-flex;
+  align-items:     center;
+  gap:             0.5rem;
+  width:           fit-content;
+  color:           var(--color-navy);
+  font-weight:     600;
+  text-decoration: none;
+  border:          2px solid var(--color-navy);
+  border-radius:   999px;
+  padding:         0.5rem 1.1rem;
+  transition:      background 0.2s, color 0.2s;
+}
+.section__attachment:hover {
+  background: var(--color-navy);
+  color:      var(--color-white);
+}
+.section__attachment-meta {
+  font-weight: 400;
+  opacity:     0.65;
+  font-size:   0.85rem;
+}
+
+/* ── AMISFITS-testi -painike ───────────────────────────────── */
+.section__test { margin-top: 2.5rem; }
+.section__test-lead {
+  margin-bottom:  0.75rem;
   font-family:    var(--font-display);
   font-size:      0.95rem;
   font-weight:    700;
@@ -287,13 +366,27 @@ details[open] .section__icon { transform: rotate(180deg); }
   text-transform: uppercase;
   color:          var(--color-navy);
 }
-
-.section__test-link {
-  text-decoration:       underline;
-  text-underline-offset: 3px;
-  color:                 var(--color-navy);
+.section__test-button {
+  display:         inline-flex;
+  align-items:     center;
+  gap:             0.5rem;
+  background:      var(--color-navy);
+  color:           var(--color-white);
+  border-radius:   999px;
+  padding:         0.85rem 2rem;
+  font-family:     var(--font-display);
+  font-size:       0.85rem;
+  font-weight:     700;
+  letter-spacing:  0.12em;
+  text-transform:  uppercase;
+  text-decoration: none;
+  transition:      transform 0.2s, box-shadow 0.2s;
 }
-.section__test-link--placeholder {
+.section__test-button:hover {
+  transform:  translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+}
+.section__test-button--placeholder {
   opacity:        0.35;
   cursor:         default;
   pointer-events: none;

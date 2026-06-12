@@ -1,20 +1,32 @@
 ---
-import { toHTML } from '@portabletext/to-html'
-import type { Section, Audience } from '@/lib/queries'
+import { renderPT } from '@/lib/portable'
+import { urlFor } from '@/lib/sanity'
+import { t } from '@/lib/i18n'
+import type { Section, Audience, Language } from '@/lib/queries'
 
 interface Props {
   section:  Section
   audience: Audience
+  lang:     Language
 }
 
-const { section, audience } = Astro.props
+const { section, audience, lang } = Astro.props
+const tr = t(lang)
 
 // ── Audience-ehtologiikka – valitaan oikea sisältö ───────────────────────────
-const summary  = audience === 'nuoret' ? section.summaryYouth  : section.summaryAdult
-const expanded = audience === 'nuoret' ? section.expandedYouth : section.expandedAdult
+const summary = audience === 'nuoret' ? section.summaryYouth     : section.summaryAdult
+const uas     = audience === 'nuoret' ? section.expandedYouth     : section.expandedAdult     // polku ammattikorkeakouluun
+const uni     = audience === 'nuoret' ? section.expandedYouthUni  : section.expandedAdultUni  // polku yliopistoon
 
-const summaryHTML  = summary?.length  ? toHTML(summary)  : ''
-const expandedHTML = expanded?.length ? toHTML(expanded) : ''
+const summaryHTML = renderPT(summary)
+const uasHTML     = renderPT(uas)
+const uniHTML     = renderPT(uni)
+
+// Polkupainikkeiden lokalisoidut otsikot
+const paths = [
+  { label: tr.pathUas, html: uasHTML },
+  { label: tr.pathUni, html: uniHTML },
+].filter((p) => p.html)
 
 // Taustaväri CSS-luokkana
 const bgClass = `section--${section.backgroundColor}` // section--pink / section--yellow / section--blue
@@ -34,6 +46,13 @@ const graphic = section.backgroundColor
 function toEmbed(url: string): string {
   const ytMatch = url.match(/(?:v=|youtu\.be\/)([A-Za-z0-9_-]{11})/)
   return ytMatch ? `https://www.youtube.com/embed/${ytMatch[1]}` : url
+}
+
+// Tiedostokoko luettavaan muotoon
+function fmtSize(bytes?: number): string {
+  if (!bytes) return ''
+  if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} kB`
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
 }
 ---
 
@@ -87,7 +106,7 @@ function toEmbed(url: string): string {
 
     {!section.video && (
       <div class="section__video-area">
-        <div class="section__video-placeholder">Video tulossa</div>
+        <div class="section__video-placeholder">{tr.videoComing}</div>
       </div>
     )}
 
@@ -101,27 +120,69 @@ function toEmbed(url: string): string {
       <div class="section__summary" set:html={summaryHTML} />
     )}
 
-    {/* Laajennettu sisältö – haitari, natiivi HTML, ei JavaScriptiä */}
-    {expandedHTML && (
-      <details class="section__details">
-        <summary class="section__cta">
-          <span class="section__cta-pill">
-            LUE LISÄÄ
-            <i class="section__cta-icon" aria-hidden="true">▾</i>
-          </span>
-        </summary>
-        <div class="section__expanded" set:html={expandedHTML} />
-      </details>
+    {/* Polkupainikkeet – AMK ja yliopisto erillisinä haitareina (natiivi HTML, ei JS) */}
+    {paths.length > 0 && (
+      <div class="section__paths">
+        {paths.map((p) => (
+          <details class="section__details">
+            <summary class="section__cta">
+              <span class="section__cta-pill">
+                {p.label}
+                <i class="section__cta-icon" aria-hidden="true">▾</i>
+              </span>
+            </summary>
+            <div class="section__expanded" set:html={p.html} />
+          </details>
+        ))}
+      </div>
     )}
 
-    {/* AMISFITS-testi CTA */}
-    <p class="section__test-cta">
-      Sopiiko amis sinulle?{' '}
+    {/* Erilliset kuvat (valinnainen) */}
+    {section.images && section.images.length > 0 && (
+      <div class="section__images">
+        {section.images.map((img) => (
+          <figure class="section__image">
+            <img
+              src={urlFor(img).width(1200).fit('max').auto('format').url()}
+              alt={img.alt ?? ''}
+              loading="lazy"
+              decoding="async"
+            />
+            {img.alt && <figcaption class="section__image-caption">{img.alt}</figcaption>}
+          </figure>
+        ))}
+      </div>
+    )}
+
+    {/* Erilliset tiedostoliitteet (valinnainen) */}
+    {section.attachments && section.attachments.length > 0 && (
+      <ul class="section__attachments">
+        {section.attachments.map((att) => (
+          att.asset?.url && (
+            <li>
+              <a class="section__attachment" href={att.asset.url} download>
+                <span class="section__attachment-icon" aria-hidden="true">📎</span>
+                <span>{att.title ?? att.asset.originalFilename ?? 'Lataa tiedosto'}</span>
+                {(att.asset.extension || att.asset.size) && (
+                  <span class="section__attachment-meta">
+                    {att.asset.extension ? att.asset.extension.toUpperCase() : ''}{att.asset.extension && att.asset.size ? ' · ' : ''}{fmtSize(att.asset.size)}
+                  </span>
+                )}
+              </a>
+            </li>
+          )
+        ))}
+      </ul>
+    )}
+
+    {/* AMISFITS-testi CTA – selkeä painike */}
+    <div class="section__test">
+      <p class="section__test-lead">{tr.testLead}</p>
       {section.testCtaUrl
-        ? <a href={section.testCtaUrl} class="section__test-link">Tee 2 min AMISFITS-testi →</a>
-        : <span class="section__test-link section__test-link--placeholder">Tee 2 min AMISFITS-testi →</span>
+        ? <a href={section.testCtaUrl} class="section__test-button">{tr.testButton}</a>
+        : <span class="section__test-button section__test-button--placeholder">{tr.testButton}</span>
       }
-    </p>
+    </div>
 
   </div>
 </section>

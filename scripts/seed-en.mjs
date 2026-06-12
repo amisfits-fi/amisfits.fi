@@ -1,7 +1,11 @@
 /**
- * seed-fi.mjs — Luo suomenkielinen placeholder-sisältö Sanityyn
- * Aja: node scripts/seed-fi.mjs
- * Vaatii: SANITY_TOKEN ympäristömuuttujan tai kysyy sen
+ * seed-en.mjs — Creates English placeholder content in Sanity
+ * Run: node scripts/seed-en.mjs
+ * Requires: SANITY_TOKEN environment variable
+ *
+ * Note: body text is Lorem Ipsum (layout testing). Headlines, button leads and
+ * FAQ questions are translated. The frontend UI text (button labels etc.) is
+ * still hardcoded in Finnish – to be translated separately when i18n is added.
  */
 
 import { createClient } from '@sanity/client'
@@ -10,12 +14,12 @@ const client = createClient({
   projectId: 'l442zg5l',
   dataset:   'production',
   apiVersion: '2024-01-01',
-  // Hae token: https://sanity.io/manage → l442zg5l → API → Tokens → Add API token (Editor)
+  // Get a token: https://sanity.io/manage → l442zg5l → API → Tokens → Add API token (Editor)
   token: process.env.SANITY_TOKEN,
   useCdn:    false,
 })
 
-// ── Portable Text -apufunktio ─────────────────────────────────────────────────
+// ── Portable Text helper ──────────────────────────────────────────────────────
 const block = (text, bold = false) => ({
   _type:    'block',
   _key:     Math.random().toString(36).slice(2, 9),
@@ -29,10 +33,9 @@ const block = (text, bold = false) => ({
   }],
 })
 
-// ── Sisältö leiskasta ─────────────────────────────────────────────────────────
-// Lisätäytteenä käytetään standardia Lorem Ipsum -tekstiä (julkista, vapaasti
-// käytettävää placeholder-latinaa), jotta tekstilohkot vastaavat paremmin
-// todellisen sisällön pituutta layoutin testausta varten.
+// ── Content ───────────────────────────────────────────────────────────────────
+// Body text uses standard Lorem Ipsum (free placeholder Latin) so the text
+// blocks better match the length of real content for layout testing.
 const fillerA = block('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.')
 
 const fillerB = block('Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.')
@@ -55,38 +58,20 @@ const summaryText = [
   fillerC,
 ]
 
-const expandedShort = [
-  block('Lorem ipsum dolor sit amet', true),
-  block('Te velique voluptatium aut maximus sit unt ditas maxim cuptatus dolorum voloruntorio eosa dere etur aut et volectem quam laborate nobis es prae nonsecum et arum volupta vollaccum.'),
-  fillerA,
-  fillerB,
-  fillerC,
-  fillerD,
-]
-
-const expandedLong = [
-  ...expandedShort,
-  block('Lorem ipsum', true),
-  block('Ut eossum re archillorum eosam voluptatassi derero tet resti dus quatum intus solori delest pressim dempos de pro deligent, comnihi llendist labo.'),
-  fillerE,
-  fillerF,
-  fillerG,
-]
-
-// Polku ammattikorkeakouluun (AMK)
+// Path to a university of applied sciences (UAS)
 const uasText = [
-  block('Ammattikorkeakouluun', true),
-  block('Amiksesta voit hakea suoraan ammattikorkeakouluun. Tästä polusta kerrotaan, miten jatko-opinnot AMK:ssa etenevät ja mitä se vaatii.'),
+  block('To a university of applied sciences', true),
+  block('From vocational school you can apply directly to a university of applied sciences. This path explains how further studies at a UAS work and what they require.'),
   fillerA,
   fillerB,
   fillerC,
   fillerD,
 ]
 
-// Polku yliopistoon (UNI)
+// Path to university (UNI)
 const uniText = [
-  block('Yliopistoon', true),
-  block('Myös yliopisto on mahdollinen reitti amiksen jälkeen. Tässä käydään läpi yliopistosiirtymät ja se, miten korkeakoulukelpoisuus saavutetaan.'),
+  block('To university', true),
+  block('University is also a possible route after vocational school. Here we cover transitions to university and how to achieve eligibility for higher education.'),
   fillerE,
   fillerF,
   fillerG,
@@ -100,18 +85,18 @@ const faqAnswer = [
   fillerD,
 ]
 
-// ── Dokumentti ───────────────────────────────────────────────────────────────
+// ── Document ──────────────────────────────────────────────────────────────────
 const doc = {
-  _id:      'onePager-fi',
+  _id:      'onePager-en',
   _type:    'onePager',
-  language: 'fi',
+  language: 'en',
 
   sections: [
     {
       _type:           'section',
       _key:            'sec-pink',
-      displayHeadline: 'ANTAA ETUMATKAA',
-      headline:        '',   // SVG-grafiikassa — ei näytetä tekstinä
+      displayHeadline: 'GIVES A HEAD START',
+      headline:        '',   // in the SVG graphic — not shown as text
       backgroundColor: 'pink',
       summaryYouth:      summaryText,
       expandedYouth:     uasText,
@@ -123,8 +108,8 @@ const doc = {
     {
       _type:           'section',
       _key:            'sec-yellow',
-      displayHeadline: 'avaa ovia',
-      headline:        '',   // SVG-grafiikassa — ei näytetä tekstinä
+      displayHeadline: 'opens doors',
+      headline:        '',   // in the SVG graphic — not shown as text
       backgroundColor: 'yellow',
       summaryYouth:      summaryText,
       expandedYouth:     uasText,
@@ -136,8 +121,8 @@ const doc = {
     {
       _type:           'section',
       _key:            'sec-blue',
-      displayHeadline: 'AKTIVOI UNELMASI',
-      headline:        '',   // SVG-grafiikassa — ei näytetä tekstinä
+      displayHeadline: 'ACTIVATE YOUR DREAMS',
+      headline:        '',   // in the SVG graphic — not shown as text
       backgroundColor: 'blue',
       summaryYouth:      summaryText,
       expandedYouth:     uasText,
@@ -149,32 +134,31 @@ const doc = {
   ],
 
   faq: [
-    { _key: 'faq1', question: 'Pääseekö amiksesta yliopistoon?',            answerYouth: faqAnswer, answerAdult: faqAnswer },
-    { _key: 'faq2', question: 'Mitä voin tehdä valmistumisen jälkeen?',     answerYouth: faqAnswer, answerAdult: faqAnswer },
-    { _key: 'faq3', question: 'Onko pakko mennä heti töihin?',              answerYouth: faqAnswer, answerAdult: faqAnswer },
-    { _key: 'faq4', question: 'Voinko jatkaa opintoja amiksen jälkeen?',    answerYouth: faqAnswer, answerAdult: faqAnswer },
-    { _key: 'faq5', question: 'Miten yhteishaku toimii amikselle?',         answerYouth: faqAnswer, answerAdult: faqAnswer },
-    { _key: 'faq6', question: 'Mikä reitti sopii juuri minulle?',           answerYouth: faqAnswer, answerAdult: faqAnswer },
-    { _key: 'faq7', question: 'Tarvitsenko lukion käyneitä paremmat paperit?', answerYouth: faqAnswer, answerAdult: faqAnswer },
+    { _key: 'faq1', question: 'Can you get into university from vocational school?',              answerYouth: faqAnswer, answerAdult: faqAnswer },
+    { _key: 'faq2', question: 'What can I do after graduation?',                                  answerYouth: faqAnswer, answerAdult: faqAnswer },
+    { _key: 'faq3', question: 'Do I have to start working right away?',                           answerYouth: faqAnswer, answerAdult: faqAnswer },
+    { _key: 'faq4', question: 'Can I continue studying after vocational school?',                 answerYouth: faqAnswer, answerAdult: faqAnswer },
+    { _key: 'faq5', question: 'How does the joint application to vocational school work?',        answerYouth: faqAnswer, answerAdult: faqAnswer },
+    { _key: 'faq6', question: 'Which path suits me best?',                                        answerYouth: faqAnswer, answerAdult: faqAnswer },
+    { _key: 'faq7', question: 'Do I need better grades than those who went to upper secondary?',  answerYouth: faqAnswer, answerAdult: faqAnswer },
   ],
 
   partnerLogos: [],
 }
 
-// ── Aja ───────────────────────────────────────────────────────────────────────
+// ── Run ───────────────────────────────────────────────────────────────────────
 async function main() {
   if (!client.config().token) {
-    console.error('❌  SANITY_TOKEN puuttuu.')
-    console.error('   Hae token: https://sanity.io/manage → l442zg5l → API → Tokens')
-    console.error('   Aja: SANITY_TOKEN=xxx node scripts/seed-fi.mjs')
+    console.error('❌  SANITY_TOKEN is missing.')
+    console.error('   Get a token: https://sanity.io/manage → l442zg5l → API → Tokens')
+    console.error('   Run: SANITY_TOKEN=xxx node scripts/seed-en.mjs')
     process.exit(1)
   }
 
-  // createOrReplace ilman drafts.-etuliitettä luo suoraan julkaistun dokumentin
-  console.log('⬆️  Luodaan/päivitetään julkaistu onePager-fi...')
+  console.log('⬆️  Creating/updating published onePager-en...')
   await client.createOrReplace(doc)
-  console.log('✅  onePager-fi julkaistu Sanityyn!')
-  console.log('   Netlify rakentaa uudelleen automaattisesti (Sanity-webhook).')
+  console.log('✅  onePager-en published to Sanity!')
+  console.log('   Netlify will rebuild automatically (Sanity webhook).')
 }
 
 main().catch(err => { console.error('❌', err.message); process.exit(1) })

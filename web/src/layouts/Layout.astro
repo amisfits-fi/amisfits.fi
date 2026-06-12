@@ -1,5 +1,6 @@
 ---
 import type { Language, Audience } from '@/lib/queries'
+import { LANGUAGES, LANG_LABEL, htmlLang, audienceSlug, t } from '@/lib/i18n'
 import '@/styles/global.css'
 
 interface Props {
@@ -9,27 +10,28 @@ interface Props {
 }
 
 const { lang, audience, title = 'amisfits.fi' } = Astro.props
+const tr = t(lang)
 
-// Linkit kohderyhmävaihtoehtoihin (sama kieli, eri kohderyhmä)
+// Kohderyhmävaihtoehto (sama kieli, eri kohderyhmä) – lokalisoitu slug + otsikko
 const otherAudience      = audience === 'nuoret' ? 'aikuiset' : 'nuoret'
-const otherAudienceLabel = audience === 'nuoret' ? 'Aikuisopiskelijat' : 'Peruskoulunuoret'
-const currentLabel       = audience === 'nuoret' ? 'Peruskoulunuoret'  : 'Aikuisopiskelijat'
+const otherAudienceLabel = tr.audienceLabel[otherAudience]
+const currentLabel       = tr.audienceLabel[audience]
 
-// Kielivalitsin
-const languages: { code: Language; label: string }[] = [
-  { code: 'fi', label: 'FI' },
-  { code: 'se', label: 'SE' },
-  { code: 'en', label: 'EN' },
-]
+// Kielivalitsin – sama kohderyhmä, eri kieli (kunkin kielen oma slug)
+const languages = LANGUAGES.map((code) => ({
+  code,
+  label: LANG_LABEL[code],
+  href:  `/${code}/${audienceSlug(code, audience)}`,
+}))
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html lang={htmlLang(lang)}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
-    <meta name="description" content="Amisfits – ammatillinen tutkinto antaa etumatkaa" />
+    <meta name="description" content={tr.metaDescription} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <!-- CSS injected by Astro via import in frontmatter -->
   </head>
@@ -41,7 +43,7 @@ const languages: { code: Language; label: string }[] = [
         <span class="nav__audience nav__audience--active">{currentLabel}</span>
         <a
           class="nav__audience"
-          href={`/${lang}/${otherAudience}`}
+          href={`/${lang}/${audienceSlug(lang, otherAudience)}`}
         >{otherAudienceLabel}</a>
       </div>
 
@@ -49,7 +51,7 @@ const languages: { code: Language; label: string }[] = [
         {languages.map(l => (
           <a
             class:list={['nav__lang', { 'nav__lang--active': l.code === lang }]}
-            href={`/${l.code}/${audience}`}
+            href={l.href}
           >{l.label}</a>
         ))}
       </div>
@@ -68,11 +70,11 @@ const languages: { code: Language; label: string }[] = [
         </div>
         <div>
           <p class="footer__text">
-            Sivustoa ylläpitää{' '}
+            {tr.footerPre}
             <a href="https://www.sivista.fi" target="_blank" rel="noopener noreferrer" style="color: inherit;">
               Sivistysala ry (Sivista)
             </a>
-            {' '}– ammatillisen koulutuksen työnantaja- ja toimialajärjestö.
+            {tr.footerPost}
           </p>
         </div>
       </div>

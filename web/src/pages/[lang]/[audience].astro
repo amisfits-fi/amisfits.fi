@@ -5,21 +5,22 @@ import FaqAccordion  from '@/components/FaqAccordion.astro'
 import PartnerLogos  from '@/components/PartnerLogos.astro'
 import { getOnePager } from '@/lib/queries'
 import type { Language, Audience } from '@/lib/queries'
+import { LANGUAGES, AUDIENCES, audienceSlug } from '@/lib/i18n'
 
-// ── Staattinen reittilistaus – generoi kaikki 6 sivua build-aikana ────────────
+// ── Staattinen reittilistaus – lokalisoidut audience-slugit per kieli ─────────
+// Esim. /fi/nuoret, /se/unga, /en/youth. Kanoninen audience välitetään propsina.
 export function getStaticPaths() {
-  return [
-    { params: { lang: 'fi', audience: 'nuoret'   } },
-    { params: { lang: 'fi', audience: 'aikuiset' } },
-    { params: { lang: 'se', audience: 'nuoret'   } },
-    { params: { lang: 'se', audience: 'aikuiset' } },
-    { params: { lang: 'en', audience: 'nuoret'   } },
-    { params: { lang: 'en', audience: 'aikuiset' } },
-  ]
+  return LANGUAGES.flatMap((lang) =>
+    AUDIENCES.map((audience) => ({
+      params: { lang, audience: audienceSlug(lang, audience) },
+      props:  { audience },
+    }))
+  )
 }
 
 // ── Hae Sanitystä oikea dokumentti ───────────────────────────────────────────
-const { lang, audience } = Astro.params as { lang: Language; audience: Audience }
+const { lang } = Astro.params as { lang: Language }
+const { audience } = Astro.props as { audience: Audience }
 const page = await getOnePager(lang)
 ---
 
@@ -27,17 +28,17 @@ const page = await getOnePager(lang)
 
   {/* Sektiot – audience-ehtologiikka tapahtuu Section-komponentissa */}
   {page.sections.map((section) => (
-    <Section section={section} audience={audience} />
+    <Section section={section} audience={audience} lang={lang} />
   ))}
 
   {/* FAQ-haitari */}
   {page.faq?.length > 0 && (
-    <FaqAccordion items={page.faq} audience={audience} />
+    <FaqAccordion items={page.faq} audience={audience} lang={lang} />
   )}
 
   {/* Kumppanilogot */}
   {page.partnerLogos?.length > 0 && (
-    <PartnerLogos logos={page.partnerLogos} />
+    <PartnerLogos logos={page.partnerLogos} lang={lang} />
   )}
 
 </Layout>

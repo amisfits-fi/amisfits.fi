@@ -6,8 +6,26 @@ export type Audience = 'nuoret' | 'aikuiset'
 export type Language = 'fi' | 'se' | 'en'
 
 export interface SanityBlock {
-  _type: 'block'
+  _type: 'block' | 'image' | 'fileAttachment' | string
   [key: string]: unknown
+}
+
+export interface SanityImage {
+  _key?:  string
+  _type?: 'image'
+  asset:  { _ref: string }
+  alt?:   string
+}
+
+export interface Attachment {
+  _key:   string
+  title?: string
+  asset?: {
+    url?:              string
+    originalFilename?: string
+    extension?:        string
+    size?:             number
+  }
 }
 
 export interface Section {
@@ -16,13 +34,18 @@ export interface Section {
   headline:         string
   backgroundColor:  'pink' | 'yellow' | 'blue'
   video?:           string
-  testCtaUrl?:      string          // siirretty pois onePager-tasolta
+  testCtaUrl?:      string
   // Sisältö nuorille
-  summaryYouth:     SanityBlock[]
-  expandedYouth:    SanityBlock[]
+  summaryYouth:      SanityBlock[]
+  expandedYouth:     SanityBlock[]  // polku ammattikorkeakouluun
+  expandedYouthUni:  SanityBlock[]  // polku yliopistoon
   // Sisältö aikuisopiskelijoille
-  summaryAdult:     SanityBlock[]
-  expandedAdult:    SanityBlock[]
+  summaryAdult:      SanityBlock[]
+  expandedAdult:     SanityBlock[]  // polku ammattikorkeakouluun
+  expandedAdultUni:  SanityBlock[]  // polku yliopistoon
+  // Erilliset liitteet
+  images?:      SanityImage[]
+  attachments?: Attachment[]
 }
 
 export interface FaqItem {
@@ -61,8 +84,25 @@ const ONE_PAGER_QUERY = /* groq */ `
       testCtaUrl,
       summaryYouth,
       expandedYouth,
+      expandedYouthUni,
       summaryAdult,
-      expandedAdult
+      expandedAdult,
+      expandedAdultUni,
+      images[] {
+        _key,
+        asset,
+        alt
+      },
+      attachments[] {
+        _key,
+        title,
+        "asset": file.asset->{
+          url,
+          originalFilename,
+          extension,
+          size
+        }
+      }
     },
     faq[] {
       _key,

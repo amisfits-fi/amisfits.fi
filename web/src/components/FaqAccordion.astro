@@ -1,24 +1,27 @@
 ---
-import { toHTML } from '@portabletext/to-html'
-import type { FaqItem, Audience } from '@/lib/queries'
+import { renderPT } from '@/lib/portable'
+import { t } from '@/lib/i18n'
+import type { FaqItem, Audience, Language } from '@/lib/queries'
 
 interface Props {
   items:    FaqItem[]
   audience: Audience
+  lang:     Language
 }
 
-const { items, audience } = Astro.props
+const { items, audience, lang } = Astro.props
+const tr = t(lang)
 ---
 
 <section class="faq">
   <div class="faq__inner">
-    <h2 class="faq__heading">Usein kysyttyä amiksesta</h2>
+    <h2 class="faq__heading">{tr.faqHeading}</h2>
 
     <div class="faq__list">
       {items.map((item) => {
         // Audience-ehtologiikka: valitaan oikea vastaus
         const answerBlocks = audience === 'nuoret' ? item.answerYouth : item.answerAdult
-        const answerHTML   = answerBlocks?.length ? toHTML(answerBlocks) : ''
+        const answerHTML   = renderPT(answerBlocks)
 
         return (
           // Natiivi HTML details/summary – toimii ilman JavaScriptiä
