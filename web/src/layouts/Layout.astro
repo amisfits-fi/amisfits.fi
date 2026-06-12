@@ -1,6 +1,6 @@
 ---
 import type { Language, Audience } from '@/lib/queries'
-import { LANGUAGES, LANG_LABEL, htmlLang, audienceSlug, t } from '@/lib/i18n'
+import { LANGUAGES, LANG_LABEL, htmlLang, pagePath, t } from '@/lib/i18n'
 import '@/styles/global.css'
 
 interface Props {
@@ -21,7 +21,7 @@ const currentLabel       = tr.audienceLabel[audience]
 const languages = LANGUAGES.map((code) => ({
   code,
   label: LANG_LABEL[code],
-  href:  `/${code}/${audienceSlug(code, audience)}`,
+  href:  pagePath(code, audience),
 }))
 ---
 
@@ -43,7 +43,7 @@ const languages = LANGUAGES.map((code) => ({
         <span class="nav__audience nav__audience--active">{currentLabel}</span>
         <a
           class="nav__audience"
-          href={`/${lang}/${audienceSlug(lang, otherAudience)}`}
+          href={pagePath(lang, otherAudience)}
         >{otherAudienceLabel}</a>
       </div>
 

@@ -17,14 +17,28 @@ export default defineType({
       name:  'answerYouth',
       title: '👦 Vastaus – Peruskoulunuoret',
       type:  'array',
-      of:    [{ type: 'block' }],
+      of:    [{
+        type: 'block',
+        styles: [
+          { title: 'Normaali',          value: 'normal' },
+          { title: 'Väliotsikko',       value: 'h3' },
+          { title: 'Pieni väliotsikko', value: 'h4' },
+        ],
+      }],
     }),
 
     defineField({
       name:  'answerAdult',
       title: '🎓 Vastaus – Aikuisopiskelijat',
       type:  'array',
-      of:    [{ type: 'block' }],
+      of:    [{
+        type: 'block',
+        styles: [
+          { title: 'Normaali',          value: 'normal' },
+          { title: 'Väliotsikko',       value: 'h3' },
+          { title: 'Pieni väliotsikko', value: 'h4' },
+        ],
+      }],
       description: 'Jätä tyhjäksi jos vastaus on sama kuin nuorille.',
     }),
   ],

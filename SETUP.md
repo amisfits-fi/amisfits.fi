@@ -147,7 +147,15 @@ Muuttujien lisäyksen jälkeen: **Trigger deploy** → Deploy site
    *(tai Netlify antaa tarkat ohjeet)*
 3. Netlify hoitaa HTTPS-sertifikaatin automaattisesti (Let's Encrypt)
 
-✅ **Domain valmis** kun https://amisfits.fi aukeaa selaimessa
+### 4.4 ⚠️ Salli hakukoneindeksointi (PAKOLLINEN julkaisuvaihe!)
+1. Poista `netlify.toml`-tiedostosta rivi `X-Robots-Tag = "noindex, nofollow"`
+   (väliaikainen esto, joka pitää keskeneräisen sivuston poissa Googlesta)
+2. Committaa ja pushaa → Netlify buildaa uudelleen
+3. Varmista: `curl -I https://amisfits.fi/fi/nuoret` — vastauksessa EI saa
+   enää näkyä `x-robots-tag`-otsaketta
+
+✅ **Domain valmis** kun https://amisfits.fi aukeaa selaimessa eikä
+x-robots-tag-otsaketta enää ole
 
 ---
 

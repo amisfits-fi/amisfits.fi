@@ -5,22 +5,22 @@ import FaqAccordion  from '@/components/FaqAccordion.astro'
 import PartnerLogos  from '@/components/PartnerLogos.astro'
 import { getOnePager } from '@/lib/queries'
 import type { Language, Audience } from '@/lib/queries'
-import { LANGUAGES, AUDIENCES, audienceSlug } from '@/lib/i18n'
+import { LANGUAGES, AUDIENCES, audienceSlug, pathLang } from '@/lib/i18n'
 
 // ── Staattinen reittilistaus – lokalisoidut audience-slugit per kieli ─────────
-// Esim. /fi/nuoret, /se/unga, /en/youth. Kanoninen audience välitetään propsina.
+// Esim. /fi/nuoret, /sv/unga, /en/youth. URL:ssä käytetään ISO-kielikoodia
+// (pathLang); Sanityn sisäinen koodi ja kanoninen audience välitetään propseina.
 export function getStaticPaths() {
   return LANGUAGES.flatMap((lang) =>
     AUDIENCES.map((audience) => ({
-      params: { lang, audience: audienceSlug(lang, audience) },
-      props:  { audience },
+      params: { lang: pathLang(lang), audience: audienceSlug(lang, audience) },
+      props:  { lang, audience },
     }))
   )
 }
 
 // ── Hae Sanitystä oikea dokumentti ───────────────────────────────────────────
-const { lang } = Astro.params as { lang: Language }
-const { audience } = Astro.props as { audience: Audience }
+const { lang, audience } = Astro.props as { lang: Language; audience: Audience }
 const page = await getOnePager(lang)
 ---
 

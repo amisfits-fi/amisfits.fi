@@ -3,11 +3,13 @@
 # ruotsin/englannin reiteillä ohjataan pysyvästi (301) uusiin osoitteisiin.
 # (Suomen reitit /fi/nuoret ja /fi/aikuiset eivät muuttuneet.)
 
-# Ruotsi: nuoret → unga, aikuiset → vuxna
-/se/nuoret       /se/unga    301!
-/se/nuoret/      /se/unga/   301!
-/se/aikuiset     /se/vuxna   301!
-/se/aikuiset/    /se/vuxna/  301!
+# Ruotsi: nuoret → unga, aikuiset → vuxna.
+# Lisäksi kielikoodi korjattu: /se/ (pohjoissaame) → /sv/ (ruotsi, ISO 639-1).
+/se/nuoret       /sv/unga    301!
+/se/nuoret/      /sv/unga/   301!
+/se/aikuiset     /sv/vuxna   301!
+/se/aikuiset/    /sv/vuxna/  301!
+/se/*            /sv/:splat  301!
 
 # Englanti: nuoret → youth, aikuiset → adults
 /en/nuoret       /en/youth   301!

@@ -8,7 +8,17 @@ const bodyField = (name: string, title: string) =>
     title,
     type:  'array',
     of: [
-      { type: 'block' },
+      {
+        type: 'block',
+        // Väliotsikot tehdään oikeilla otsikkotyyleillä (ei lihavoinnilla),
+        // jotta ruudunlukijat ja hakukoneet tunnistavat ne otsikoiksi.
+        // Sektion oma otsikko on sivulla <h2>, joten väliotsikot ovat h3/h4.
+        styles: [
+          { title: 'Normaali',            value: 'normal' },
+          { title: 'Väliotsikko',         value: 'h3' },
+          { title: 'Pieni väliotsikko',   value: 'h4' },
+        ],
+      },
       // Kuva tekstin sisään
       {
         type:    'image',

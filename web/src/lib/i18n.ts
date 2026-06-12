@@ -1,18 +1,33 @@
 import type { Language, Audience } from './queries'
 
 // ── Kielet ────────────────────────────────────────────────────────────────────
+// HUOM: Sanityn sisäinen kielikoodi ruotsille on historiallisista syistä 'se'
+// (mm. dokumentti onePager-se). URL-poluissa ja HTML lang -attribuutissa
+// käytetään aina oikeaa ISO 639-1 -koodia 'sv' ('se' tarkoittaa pohjoissaamea)
+// — PATH_LANG hoitaa muunnoksen. Jos Sanity-data joskus migroidaan koodille
+// 'sv', tämä mappaus voidaan poistaa.
 export const LANGUAGES: Language[] = ['fi', 'se', 'en']
 export const DEFAULT_LANGUAGE: Language = 'fi'
 
-// Kielivalitsimen lyhenteet (huom: ruotsi näytetään 'SV', vaikka sisäinen koodi on 'se')
+// Kielivalitsimen lyhenteet
 export const LANG_LABEL: Record<Language, string> = { fi: 'FI', se: 'SV', en: 'EN' }
 
-/**
- * HTML lang -attribuutti. Sisäinen koodi 'se' (Sanity + reitit) → oikea
- * BCP47-koodi 'sv' ruotsille (se = pohjoissaame). Muut kielet sellaisenaan.
- */
+// Sisäinen kielikoodi → URL-polun/HTML langin ISO 639-1 -koodi
+export const PATH_LANG: Record<Language, string> = { fi: 'fi', se: 'sv', en: 'en' }
+
+/** URL-polun kielikoodi (esim. /sv/unga). */
+export function pathLang(lang: Language): string {
+  return PATH_LANG[lang]
+}
+
+/** HTML lang -attribuutti – sama ISO 639-1 -koodi kuin URL-poluissa. */
 export function htmlLang(lang: Language): string {
-  return lang === 'se' ? 'sv' : lang
+  return PATH_LANG[lang]
+}
+
+/** Sivun polku: /<iso-kielikoodi>/<lokalisoitu kohderyhmäslug>. */
+export function pagePath(lang: Language, audience: Audience): string {
+  return `/${pathLang(lang)}/${audienceSlug(lang, audience)}`
 }
 
 // ── Kohderyhmät ja lokalisoidut URL-slugit ───────────────────────────────────
