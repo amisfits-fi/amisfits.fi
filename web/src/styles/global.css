@@ -768,3 +768,7 @@ details[open] .faq__icon { transform: rotate(180deg); }
   color:          var(--color-navy);
   font-weight:    500;
 }
+
+/* hidden-attribuutin kunnioitus — luokkien display-säännöt eivät saa
+   ohittaa sitä (mm. quiz__nav-button inline-flex) */
+.quiz [hidden] { display: none !important; }
