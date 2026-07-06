@@ -22,26 +22,74 @@ export default defineConfig({
             S.listItem()
               .title('🇫🇮 Suomi')
               .child(
-                S.document()
-                  .schemaType('onePager')
-                  .documentId('onePager-fi')
-                  .title('Suomenkielinen sisältö')
+                S.list()
+                  .title('🇫🇮 Suomi')
+                  .items([
+                    S.listItem()
+                      .title('Sivun sisältö')
+                      .child(
+                        S.document()
+                          .schemaType('onePager')
+                          .documentId('onePager-fi')
+                          .title('Suomenkielinen sisältö')
+                      ),
+                    S.listItem()
+                      .title('Amisfits-testi')
+                      .child(
+                        S.document()
+                          .schemaType('quiz')
+                          .documentId('quiz-fi')
+                          .title('Amisfits-testi (suomi)')
+                      ),
+                  ])
               ),
             S.listItem()
               .title('🇸🇪 Svenska')
               .child(
-                S.document()
-                  .schemaType('onePager')
-                  .documentId('onePager-se')
-                  .title('Ruotsinkielinen sisältö')
+                S.list()
+                  .title('🇸🇪 Svenska')
+                  .items([
+                    S.listItem()
+                      .title('Sivun sisältö')
+                      .child(
+                        S.document()
+                          .schemaType('onePager')
+                          .documentId('onePager-se')
+                          .title('Ruotsinkielinen sisältö')
+                      ),
+                    S.listItem()
+                      .title('Amisfits-testi')
+                      .child(
+                        S.document()
+                          .schemaType('quiz')
+                          .documentId('quiz-se')
+                          .title('Amisfits-testi (ruotsi)')
+                      ),
+                  ])
               ),
             S.listItem()
               .title('🇬🇧 English')
               .child(
-                S.document()
-                  .schemaType('onePager')
-                  .documentId('onePager-en')
-                  .title('Englanninkielinen sisältö')
+                S.list()
+                  .title('🇬🇧 English')
+                  .items([
+                    S.listItem()
+                      .title('Sivun sisältö')
+                      .child(
+                        S.document()
+                          .schemaType('onePager')
+                          .documentId('onePager-en')
+                          .title('Englanninkielinen sisältö')
+                      ),
+                    S.listItem()
+                      .title('Amisfits-testi')
+                      .child(
+                        S.document()
+                          .schemaType('quiz')
+                          .documentId('quiz-en')
+                          .title('Amisfits-testi (englanti)')
+                      ),
+                  ])
               ),
           ]),
     }),

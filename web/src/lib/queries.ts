@@ -69,6 +69,49 @@ export interface OnePager {
   partnerLogos: PartnerLogo[]
 }
 
+// ── Amisfits-testi ───────────────────────────────────────────────────────────
+
+export type QuizColor = 'green' | 'yellow'
+
+export interface QuizOption {
+  _key:       string
+  textYouth:  string
+  textAdult?: string       // tyhjä = sama kuin nuorille
+  colorYouth: QuizColor
+  colorAdult: QuizColor
+}
+
+export interface QuizQuestion {
+  _key:           string
+  questionYouth:  string
+  questionAdult?: string   // tyhjä = sama kuin nuorille
+  options:        QuizOption[]
+}
+
+export interface QuizResult {
+  _key:          string
+  category:      QuizColor
+  headingYouth?: string
+  bodyYouth?:    SanityBlock[]
+  sloganYouth?:  string
+  headingAdult?: string
+  bodyAdult?:    SanityBlock[]
+  sloganAdult?:  string
+}
+
+export interface Quiz {
+  _id:       string
+  language:  Language
+  titleYouth: string
+  leadYouth?: string
+  titleAdult?: string
+  leadAdult?:  string
+  questions: QuizQuestion[]
+  results:   QuizResult[]
+  ctaLabel?: string
+  ctaUrl?:   string
+}
+
 // ── GROQ-kyselyt ─────────────────────────────────────────────────────────────
 
 const ONE_PAGER_QUERY = /* groq */ `
@@ -141,4 +184,48 @@ function emptyOnePager(language: Language): OnePager {
 export async function getOnePager(language: Language): Promise<OnePager> {
   const data = await client.fetch<OnePager | null>(ONE_PAGER_QUERY, { language })
   return data ?? emptyOnePager(language)
+}
+
+const QUIZ_QUERY = /* groq */ `
+  *[_type == "quiz" && language == $language][0] {
+    _id,
+    language,
+    titleYouth,
+    leadYouth,
+    titleAdult,
+    leadAdult,
+    questions[] {
+      _key,
+      questionYouth,
+      questionAdult,
+      options[] {
+        _key,
+        textYouth,
+        textAdult,
+        colorYouth,
+        colorAdult
+      }
+    },
+    results[] {
+      _key,
+      category,
+      headingYouth,
+      bodyYouth,
+      sloganYouth,
+      headingAdult,
+      bodyAdult,
+      sloganAdult
+    },
+    ctaLabel,
+    ctaUrl
+  }
+`
+
+/**
+ * Hakee Amisfits-testin kielen perusteella.
+ * Palauttaa null jos testiä ei ole vielä syötetty Sanityyn —
+ * testisivu näyttää silloin "testi tulossa" -viestin.
+ */
+export async function getQuiz(language: Language): Promise<Quiz | null> {
+  return client.fetch<Quiz | null>(QUIZ_QUERY, { language })
 }

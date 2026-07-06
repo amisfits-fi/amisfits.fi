@@ -1,0 +1,50 @@
+---
+/**
+ * Amisfits-testisivu — /fi/nuoret/testi, /fi/aikuiset/testi,
+ * /sv/unga/testet, /sv/vuxna/testet, /en/youth/test, /en/adults/test
+ *
+ * Nuorten sivu näyttää lyhyen version, aikuisten pitkän — sisältö
+ * tulee samasta kielikohtaisesta quiz-dokumentista (Sanity).
+ */
+import Layout     from '@/layouts/Layout.astro'
+import QuizIsland from '@/components/QuizIsland.astro'
+import { getQuiz } from '@/lib/queries'
+import type { Language, Audience } from '@/lib/queries'
+import { LANGUAGES, AUDIENCES, audienceSlug, pathLang, QUIZ_SLUGS, pagePath, t } from '@/lib/i18n'
+
+export function getStaticPaths() {
+  return LANGUAGES.flatMap((lang) =>
+    AUDIENCES.map((audience) => ({
+      params: {
+        lang:     pathLang(lang),
+        audience: audienceSlug(lang, audience),
+        quiz:     QUIZ_SLUGS[lang],
+      },
+      props: { lang, audience },
+    }))
+  )
+}
+
+const { lang, audience } = Astro.props as { lang: Language; audience: Audience }
+const quiz = await getQuiz(lang)
+const tr = t(lang)
+
+const pageTitle =
+  lang === 'fi' ? 'Amisfits-testi – amisfits.fi'
+  : lang === 'se' ? 'Amisfits-testet – amisfits.fi'
+  : 'Amisfits test – amisfits.fi'
+---
+
+<Layout lang={lang} audience={audience} title={pageTitle}>
+  {quiz && (quiz.questions?.length ?? 0) > 0 ? (
+    <QuizIsland quiz={quiz} audience={audience} lang={lang} />
+  ) : (
+    <section class="quiz">
+      <div class="quiz__inner">
+        <h1 class="quiz__title">Amisfits</h1>
+        <p class="quiz__lead">{tr.quizComing}</p>
+        <p><a class="quiz__back" href={pagePath(lang, audience)}>{tr.quizBackToPage}</a></p>
+      </div>
+    </section>
+  )}
+</Layout>

@@ -596,3 +596,175 @@ details[open] .faq__icon { transform: rotate(180deg); }
 .faq__answer       h4:first-child {
   margin-top: 0;
 }
+
+/* ── Amisfits-testi (QuizIsland) ─────────────────────────────── */
+.quiz {
+  background:     var(--color-white);
+  color:          var(--color-navy);
+  padding:        clamp(3rem, 8vw, 6rem) var(--pad-content) var(--pad-section);
+  min-height:     60vh;
+}
+.quiz__inner {
+  max-width: var(--max-content);
+  margin:    0 auto;
+}
+.quiz__title {
+  font-family: var(--font-display);
+  font-size:   clamp(2rem, 5vw, 2.8rem);
+  font-weight: 700;
+  line-height: 1.15;
+  margin:      0 0 1rem;
+}
+.quiz__lead {
+  font-size:     clamp(1.05rem, 2vw, 1.2rem);
+  margin-bottom: 2.5rem;
+}
+.quiz__progress {
+  font-family:    var(--font-display);
+  font-size:      0.85rem;
+  font-weight:    700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom:  1rem;
+  opacity:        0.7;
+}
+
+/* Ilman JS:ää kaikki kysymykset näkyvät listana; JS piilottaa muut paitsi
+   nykyisen (hidden-attribuutti). */
+.quiz__step {
+  border:        0;
+  margin-bottom: 2.5rem;
+}
+.quiz--js .quiz__step { margin-bottom: 1rem; }
+.quiz__question {
+  font-family:   var(--font-display);
+  font-size:     clamp(1.3rem, 3vw, 1.6rem);
+  font-weight:   700;
+  line-height:   1.25;
+  margin-bottom: 1.25rem;
+  outline:       none;
+}
+.quiz__options {
+  display:        flex;
+  flex-direction: column;
+  gap:            0.75rem;
+}
+.quiz__option {
+  display:       flex;
+  align-items:   flex-start;
+  gap:           0.85rem;
+  background:    var(--color-blue);
+  border:        2px solid transparent;
+  border-radius: 1rem;
+  padding:       1rem 1.25rem;
+  cursor:        pointer;
+  transition:    border-color 0.15s, transform 0.15s;
+}
+.quiz__option:hover { transform: translateY(-1px); }
+.quiz__option:has(.quiz__radio:checked) {
+  border-color: var(--color-navy);
+  background:   var(--color-yellow);
+}
+.quiz__option:has(.quiz__radio:focus-visible) {
+  outline:        3px solid var(--color-navy);
+  outline-offset: 2px;
+}
+.quiz__radio {
+  accent-color: var(--color-navy);
+  width:        1.15rem;
+  height:       1.15rem;
+  margin-top:   0.15rem;
+  flex-shrink:  0;
+}
+.quiz__option-text { line-height: 1.4; }
+
+.quiz__error {
+  color:       #a4262c;
+  font-weight: 500;
+  margin:      1rem 0 0;
+}
+
+.quiz__nav {
+  display:     flex;
+  flex-wrap:   wrap;
+  gap:         0.75rem;
+  margin-top:  1.75rem;
+  align-items: center;
+}
+.quiz__nav-button {
+  display:         inline-flex;
+  align-items:     center;
+  gap:             0.5rem;
+  background:      var(--color-navy);
+  color:           var(--color-white);
+  border:          2px solid var(--color-navy);
+  border-radius:   999px;
+  padding:         0.85rem 2rem;
+  font-family:     var(--font-display);
+  font-size:       0.85rem;
+  font-weight:     700;
+  letter-spacing:  0.12em;
+  text-transform:  uppercase;
+  cursor:          pointer;
+  transition:      transform 0.2s, box-shadow 0.2s;
+}
+.quiz__nav-button:hover {
+  transform:  translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+}
+.quiz__nav-button--ghost {
+  background: transparent;
+  color:      var(--color-navy);
+}
+.quiz__noscript {
+  margin-top:  1.5rem;
+  font-weight: 500;
+}
+
+/* Tulos */
+.quiz__result-heading {
+  font-family: var(--font-display);
+  font-size:   clamp(1.8rem, 4.5vw, 2.4rem);
+  font-weight: 700;
+  line-height: 1.15;
+  margin:      0 0 1.25rem;
+  outline:     none;
+}
+.quiz__result-body p { margin-bottom: 1rem; line-height: 1.55; }
+.quiz__slogan {
+  font-family: var(--font-display);
+  font-size:   clamp(1.2rem, 2.5vw, 1.45rem);
+  font-weight: 700;
+  margin:      1.5rem 0 0;
+}
+.quiz__result-actions {
+  display:     flex;
+  flex-wrap:   wrap;
+  gap:         1rem;
+  align-items: center;
+  margin-top:  2rem;
+}
+.quiz__cta {
+  display:         inline-flex;
+  align-items:     center;
+  gap:             0.5rem;
+  background:      var(--color-navy);
+  color:           var(--color-white);
+  border-radius:   999px;
+  padding:         0.85rem 2rem;
+  font-family:     var(--font-display);
+  font-size:       0.85rem;
+  font-weight:     700;
+  letter-spacing:  0.12em;
+  text-transform:  uppercase;
+  text-decoration: none;
+  transition:      transform 0.2s, box-shadow 0.2s;
+}
+.quiz__cta:hover {
+  transform:  translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+}
+.quiz__back {
+  color:          var(--color-navy);
+  font-weight:    500;
+}

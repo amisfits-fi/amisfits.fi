@@ -1,7 +1,7 @@
 ---
 import { renderPT } from '@/lib/portable'
 import { urlFor } from '@/lib/sanity'
-import { t } from '@/lib/i18n'
+import { t, quizPath } from '@/lib/i18n'
 import type { Section, Audience, Language } from '@/lib/queries'
 
 interface Props {
@@ -175,13 +175,12 @@ function fmtSize(bytes?: number): string {
       </ul>
     )}
 
-    {/* AMISFITS-testi CTA – selkeä painike */}
+    {/* AMISFITS-testi CTA – selkeä painike.
+        testCtaUrl (Sanity) voi ohjata muualle; tyhjänä käytetään
+        sivuston omaa testisivua (/fi/nuoret/testi jne.) */}
     <div class="section__test">
       <p class="section__test-lead">{tr.testLead}</p>
-      {section.testCtaUrl
-        ? <a href={section.testCtaUrl} class="section__test-button">{tr.testButton}</a>
-        : <span class="section__test-button section__test-button--placeholder">{tr.testButton}</span>
-      }
+      <a href={section.testCtaUrl || quizPath(lang, audience)} class="section__test-button">{tr.testButton}</a>
     </div>
 
   </div>

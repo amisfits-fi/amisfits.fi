@@ -49,6 +49,18 @@ export function audienceFromSlug(lang: Language, slug: string): Audience | undef
   return (Object.keys(map) as Audience[]).find((a) => map[a] === slug)
 }
 
+// ── Amisfits-testin lokalisoitu URL-slug ─────────────────────────────────────
+export const QUIZ_SLUGS: Record<Language, string> = {
+  fi: 'testi',
+  se: 'testet',
+  en: 'test',
+}
+
+/** Testisivun polku: /<iso-kielikoodi>/<audience-slug>/<testi-slug>. */
+export function quizPath(lang: Language, audience: Audience): string {
+  return `${pagePath(lang, audience)}/${QUIZ_SLUGS[lang]}`
+}
+
 // ── Käännökset ───────────────────────────────────────────────────────────────
 interface Dict {
   audienceLabel:   Record<Audience, string>
@@ -62,6 +74,16 @@ interface Dict {
   metaDescription: string
   footerPre:       string   // teksti ennen Sivista-linkkiä
   footerPost:      string   // teksti linkin jälkeen
+  // Amisfits-testi
+  quizQuestionWord: string  // "Kysymys" (edistymisilmaisin: Kysymys 2/5)
+  quizStart:        string  // aloituspainike
+  quizPrev:         string
+  quizNext:         string
+  quizShowResult:   string
+  quizChooseOne:    string  // validointiviesti
+  quizRestart:      string
+  quizBackToPage:   string
+  quizComing:       string  // näytetään jos testiä ei vielä ole Sanityssä
 }
 
 export const T: Record<Language, Dict> = {
@@ -77,6 +99,15 @@ export const T: Record<Language, Dict> = {
     metaDescription: 'Amisfits – ammatillinen tutkinto antaa etumatkaa',
     footerPre:       'Sivustoa ylläpitää ',
     footerPost:      ' – ammatillisen koulutuksen työnantaja- ja toimialajärjestö.',
+    quizQuestionWord: 'Kysymys',
+    quizStart:        'Aloita testi',
+    quizPrev:         'Edellinen',
+    quizNext:         'Seuraava',
+    quizShowResult:   'Näytä tulos',
+    quizChooseOne:    'Valitse yksi vaihtoehto ennen jatkamista.',
+    quizRestart:      'Tee testi uudelleen',
+    quizBackToPage:   'Takaisin etusivulle',
+    quizComing:       'Testi julkaistaan pian – tervetuloa takaisin!',
   },
   se: {
     audienceLabel:   { nuoret: 'Grundskoleelever', aikuiset: 'Vuxenstuderande' },
@@ -90,6 +121,15 @@ export const T: Record<Language, Dict> = {
     metaDescription: 'Amisfits – en yrkesexamen ger dig ett försprång',
     footerPre:       'Webbplatsen upprätthålls av ',
     footerPost:      ' – arbetsgivar- och branschorganisation för yrkesutbildning.',
+    quizQuestionWord: 'Fråga',
+    quizStart:        'Starta testet',
+    quizPrev:         'Föregående',
+    quizNext:         'Nästa',
+    quizShowResult:   'Visa resultat',
+    quizChooseOne:    'Välj ett alternativ innan du fortsätter.',
+    quizRestart:      'Gör om testet',
+    quizBackToPage:   'Tillbaka till startsidan',
+    quizComing:       'Testet publiceras snart – välkommen tillbaka!',
   },
   en: {
     audienceLabel:   { nuoret: 'Comprehensive school students', aikuiset: 'Adult learners' },
@@ -103,6 +143,15 @@ export const T: Record<Language, Dict> = {
     metaDescription: 'Amisfits – a vocational qualification gives you a head start',
     footerPre:       'This site is maintained by ',
     footerPost:      ' – the employer and industry association for vocational education.',
+    quizQuestionWord: 'Question',
+    quizStart:        'Start the test',
+    quizPrev:         'Previous',
+    quizNext:         'Next',
+    quizShowResult:   'Show my result',
+    quizChooseOne:    'Please choose one option before continuing.',
+    quizRestart:      'Retake the test',
+    quizBackToPage:   'Back to the main page',
+    quizComing:       'The test will be published soon – check back later!',
   },
 }
 

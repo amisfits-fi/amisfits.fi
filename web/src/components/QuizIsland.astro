@@ -1,0 +1,231 @@
+---
+/**
+ * QuizIsland — Amisfits-testi
+ *
+ * Koko sisältö renderöidään serverillä (myös molemmat palautetekstit,
+ * piilotettuina). Selaimen JS hoitaa vain askelluksen, pisteytyksen ja
+ * oikean palautteen näyttämisen — mitään ei lähetetä minnekään,
+ * joten testi ei käsittele henkilötietoja.
+ *
+ * Pisteytys: jokaisella vastausvaihtoehdolla on data-color (green/yellow),
+ * joka on valittu kohderyhmän mukaan jo serverillä. Eniten värejä voittaa;
+ * tasapelissä vihreä (nykyisellä sisällöllä tasapeli on mahdoton, koska
+ * laskettavia vastauksia on pariton määrä).
+ */
+import { renderPT } from '@/lib/portable'
+import { t, pagePath } from '@/lib/i18n'
+import type { Quiz, Audience, Language, SanityBlock } from '@/lib/queries'
+
+interface Props {
+  quiz:     Quiz
+  audience: Audience
+  lang:     Language
+}
+
+const { quiz, audience, lang } = Astro.props
+const tr = t(lang)
+
+// Kohderyhmälogiikka: aikuiskenttä tyhjänä → käytetään nuorten tekstiä
+const isYouth = audience === 'nuoret'
+const pick = (youth?: string, adult?: string): string =>
+  (isYouth ? youth : (adult || youth)) ?? ''
+const pickBlocks = (youth?: SanityBlock[], adult?: SanityBlock[]): SanityBlock[] =>
+  (isYouth ? youth : (adult?.length ? adult : youth)) ?? []
+
+const title = pick(quiz.titleYouth, quiz.titleAdult)
+const lead  = pick(quiz.leadYouth,  quiz.leadAdult)
+
+const questions = (quiz.questions ?? []).map((q) => ({
+  text: pick(q.questionYouth, q.questionAdult),
+  options: (q.options ?? []).map((o) => ({
+    key:   o._key,
+    text:  pick(o.textYouth, o.textAdult),
+    color: isYouth ? o.colorYouth : o.colorAdult,
+  })),
+}))
+
+const results = (quiz.results ?? []).map((r) => ({
+  category: r.category,
+  heading:  pick(r.headingYouth, r.headingAdult),
+  bodyHTML: renderPT(pickBlocks(r.bodyYouth, r.bodyAdult)),
+  slogan:   pick(r.sloganYouth, r.sloganAdult),
+}))
+
+const backHref = pagePath(lang, audience)
+---
+
+<section class="quiz" data-quiz>
+  <div class="quiz__inner">
+
+    <h1 class="quiz__title">{title}</h1>
+    {lead && <p class="quiz__lead" data-quiz-lead>{lead}</p>}
+
+    <p
+      class="quiz__progress"
+      data-quiz-progress
+      data-word={tr.quizQuestionWord}
+      aria-live="polite"
+      hidden
+    ></p>
+
+    <form class="quiz__form" data-quiz-form novalidate>
+      {questions.map((q, i) => (
+        <fieldset class="quiz__step" data-quiz-step={String(i)}>
+          <legend class="quiz__question" tabindex="-1">{i + 1}. {q.text}</legend>
+          <div class="quiz__options" role="presentation">
+            {q.options.map((o) => (
+              <label class="quiz__option">
+                <input
+                  class="quiz__radio"
+                  type="radio"
+                  name={`q${i}`}
+                  value={o.key}
+                  data-color={o.color}
+                />
+                <span class="quiz__option-text">{o.text}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+      ))}
+
+      <p class="quiz__error" data-quiz-error role="alert" hidden>{tr.quizChooseOne}</p>
+
+      <div class="quiz__nav">
+        <button type="button" class="quiz__nav-button quiz__nav-button--ghost" data-quiz-prev hidden>
+          ← {tr.quizPrev}
+        </button>
+        <button type="button" class="quiz__nav-button" data-quiz-next>
+          {tr.quizNext} →
+        </button>
+        <button type="submit" class="quiz__nav-button" data-quiz-submit hidden>
+          {tr.quizShowResult}
+        </button>
+      </div>
+
+      <noscript>
+        <p class="quiz__noscript">
+          {lang === 'fi' ? 'Testi vaatii JavaScriptin toimiakseen.'
+           : lang === 'se' ? 'Testet kräver JavaScript för att fungera.'
+           : 'This test requires JavaScript to work.'}
+        </p>
+      </noscript>
+    </form>
+
+    <div class="quiz__results" aria-live="polite">
+      {results.map((r) => (
+        <div class="quiz__result" data-quiz-result={r.category} hidden>
+          {r.heading && <h2 class="quiz__result-heading" tabindex="-1">{r.heading}</h2>}
+          <div class="quiz__result-body" set:html={r.bodyHTML} />
+          {r.slogan && <p class="quiz__slogan">{r.slogan}</p>}
+
+          <div class="quiz__result-actions">
+            {quiz.ctaLabel && quiz.ctaUrl && (
+              <a class="quiz__cta" href={quiz.ctaUrl}>{quiz.ctaLabel}</a>
+            )}
+            <button type="button" class="quiz__nav-button quiz__nav-button--ghost" data-quiz-restart>
+              {tr.quizRestart}
+            </button>
+            <a class="quiz__back" href={backHref}>{tr.quizBackToPage}</a>
+          </div>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-quiz]')
+
+  if (root) {
+    const form     = root.querySelector<HTMLFormElement>('[data-quiz-form]')!
+    const steps    = Array.from(root.querySelectorAll<HTMLFieldSetElement>('[data-quiz-step]'))
+    const progress = root.querySelector<HTMLElement>('[data-quiz-progress]')!
+    const lead     = root.querySelector<HTMLElement>('[data-quiz-lead]')
+    const error    = root.querySelector<HTMLElement>('[data-quiz-error]')!
+    const prevBtn  = root.querySelector<HTMLButtonElement>('[data-quiz-prev]')!
+    const nextBtn  = root.querySelector<HTMLButtonElement>('[data-quiz-next]')!
+    const submitBtn = root.querySelector<HTMLButtonElement>('[data-quiz-submit]')!
+    const results  = Array.from(root.querySelectorAll<HTMLElement>('[data-quiz-result]'))
+    const word     = progress.dataset.word ?? ''
+
+    let current = 0
+
+    // JS käytössä → siirrytään askel kerrallaan -tilaan
+    root.classList.add('quiz--js')
+    progress.hidden = false
+
+    function update(focusQuestion = false) {
+      steps.forEach((step, i) => {
+        step.hidden = i !== current
+      })
+      progress.textContent = `${word} ${current + 1}/${steps.length}`
+      prevBtn.hidden   = current === 0
+      nextBtn.hidden   = current === steps.length - 1
+      submitBtn.hidden = current !== steps.length - 1
+      error.hidden = true
+      if (focusQuestion) {
+        const legend = steps[current].querySelector<HTMLElement>('.quiz__question')
+        legend?.focus()
+      }
+    }
+
+    function currentAnswered(): boolean {
+      return !!steps[current].querySelector<HTMLInputElement>('input:checked')
+    }
+
+    prevBtn.addEventListener('click', () => {
+      if (current > 0) { current--; update(true) }
+    })
+
+    nextBtn.addEventListener('click', () => {
+      if (!currentAnswered()) { error.hidden = false; return }
+      if (current < steps.length - 1) { current++; update(true) }
+    })
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault()
+      if (!currentAnswered()) { error.hidden = false; return }
+
+      // Pisteytys: lasketaan valittujen vastausten värit
+      const checked = form.querySelectorAll<HTMLInputElement>('input:checked')
+      let green = 0
+      let yellow = 0
+      checked.forEach((input) => {
+        if (input.dataset.color === 'yellow') yellow++
+        else green++
+      })
+      // Eniten värejä voittaa; tasapelissä vihreä (nykysisällöllä mahdoton)
+      const winner = yellow > green ? 'yellow' : 'green'
+
+      form.hidden = true
+      progress.hidden = true
+      if (lead) lead.hidden = true
+
+      const target =
+        results.find((r) => r.dataset.quizResult === winner) ?? results[0]
+      if (target) {
+        target.hidden = false
+        const heading = target.querySelector<HTMLElement>('.quiz__result-heading')
+        heading?.focus()
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+    })
+
+    root.querySelectorAll<HTMLButtonElement>('[data-quiz-restart]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        form.reset()
+        results.forEach((r) => { r.hidden = true })
+        form.hidden = false
+        progress.hidden = false
+        if (lead) lead.hidden = false
+        current = 0
+        update(true)
+        root.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      })
+    })
+
+    update()
+  }
+</script>
