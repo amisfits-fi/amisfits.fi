@@ -28,6 +28,14 @@ export default defineType({
     }),
 
     defineField({
+      name:         'sameAsYouth',
+      title:        '🎓 Käytä nuorten vastausta myös aikuisille',
+      type:         'boolean',
+      initialValue: false,
+      description:  'Kun tämä on valittuna, aikuisten sivulla näytetään sama vastaus kuin nuorille, eikä alla olevaa kenttää tarvitse täyttää.',
+    }),
+
+    defineField({
       name:  'answerAdult',
       title: '🎓 Vastaus – Aikuisopiskelijat',
       type:  'array',
@@ -39,12 +47,16 @@ export default defineType({
           { title: 'Pieni väliotsikko', value: 'h4' },
         ],
       }],
-      description: 'Jätä tyhjäksi jos vastaus on sama kuin nuorille.',
+      hidden: ({ parent }: any) => parent?.sameAsYouth === true,
+      description: 'Kirjoita tähän aikuisille oma vastaus. Jos vastaus on sama kuin nuorille, valitse yllä oleva ruutu – tyhjäksi jätetty kenttä näkyy aikuisten sivulla tyhjänä.',
     }),
   ],
 
   preview: {
-    select: { title: 'question' },
-    prepare: ({ title }) => ({ title: title ?? 'FAQ-kysymys' }),
+    select: { title: 'question', same: 'sameAsYouth' },
+    prepare: ({ title, same }) => ({
+      title:    title ?? 'FAQ-kysymys',
+      subtitle: same ? 'sama vastaus aikuisille' : undefined,
+    }),
   },
 })

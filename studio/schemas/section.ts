@@ -2,11 +2,16 @@ import { defineType, defineField } from 'sanity'
 
 // ── Rikastekstikenttä – tukee lihavointia, kursiivia, linkkejä,
 //    sekä tekstin sisään upotettavia KUVIA ja TIEDOSTOLIITTEITÄ ───────────────
-const bodyField = (name: string, title: string) =>
+const bodyField = (
+  name: string,
+  title: string,
+  opts: { hidden?: (ctx: any) => boolean } = {},
+) =>
   defineField({
     name,
     title,
     type:  'array',
+    ...(opts.hidden ? { hidden: opts.hidden } : {}),
     of: [
       {
         type: 'block',
@@ -48,6 +53,11 @@ const bodyField = (name: string, title: string) =>
     ],
     description: 'Rikastekstikenttä – tukee lihavointia, kursiivia, linkkejä, kuvia ja tiedostoliitteitä.',
   })
+
+// Aikuisten kentät piilotetaan, kun "Käytä nuorten tekstiä myös aikuisille"
+// on valittuna. Sisältö säilyy tallessa – kentät tulevat takaisin näkyviin
+// heti kun valinta otetaan pois.
+const hideWhenSameAsYouth = ({ parent }: any) => parent?.sameAsYouth === true
 
 export default defineType({
   name:  'section',
@@ -104,9 +114,17 @@ export default defineType({
     bodyField('expandedYouthUni', '👦 Polku yliopistoon – Peruskoulunuoret (painike "Yliopistoon")'),
 
     // ── Aikuisopiskelijoiden sisältö ─────────────────────────────
-    bodyField('summaryAdult',     '🎓 Tiivistelmä – Aikuisopiskelijat (aina näkyvissä)'),
-    bodyField('expandedAdult',    '🎓 Polku ammattikorkeakouluun – Aikuisopiskelijat (painike "Ammattikorkeakouluun")'),
-    bodyField('expandedAdultUni', '🎓 Polku yliopistoon – Aikuisopiskelijat (painike "Yliopistoon")'),
+    defineField({
+      name:         'sameAsYouth',
+      title:        '🎓 Käytä nuorten tekstiä myös aikuisille',
+      type:         'boolean',
+      initialValue: false,
+      description:  'Kun tämä on valittuna, aikuisten sivulla näytetään täsmälleen sama teksti kuin nuorten sivulla, eikä alla olevia aikuisten kenttiä tarvitse täyttää. Ota valinta pois, jos haluat kirjoittaa aikuisille oman tekstin.',
+    }),
+
+    bodyField('summaryAdult',     '🎓 Tiivistelmä – Aikuisopiskelijat (aina näkyvissä)',                              { hidden: hideWhenSameAsYouth }),
+    bodyField('expandedAdult',    '🎓 Polku ammattikorkeakouluun – Aikuisopiskelijat (painike "Ammattikorkeakouluun")', { hidden: hideWhenSameAsYouth }),
+    bodyField('expandedAdultUni', '🎓 Polku yliopistoon – Aikuisopiskelijat (painike "Yliopistoon")',                   { hidden: hideWhenSameAsYouth }),
 
     // ── Erilliset kuva- ja tiedostokentät (näkyvät osion lopussa) ─
     defineField({
@@ -149,10 +167,13 @@ export default defineType({
   ],
 
   preview: {
-    select: { title: 'headline', display: 'displayHeadline', bg: 'backgroundColor' },
-    prepare: ({ title, display, bg }) => ({
+    select: { title: 'headline', display: 'displayHeadline', bg: 'backgroundColor', same: 'sameAsYouth' },
+    prepare: ({ title, display, bg, same }) => ({
       title:    display ? `✨ ${display}` : (title ?? 'Sektio'),
-      subtitle: bg === 'pink' ? '🌸 Koralli' : bg === 'yellow' ? '🟡 Keltainen' : '🔵 Sininen',
+      subtitle: [
+        bg === 'pink' ? '🌸 Koralli' : bg === 'yellow' ? '🟡 Keltainen' : '🔵 Sininen',
+        same ? 'sama teksti aikuisille' : null,
+      ].filter(Boolean).join(' · '),
     }),
   },
 })

@@ -40,6 +40,7 @@ export interface Section {
   expandedYouth:     SanityBlock[]  // polku ammattikorkeakouluun
   expandedYouthUni:  SanityBlock[]  // polku yliopistoon
   // Sisältö aikuisopiskelijoille
+  sameAsYouth?:      boolean        // true = aikuisille näytetään nuorten teksti
   summaryAdult:      SanityBlock[]
   expandedAdult:     SanityBlock[]  // polku ammattikorkeakouluun
   expandedAdultUni:  SanityBlock[]  // polku yliopistoon
@@ -52,6 +53,7 @@ export interface FaqItem {
   _key:         string
   question:     string
   answerYouth:  SanityBlock[]
+  sameAsYouth?: boolean         // true = aikuisille näytetään nuorten vastaus
   answerAdult:  SanityBlock[]
 }
 
@@ -128,6 +130,7 @@ const ONE_PAGER_QUERY = /* groq */ `
       summaryYouth,
       expandedYouth,
       expandedYouthUni,
+      sameAsYouth,
       summaryAdult,
       expandedAdult,
       expandedAdultUni,
@@ -151,6 +154,7 @@ const ONE_PAGER_QUERY = /* groq */ `
       _key,
       question,
       answerYouth,
+      sameAsYouth,
       answerAdult
     },
     partnerLogos[] {

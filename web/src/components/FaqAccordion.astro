@@ -20,7 +20,9 @@ const tr = t(lang)
     <div class="faq__list">
       {items.map((item) => {
         // Audience-ehtologiikka: valitaan oikea vastaus
-        const answerBlocks = audience === 'nuoret' ? item.answerYouth : item.answerAdult
+        // sameAsYouth = Sanityn valinta "Käytä nuorten vastausta myös aikuisille"
+        const useYouth     = audience === 'nuoret' || item.sameAsYouth === true
+        const answerBlocks = useYouth ? item.answerYouth : item.answerAdult
         const answerHTML   = renderPT(answerBlocks)
 
         return (

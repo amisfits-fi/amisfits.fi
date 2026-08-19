@@ -14,9 +14,12 @@ const { section, audience, lang } = Astro.props
 const tr = t(lang)
 
 // ── Audience-ehtologiikka – valitaan oikea sisältö ───────────────────────────
-const summary = audience === 'nuoret' ? section.summaryYouth     : section.summaryAdult
-const uas     = audience === 'nuoret' ? section.expandedYouth     : section.expandedAdult     // polku ammattikorkeakouluun
-const uni     = audience === 'nuoret' ? section.expandedYouthUni  : section.expandedAdultUni  // polku yliopistoon
+// Sanityn valinta "Käytä nuorten tekstiä myös aikuisille" ohittaa aikuisten kentät.
+const useYouth = audience === 'nuoret' || section.sameAsYouth === true
+
+const summary = useYouth ? section.summaryYouth     : section.summaryAdult
+const uas     = useYouth ? section.expandedYouth    : section.expandedAdult     // polku ammattikorkeakouluun
+const uni     = useYouth ? section.expandedYouthUni : section.expandedAdultUni  // polku yliopistoon
 
 const summaryHTML = renderPT(summary)
 const uasHTML     = renderPT(uas)
