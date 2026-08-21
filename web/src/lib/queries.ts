@@ -35,6 +35,7 @@ export interface Section {
   backgroundColor:  'pink' | 'yellow' | 'blue'
   video?:           string
   testCtaUrl?:      string
+  hidePaths?:       boolean       // true = ei polkupainikkeita kummallekaan kohderyhmälle
   // Sisältö nuorille
   summaryYouth:      SanityBlock[]
   expandedYouth:     SanityBlock[]  // polku ammattikorkeakouluun
@@ -127,6 +128,7 @@ const ONE_PAGER_QUERY = /* groq */ `
       backgroundColor,
       video,
       testCtaUrl,
+      hidePaths,
       summaryYouth,
       expandedYouth,
       expandedYouthUni,

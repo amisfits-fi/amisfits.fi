@@ -108,6 +108,14 @@ export default defineType({
       description: 'Linkki AMISFITS-testiin (näkyy tämän sektion lopussa). Jätetään tyhjäksi toistaiseksi.',
     }),
 
+    defineField({
+      name:         'hidePaths',
+      title:        '🚫 Piilota polkupainikkeet (Ammattikorkeakouluun / Yliopistoon)',
+      type:         'boolean',
+      initialValue: false,
+      description:  'Kun tämä on valittuna, tässä osiossa ei näytetä Ammattikorkeakouluun- eikä Yliopistoon-painiketta kummallekaan kohderyhmälle. Sopii esimerkiksi ensimmäiseen osioon, jossa kerrotaan vasta yleisesti ammatillisesta koulutuksesta. Painikkeiden tekstit säilyvät tallessa alla olevissa kentissä ja tulevat takaisin näkyviin heti kun otat valinnan pois.',
+    }),
+
     // ── Nuorten sisältö ──────────────────────────────────────────
     bodyField('summaryYouth',     '👦 Tiivistelmä – Peruskoulunuoret (aina näkyvissä)'),
     bodyField('expandedYouth',    '👦 Polku ammattikorkeakouluun – Peruskoulunuoret (painike "Ammattikorkeakouluun")'),
@@ -167,12 +175,13 @@ export default defineType({
   ],
 
   preview: {
-    select: { title: 'headline', display: 'displayHeadline', bg: 'backgroundColor', same: 'sameAsYouth' },
-    prepare: ({ title, display, bg, same }) => ({
+    select: { title: 'headline', display: 'displayHeadline', bg: 'backgroundColor', same: 'sameAsYouth', noPaths: 'hidePaths' },
+    prepare: ({ title, display, bg, same, noPaths }) => ({
       title:    display ? `✨ ${display}` : (title ?? 'Sektio'),
       subtitle: [
         bg === 'pink' ? '🌸 Koralli' : bg === 'yellow' ? '🟡 Keltainen' : '🔵 Sininen',
         same ? 'sama teksti aikuisille' : null,
+        noPaths ? 'polkupainikkeet piilotettu' : null,
       ].filter(Boolean).join(' · '),
     }),
   },

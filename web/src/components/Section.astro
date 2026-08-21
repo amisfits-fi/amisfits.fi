@@ -26,10 +26,13 @@ const uasHTML     = renderPT(uas)
 const uniHTML     = renderPT(uni)
 
 // Polkupainikkeiden lokalisoidut otsikot
-const paths = [
-  { label: tr.pathUas, html: uasHTML },
-  { label: tr.pathUni, html: uniHTML },
-].filter((p) => p.html)
+// hidePaths = Sanityn valinta "Piilota polkupainikkeet" (esim. yleisluontoinen aloitusosio)
+const paths = section.hidePaths
+  ? []
+  : [
+      { label: tr.pathUas, html: uasHTML },
+      { label: tr.pathUni, html: uniHTML },
+    ].filter((p) => p.html)
 
 // Taustaväri CSS-luokkana
 const bgClass = `section--${section.backgroundColor}` // section--pink / section--yellow / section--blue
