@@ -8,9 +8,14 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion: import.meta.env.PUBLIC_SANITY_API_VERSION ?? '2024-01-01',
-  // useCdn: true = nopea CDN-cache, sopii tuotantoon
-  // useCdn: false = reaaliaikainen data, sopii kehitykseen
-  useCdn: import.meta.env.PROD,
+  // useCdn: false MYÖS tuotannossa — tämä on staattinen sivusto, joten
+  // Sanityä kysytään vain kerran buildin aikana, ei jokaisella kävijällä.
+  // CDN-cachesta ei siis ole hyötyä, mutta siitä on haittaa: Sanity-webhook
+  // laukaisee buildin sekunneissa julkaisun jälkeen, ja apicdn ehtii palauttaa
+  // vielä vanhan sisällön. Silloin build onnistuu mutta paistaa sivustolle
+  // julkaisua edeltävän version — eikä mikään laukaise uutta buildia.
+  // (Osui 24.8.2026: julkaisu klo 14.04.22, build klo 14.04, kuvat jäivät pois.)
+  useCdn: false,
 })
 
 const builder = imageUrlBuilder(client)
