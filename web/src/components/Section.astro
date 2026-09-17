@@ -37,15 +37,25 @@ const paths = section.hidePaths
 // Taustaväri CSS-luokkana
 const bgClass = `section--${section.backgroundColor}` // section--pink / section--yellow / section--blue
 
-// Näyttöotsikko SVG -tiedostomapping
-// mobile: valinnainen — jos määritelty, käytetään <picture> + <source media>
-const displayGraphicMap: Record<string, { desktop: string; mobile?: string }> = {
-  pink:   { desktop: '/images/Teema1_desktop.svg', mobile: '/images/mobiili_teema1_animoitu.svg' },
-  yellow: { desktop: '/images/Amis-avaa-ovia.svg',      mobile: '/images/mobiili_teema3_animoitu.svg' },
-  blue:   { desktop: '/images/Amis-aktivoi-unelmasi.svg', mobile: '/images/mobiili_teema2_animoitu.svg' },
+// Näyttöotsikko SVG -tiedostomapping, kielikohtainen
+// Tiedostot ovat Berryn kampanja-aineiston kärkiviesteja, sama grafiikka kolmella kielella.
+// Nimeamiskaava: teema<1-3>_<desktop|mobiili>_<fi|se|en>.svg
+// Mitat: desktop 820x350 (vaaka), mobiili 440x520 (pysty).
+// HUOM: numero viittaa kampanja-aineiston tietoiskunumeroon, ei sektion jarjestykseen sivulla.
+//   1 = Amis antaa suunnan (pink) | 2 = Amis avaa ovia (yellow) | 3 = Amis aktivoi unelmasi (blue)
+const themeGraphicNumber: Record<string, 1 | 2 | 3> = {
+  pink:   1,
+  yellow: 2,
+  blue:   3,
 }
-const graphic = section.backgroundColor
-  ? displayGraphicMap[section.backgroundColor]
+const graphicNumber = section.backgroundColor
+  ? themeGraphicNumber[section.backgroundColor]
+  : undefined
+const graphic = graphicNumber
+  ? {
+      desktop: `/images/teema${graphicNumber}_desktop_${lang}.svg`,
+      mobile:  `/images/teema${graphicNumber}_mobiili_${lang}.svg`,
+    }
   : undefined
 
 // YouTube-URL embed-muotoon: tukee sekä watch?v=ID että youtu.be/ID
