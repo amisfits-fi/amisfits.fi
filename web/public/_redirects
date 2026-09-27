@@ -16,3 +16,14 @@
 /en/nuoret/      /en/youth/  301!
 /en/aikuiset     /en/adults  301!
 /en/aikuiset/    /en/adults/ 301!
+
+# ── Testin lyhytosoitteet (QR-koodit, pöytäkolmiot, flyerit) ─────────────────
+# 302 = tilapäinen: kohteen voi vaihtaa myöhemmin ilman että selaimet ovat
+# välimuistittaneet vanhan ohjauksen. Painettuja QR-koodeja ei tarvitse uusia.
+# Netlify normalisoi kauttaviivan, joten /testi-nuoret ja /testi-nuoret/ toimivat.
+/testi-nuoret    /fi/nuoret/testi/    302
+/testi-aikuiset  /fi/aikuiset/testi/  302
+/testet-unga     /sv/unga/testet/     302
+/testet-vuxna    /sv/vuxna/testet/    302
+/test-youth      /en/youth/test/      302
+/test-adults     /en/adults/test/     302
