@@ -358,7 +358,19 @@ details[open] .section__icon { transform: rotate(180deg); }
    jotta sitä on helppo säätää yhdestä paikasta. */
 :root {
   --infobox-skew: -6deg;
+  /* Värit muuttujina, jotta ilmettä voi säätää yhdestä kohdasta.
+     Taustat 25 % valkoista: vaalentaa osion väriä hieman (valittu 9.10.) */
+  --infobox-bg:   rgba(255, 255, 255, 0.25);
+  --chart-bg:     rgba(255, 255, 255, 0.25);
+  --chart-bar:    var(--color-coral);
+  --chart-bar-hl: var(--color-blue);
+  --chart-pad-x:  1rem;   /* 0, jos kaaviolta poistetaan oma tausta */
 }
+
+/* Palkit eivät saa olla samaa väriä kuin osion tausta:
+   korallissa osiossa tavalliset palkit keltaisiksi, sinisessä korostetut. */
+.section--pink .chart { --chart-bar:    var(--color-yellow); }
+.section--blue .chart { --chart-bar-hl: var(--color-yellow); }
 
 .infobox {
   margin: 2.5rem auto;         /* vinous vie tilaa ylä- ja alapuolelta */
@@ -366,7 +378,7 @@ details[open] .section__icon { transform: rotate(180deg); }
 }
 
 .infobox__inner {
-  background: var(--color-white);
+  background: var(--infobox-bg);
   color:      var(--color-navy);
   border:     2px solid var(--color-navy);
   text-align: center;
@@ -411,7 +423,7 @@ details[open] .section__icon { transform: rotate(180deg); }
 
 .chart__card {
   container-type: inline-size;
-  background:     var(--color-white);
+  background:     var(--chart-bg);
   color:          var(--color-navy);
   padding-bottom: 1rem;
 }
@@ -430,7 +442,7 @@ details[open] .section__icon { transform: rotate(180deg); }
 .chart__rows {
   list-style: none;
   margin:     0;
-  padding:    1.1rem 1rem 0.25rem;
+  padding:    1.1rem var(--chart-pad-x) 0.25rem;
   display:    grid;
   row-gap:    1rem;             /* rivien väli selvästi isompi kuin palkki–huomautus */
 }
@@ -458,9 +470,9 @@ details[open] .section__icon { transform: rotate(180deg); }
   min-width:     3px;
   height:        1.35rem;
   border-radius: 0 4px 4px 0;
-  background:    var(--color-coral);
+  background:    var(--chart-bar);
 }
-.chart__row--hl .chart__bar { background: var(--color-blue); }
+.chart__row--hl .chart__bar { background: var(--chart-bar-hl); }
 
 .chart__value {
   font-size:            0.9rem;
@@ -480,7 +492,7 @@ details[open] .section__icon { transform: rotate(180deg); }
 .chart__source {
   font-size:  0.8rem;
   text-align: right;
-  padding:    0.6rem 1rem 0;
+  padding:    0.6rem var(--chart-pad-x) 0;
   margin:     0;
 }
 
@@ -493,7 +505,7 @@ details[open] .section__icon { transform: rotate(180deg); }
 
 @container (min-width: 560px) {
   .chart__title { font-size: 1.2rem; padding: 0.75rem 1.25rem; }
-  .chart__rows  { padding: 1.4rem 1.25rem 0.5rem; row-gap: 0.75rem; }
+  .chart__rows  { padding: 1.4rem calc(var(--chart-pad-x) * 1.25) 0.5rem; row-gap: 0.75rem; }
   .chart__row {
     grid-template-columns: minmax(0, 38%) 1fr;
     column-gap:            1rem;
@@ -502,7 +514,7 @@ details[open] .section__icon { transform: rotate(180deg); }
   }
   .chart__label  { text-align: right; }
   .chart__note   { grid-column: 2; margin-top: 0; }
-  .chart__source { padding: 0.6rem 1.25rem 0; }
+  .chart__source { padding: 0.6rem calc(var(--chart-pad-x) * 1.25) 0; }
 }
 
 /* Erilliset tiedostoliitteet -lista */
