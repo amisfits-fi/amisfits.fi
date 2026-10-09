@@ -380,7 +380,6 @@ details[open] .section__icon { transform: rotate(180deg); }
 .infobox__inner {
   background: var(--infobox-bg);
   color:      var(--color-navy);
-  border:     2px solid var(--color-navy);
   text-align: center;
   padding-bottom: 1.25rem;
 }
