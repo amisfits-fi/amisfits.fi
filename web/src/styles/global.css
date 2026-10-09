@@ -39,7 +39,16 @@
 img, picture, video, iframe { max-width: 100%; display: block; }
 ul[role="list"]        { list-style: none; }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  /* iPhone ei saa kasvattaa leipätekstiä omin päin vaakanäkymässä */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust:         100%;
+}
+
+/* Ei sivuttaisvieritystä mobiilissa (Sampsan ehdotus 1.10.).
+   clip ei luo vierityskonttia, joten sticky-navigaatio toimii edelleen. */
+html, body { overflow-x: clip; }
 
 body {
   font-family: var(--font-body);
@@ -320,6 +329,180 @@ details[open] .section__icon { transform: rotate(180deg); }
   font-weight:           600;
   text-decoration:       underline;
   text-underline-offset: 3px;
+}
+
+/* ── Kelluvat elementit rikastekstissä (kuvat, tietolaatikot) ──
+   flow-root pitää kelluvat elementit oman tekstialueensa sisällä, ja
+   väliotsikko aloittaa aina puhtaalta riviltä laatikon alta. */
+.section__summary,
+.section__expanded { display: flow-root; }
+
+.section__summary  h3, .section__summary  h4,
+.section__expanded h3, .section__expanded h4,
+.rt-image--full,
+.chart { clear: both; }
+
+/* p + p -väli katkeaa, kun kappaleiden välissä on laatikko tai kuva */
+.section__summary  :is(.infobox, .rt-image) + p,
+.section__expanded :is(.infobox, .rt-image) + p { margin-top: 0.75rem; }
+
+@media (min-width: 641px) {
+  .rt-image--right,
+  .rt-image--left { width: min(45%, 22rem); margin-top: 0.4rem; margin-bottom: 1.5rem; }
+  .rt-image--right { float: right; margin-left:  2rem; }
+  .rt-image--left  { float: left;  margin-right: 2rem; }
+}
+
+/* ── Tietolaatikko ("Tiesitkö?", "Huomio!") ──────────────────────
+   Sisältö Sanityssä (infoBox), ulkoasu täällä. Vinous on muuttuja,
+   jotta sitä on helppo säätää yhdestä paikasta. */
+:root {
+  --infobox-skew: -6deg;
+}
+
+.infobox {
+  margin: 2.5rem auto;         /* vinous vie tilaa ylä- ja alapuolelta */
+  max-width: 26rem;
+}
+
+.infobox__inner {
+  background: var(--color-white);
+  color:      var(--color-navy);
+  border:     2px solid var(--color-navy);
+  text-align: center;
+  padding-bottom: 1.25rem;
+}
+.infobox--tilted .infobox__inner { transform: skewY(var(--infobox-skew)); }
+
+.infobox__title {
+  background:     var(--color-navy);
+  color:          var(--color-white);
+  font-family:    var(--font-display);
+  font-weight:    700;
+  font-size:      clamp(1.8rem, 3vw, 2.3rem);
+  line-height:    1.1;
+  padding:        0.6rem 1rem 0.55rem;
+  margin:         0 0 1rem;
+}
+
+.infobox__body {
+  padding:     0 1.25rem;
+  font-size:   1.05rem;
+  line-height: 1.5;
+}
+.infobox__body p + p { margin-top: 0.5rem; }
+.infobox__body a     { color: inherit; text-underline-offset: 3px; }
+
+@media (min-width: 641px) {
+  .infobox--right,
+  .infobox--left  { width: min(22rem, 42%); margin-top: 1.5rem; margin-bottom: 2rem; }
+  .infobox--right { float: right; margin-left:  2.5rem; margin-right: 0; }
+  .infobox--left  { float: left;  margin-right: 2.5rem; margin-left:  0; }
+  .infobox--full  { margin-left: 0; }
+}
+
+/* ── Pylväskaavio (barChart) ─────────────────────────────────────
+   Oikeaa tekstiä, palkit CSS:llä. Asettelu mukautuu KORTIN leveyteen
+   (container query): kapeassa selite palkin yläpuolella, leveässä
+   vasemmalla. Palkin pituus = --share (0–1) suurimmasta luvusta. */
+.chart {
+  margin: 2rem 0;
+}
+
+.chart__card {
+  container-type: inline-size;
+  background:     var(--color-white);
+  color:          var(--color-navy);
+  padding-bottom: 1rem;
+}
+
+.chart__title {
+  background:  var(--color-navy);
+  color:       var(--color-white);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size:   1.05rem;
+  line-height: 1.3;
+  padding:     0.65rem 1rem;
+  margin:      0;
+}
+
+.chart__rows {
+  list-style: none;
+  margin:     0;
+  padding:    1.1rem 1rem 0.25rem;
+  display:    grid;
+  row-gap:    1rem;             /* rivien väli selvästi isompi kuin palkki–huomautus */
+}
+
+.chart__row {
+  display:               grid;
+  grid-template-columns: 1fr;
+  row-gap:               0.25rem;
+}
+
+.chart__label {
+  font-size:   0.95rem;
+  line-height: 1.3;
+}
+
+.chart__track {
+  display:     flex;
+  align-items: center;
+  gap:         0.5rem;
+}
+
+.chart__bar {
+  flex:          0 0 auto;
+  width:         calc(var(--share, 0) * (100% - 5.5rem));  /* 5.5rem tilaa luvulle */
+  min-width:     3px;
+  height:        1.35rem;
+  border-radius: 0 4px 4px 0;
+  background:    var(--color-coral);
+}
+.chart__row--hl .chart__bar { background: var(--color-blue); }
+
+.chart__value {
+  font-size:            0.9rem;
+  font-weight:          500;
+  white-space:          nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Huomautus on alisteinen rivin selitteelle: pieni, ei lihavointia,
+   kiinni edeltävässä palkissa (Sampsan kommentti 9.10.) */
+.chart__note {
+  font-size:   0.8rem;
+  line-height: 1.3;
+  margin-top:  -0.1rem;
+}
+
+.chart__source {
+  font-size:  0.8rem;
+  text-align: right;
+  padding:    0.6rem 1rem 0;
+  margin:     0;
+}
+
+.chart__caption {
+  font-size:   0.85rem;
+  line-height: 1.45;
+  margin-top:  0.6rem;
+  color:       var(--color-navy);
+}
+
+@container (min-width: 560px) {
+  .chart__title { font-size: 1.2rem; padding: 0.75rem 1.25rem; }
+  .chart__rows  { padding: 1.4rem 1.25rem 0.5rem; row-gap: 0.75rem; }
+  .chart__row {
+    grid-template-columns: minmax(0, 38%) 1fr;
+    column-gap:            1rem;
+    row-gap:               0.15rem;
+    align-items:           center;
+  }
+  .chart__label  { text-align: right; }
+  .chart__note   { grid-column: 2; margin-top: 0; }
+  .chart__source { padding: 0.6rem 1.25rem 0; }
 }
 
 /* Erilliset tiedostoliitteet -lista */

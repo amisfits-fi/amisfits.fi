@@ -6,7 +6,7 @@ export type Audience = 'nuoret' | 'aikuiset'
 export type Language = 'fi' | 'se' | 'en'
 
 export interface SanityBlock {
-  _type: 'block' | 'image' | 'fileAttachment' | string
+  _type: 'block' | 'image' | 'fileAttachment' | 'infoBox' | 'barChart' | string
   [key: string]: unknown
 }
 

@@ -34,8 +34,27 @@ const bodyField = (
             title: 'Vaihtoehtoinen teksti (saavutettavuus)',
             type:  'string',
           }),
+          defineField({
+            name:         'placement',
+            title:        'Sijoittelu tietokoneella',
+            type:         'string',
+            initialValue: 'full',
+            options: {
+              list: [
+                { title: 'Koko palstan levyinen',      value: 'full'  },
+                { title: 'Oikealle, teksti kiertää',  value: 'right' },
+                { title: 'Vasemmalle, teksti kiertää', value: 'left'  },
+              ],
+              layout: 'radio',
+            },
+            description: 'Kuva sijoittuu sen kappaleen viereen, jonka YLÄPUOLELLE se on lisätty. Puhelimessa kuva on aina koko levyinen.',
+          }),
         ],
       },
+      // Tietolaatikko ("Tiesitkö?", "Huomio!") – ks. infoBox.ts
+      { type: 'infoBox' },
+      // Pylväskaavio oikeana tekstinä – ks. barChart.ts
+      { type: 'barChart' },
       // Tiedostoliite (PDF tms.) tekstin sisään
       {
         type:   'object',
@@ -51,7 +70,7 @@ const bodyField = (
         },
       },
     ],
-    description: 'Rikastekstikenttä – tukee lihavointia, kursiivia, linkkejä, kuvia ja tiedostoliitteitä.',
+    description: 'Rikastekstikenttä – tukee lihavointia, kursiivia, linkkejä, kuvia, tiedostoliitteitä, tietolaatikoita ja pylväskaavioita.',
   })
 
 // Aikuisten kentät piilotetaan, kun "Käytä nuorten tekstiä myös aikuisille"

@@ -21,9 +21,9 @@ const summary = useYouth ? section.summaryYouth     : section.summaryAdult
 const uas     = useYouth ? section.expandedYouth    : section.expandedAdult     // polku ammattikorkeakouluun
 const uni     = useYouth ? section.expandedYouthUni : section.expandedAdultUni  // polku yliopistoon
 
-const summaryHTML = renderPT(summary)
-const uasHTML     = renderPT(uas)
-const uniHTML     = renderPT(uni)
+const summaryHTML = renderPT(summary, lang)
+const uasHTML     = renderPT(uas, lang)
+const uniHTML     = renderPT(uni, lang)
 
 // Polkupainikkeiden lokalisoidut otsikot
 // hidePaths = Sanityn valinta "Piilota polkupainikkeet" (esim. yleisluontoinen aloitusosio)
