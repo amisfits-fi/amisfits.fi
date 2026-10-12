@@ -59,9 +59,9 @@ const TEXT = {
       'Opistoasteen tai ammatillisen korkea-asteen tutkinto',
       'Aikaisempi koulutus tuntematon tai peruskoulu',
     ],
-    notes: { 1: '33,3 % kaikista uusista AMK-opiskelijoista', 2: '10,5 % kaikista uusista AMK-opiskelijoista' },
+    notes: { 1: '32,7 % kaikista uusista AMK-opiskelijoista', 2: '10,5 % kaikista uusista AMK-opiskelijoista' },
     source: 'Lähde: Tilastokeskus, Koulutukseen hakeutuminen',
-    caption: 'Tilastokeskuksen StatFin-tietokannan mukaan vuonna 2024 ammattikorkeakouluopinnot aloittaneista uusista opiskelijoista 33,3 prosentilla korkein suoritettu tutkinto oli toisen asteen ammatillinen tutkinto ja 10,5 prosentilla toisen asteen ammatillinen tutkinto ja ylioppilastutkinto.',
+    caption: 'Tilastokeskuksen StatFin-tietokannan mukaan vuonna 2024 ammattikorkeakouluopinnot aloittaneista uusista opiskelijoista 32,7 prosentilla korkein suoritettu tutkinto oli toisen asteen ammatillinen tutkinto ja 10,5 prosentilla toisen asteen ammatillinen tutkinto ja ylioppilastutkinto.',
   },
   se: {
     tiesitko: 'Visste du?',
@@ -79,9 +79,9 @@ const TEXT = {
       'Examen på institutnivå eller yrkesexamen på högre nivå',
       'Tidigare utbildning okänd eller grundskola',
     ],
-    notes: { 1: '33,3 % av alla nya YH-studerande', 2: '10,5 % av alla nya YH-studerande' },
+    notes: { 1: '32,7 % av alla nya YH-studerande', 2: '10,5 % av alla nya YH-studerande' },
     source: 'Källa: Statistikcentralen, Sökande till utbildning',
-    caption: 'Enligt Statistikcentralens StatFin-databas hade 33,3 procent av de nya studerande som inledde sina yrkeshögskolestudier år 2024 en yrkesinriktad examen på andra stadiet som sin högsta tidigare avlagda examen och 10,5 procent hade en yrkesexamen på andra stadiet och en studentexamen.',
+    caption: 'Enligt Statistikcentralens StatFin-databas hade 32,7 procent av de nya studerande som inledde sina yrkeshögskolestudier år 2024 en yrkesinriktad examen på andra stadiet som sin högsta tidigare avlagda examen och 10,5 procent hade en yrkesexamen på andra stadiet och en studentexamen.',
   },
   en: {
     tiesitko: 'Did you know?',
@@ -99,9 +99,9 @@ const TEXT = {
       'Vocational post-secondary or tertiary level qualification',
       'Previous qualification unknown or comprehensive school',
     ],
-    notes: { 1: '33.3% of all new UAS students', 2: '10.5% of all new UAS students' },
+    notes: { 1: '32.7% of all new UAS students', 2: '10.5% of all new UAS students' },
     source: 'Source: Statistics Finland, Entrance to education',
-    caption: "According to Statistics Finland's StatFin database, among the new students who began studies at a University of Applied Sciences in 2024, 33.3 per cent had a vocational qualification at upper secondary level as their highest completed qualification, while 10.5 per cent had both a vocational qualification at upper secondary level and a matriculation examination.",
+    caption: "According to Statistics Finland's StatFin database, among the new students who began studies at a University of Applied Sciences in 2024, 32.7 per cent had a vocational qualification at upper secondary level as their highest completed qualification, while 10.5 per cent had both a vocational qualification at upper secondary level and a matriculation examination.",
   },
 }
 
