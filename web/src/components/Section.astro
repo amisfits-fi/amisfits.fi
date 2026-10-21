@@ -58,10 +58,16 @@ const graphic = graphicNumber
     }
   : undefined
 
-// YouTube-URL embed-muotoon: tukee sekä watch?v=ID että youtu.be/ID
+// Kohderyhmän video: aikuisille oma video, jos sellainen on, muuten nuorten video.
+// Jos videota ei ole, videopaikkaa ei näytetä lainkaan.
+const videoUrl = audience === 'aikuiset' ? (section.videoAdult || section.video) : section.video
+
+// YouTube-URL embed-muotoon: tukee watch?v=ID, youtu.be/ID, /embed/ID ja /shorts/ID.
+// youtube-nocookie = YouTuben yksityisyyttä suojaava tila (ei evästeitä ennen toistoa),
+// rel=0 = videon lopussa ehdotetaan vain saman kanavan videoita.
 function toEmbed(url: string): string {
-  const ytMatch = url.match(/(?:v=|youtu\.be\/)([A-Za-z0-9_-]{11})/)
-  return ytMatch ? `https://www.youtube.com/embed/${ytMatch[1]}` : url
+  const ytMatch = url.match(/(?:v=|youtu\.be\/|\/embed\/|\/shorts\/)([A-Za-z0-9_-]{11})/)
+  return ytMatch ? `https://www.youtube-nocookie.com/embed/${ytMatch[1]}?rel=0` : url
 }
 
 // Tiedostokoko luettavaan muotoon
@@ -105,24 +111,19 @@ function fmtSize(bytes?: number): string {
 
   <div class="section__inner">
 
-    {/* YouTube-video (valinnainen) */}
-    {section.video && (
+    {/* YouTube-video (valinnainen) – tyhjänä videopaikkaa ei näytetä */}
+    {videoUrl && (
       <div class="section__video-area">
         <div class="section__video">
           <iframe
-            src={toEmbed(section.video)}
-            title={section.headline}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            src={toEmbed(videoUrl)}
+            title={section.headline || section.displayHeadline || 'Video'}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
             allowfullscreen
             loading="lazy"
           />
         </div>
-      </div>
-    )}
-
-    {!section.video && (
-      <div class="section__video-area">
-        <div class="section__video-placeholder">{tr.videoComing}</div>
       </div>
     )}
 

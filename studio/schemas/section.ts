@@ -115,9 +115,16 @@ export default defineType({
 
     defineField({
       name:        'video',
-      title:       'YouTube-video URL',
+      title:       '🎬 YouTube-video – Peruskoulunuoret',
       type:        'url',
-      description: 'Liitä YouTube-videon osoite tähän (valinnainen). Esim. https://www.youtube.com/watch?v=xxxxx',
+      description: 'Liitä YouTube-videon osoite (valinnainen), esim. https://www.youtube.com/watch?v=xxxxx tai https://youtu.be/xxxxx. Näytetään nuorten sivulla – ja myös aikuisten sivulla, jos aikuisten video on tyhjä. Jos kumpaakaan ei ole, osiossa ei näytetä videopaikkaa lainkaan.',
+    }),
+
+    defineField({
+      name:        'videoAdult',
+      title:       '🎬 YouTube-video – Aikuisopiskelijat',
+      type:        'url',
+      description: 'Aikuisten oma video (valinnainen). Tyhjänä aikuisille näytetään yllä oleva nuorten video.',
     }),
 
     defineField({

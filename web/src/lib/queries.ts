@@ -33,7 +33,8 @@ export interface Section {
   displayHeadline?: string          // iso koristeellinen teksti ennen sektiota
   headline:         string
   backgroundColor:  'pink' | 'yellow' | 'blue'
-  video?:           string
+  video?:           string          // nuorten video (ja aikuisten, jos videoAdult puuttuu)
+  videoAdult?:      string          // aikuisten oma video
   testCtaUrl?:      string
   hidePaths?:       boolean       // true = ei polkupainikkeita kummallekaan kohderyhmälle
   // Sisältö nuorille
@@ -127,6 +128,7 @@ const ONE_PAGER_QUERY = /* groq */ `
       headline,
       backgroundColor,
       video,
+      videoAdult,
       testCtaUrl,
       hidePaths,
       summaryYouth,
