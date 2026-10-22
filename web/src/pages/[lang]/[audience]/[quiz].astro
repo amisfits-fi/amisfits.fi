@@ -35,7 +35,7 @@ const pageTitle =
   : 'Amisfits test – amisfits.fi'
 ---
 
-<Layout lang={lang} audience={audience} title={pageTitle}>
+<Layout lang={lang} audience={audience} title={pageTitle} quiz>
   {quiz && (quiz.questions?.length ?? 0) > 0 ? (
     <QuizIsland quiz={quiz} audience={audience} lang={lang} />
   ) : (

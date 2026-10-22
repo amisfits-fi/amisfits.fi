@@ -27,8 +27,8 @@ const page = await getOnePager(lang)
 <Layout lang={lang} audience={audience}>
 
   {/* Sektiot – audience-ehtologiikka tapahtuu Section-komponentissa */}
-  {page.sections.map((section) => (
-    <Section section={section} audience={audience} lang={lang} />
+  {page.sections.map((section, index) => (
+    <Section section={section} audience={audience} lang={lang} index={index} />
   ))}
 
   {/* FAQ-haitari */}

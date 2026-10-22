@@ -8,9 +8,11 @@ interface Props {
   section:  Section
   audience: Audience
   lang:     Language
+  index?:   number   // 0 = sivun ensimmäinen sektio (H1-otsikko, kuva latautuu heti)
 }
 
-const { section, audience, lang } = Astro.props
+const { section, audience, lang, index = 0 } = Astro.props
+const isFirst = index === 0
 const tr = t(lang)
 
 // ── Audience-ehtologiikka – valitaan oikea sisältö ───────────────────────────
@@ -58,6 +60,14 @@ const graphic = graphicNumber
     }
   : undefined
 
+// Grafiikan alt-teksti = grafiikan koko teksti (i18n.ts), ei vain Sanityn lyhyt näyttöotsikko
+const graphicAlt = graphicNumber ? tr.themeAlt[graphicNumber] : (section.displayHeadline ?? '')
+// Ensimmäinen grafiikka näkyy heti sivun auetessa: ei viivästettyä latausta
+const imgLoading  = isFirst ? 'eager' : 'lazy'
+const imgPriority = isFirst ? 'high' : 'auto'
+// Grafiikan otsikkotaso: sivun ensimmäinen on sivun H1
+const GraphicTag  = isFirst ? 'h1' : 'div'
+
 // Kohderyhmän video: aikuisille oma video, jos sellainen on, muuten nuorten video.
 // Jos videota ei ole, videopaikkaa ei näytetä lainkaan.
 const videoUrl = audience === 'aikuiset' ? (section.videoAdult || section.video) : section.video
@@ -84,15 +94,17 @@ function fmtSize(bytes?: number): string {
   {/* Näyttöotsikko SVG – section__innerin ulkopuolella, vuotaa symmetrisesti molemmille puolille */}
   {graphic && (
     <div class="section__display-graphic">
+      <GraphicTag class="section__display-heading">
       {graphic.mobile ? (
         /* Desktop + mobiili eri kuva — <picture> lataa vain tarvittavan */
         <picture>
           <source media="(min-width: 641px)" srcset={graphic.desktop} />
           <img
             src={graphic.mobile}
-            alt={section.displayHeadline ?? ''}
+            alt={graphicAlt}
             class="section__display-img"
-            loading="lazy"
+            loading={imgLoading}
+            fetchpriority={imgPriority}
             decoding="async"
           />
         </picture>
@@ -100,12 +112,14 @@ function fmtSize(bytes?: number): string {
         /* Yksi kuva kaikille näytöille */
         <img
           src={graphic.desktop}
-          alt={section.displayHeadline ?? ''}
+          alt={graphicAlt}
           class="section__display-img"
-          loading="lazy"
+          loading={imgLoading}
+          fetchpriority={imgPriority}
           decoding="async"
         />
       )}
+      </GraphicTag>
     </div>
   )}
 
@@ -117,7 +131,7 @@ function fmtSize(bytes?: number): string {
         <div class="section__video">
           <iframe
             src={toEmbed(videoUrl)}
-            title={section.headline || section.displayHeadline || 'Video'}
+            title={`Video: ${tr.slogan}`}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerpolicy="strict-origin-when-cross-origin"
             allowfullscreen

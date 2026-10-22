@@ -17,6 +17,12 @@
 /en/aikuiset     /en/adults  301!
 /en/aikuiset/    /en/adults/ 301!
 
+# ── Kielen juuri → kielen nuorten sivu (ennen 404) ──────────────────────────
+# Netlify normalisoi kauttaviivan: /fi ja /fi/ ohjautuvat molemmat.
+/fi              /fi/nuoret/          301
+/sv              /sv/unga/            301
+/en              /en/youth/           301
+
 # ── Testin lyhytosoitteet (QR-koodit, pöytäkolmiot, flyerit) ─────────────────
 # 302 = tilapäinen: kohteen voi vaihtaa myöhemmin ilman että selaimet ovat
 # välimuistittaneet vanhan ohjauksen. Painettuja QR-koodeja ei tarvitse uusia.

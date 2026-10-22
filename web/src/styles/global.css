@@ -966,3 +966,16 @@ details[open] .faq__icon { transform: rotate(180deg); }
 /* hidden-attribuutin kunnioitus — luokkien display-säännöt eivät saa
    ohittaa sitä (mm. quiz__nav-button inline-flex) */
 .quiz [hidden] { display: none !important; }
+
+/* ── Korjaukset 10/2026 (sivuston tarkistus) ─────────────────── */
+/* Sivun ensimmäinen teemagrafiikka on H1: otsikolla ei omaa typografiaa,
+   kuva määrää koon kuten ennenkin. */
+.section__display-heading {
+  font-size:   inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
+/* Lyhyillä sivuilla (testi) footerin alle jäi valkoinen raita:
+   sivun ulkopuolinen tausta samaa navya kuin footer ja navigaatio. */
+html { background: var(--color-navy); }

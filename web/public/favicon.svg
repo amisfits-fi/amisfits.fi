@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Amisfits-tunnuksen tyyliin: vino navy-palkki ja valkoinen a -->
+  <path fill="#00204c" d="M2 15 62 4v45L2 60z"/>
+  <text x="31" y="47" text-anchor="middle" transform="rotate(-10 32 32)"
+        font-family="Rubik, Arial, Helvetica, sans-serif" font-weight="700" font-size="40" fill="#fff">a</text>
+</svg>

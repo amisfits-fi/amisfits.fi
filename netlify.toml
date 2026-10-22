@@ -19,8 +19,11 @@
 [[redirects]]
   # Juurisivu → suomenkielinen nuorten sivu
   from   = "/"
-  to     = "/fi/nuoret"
+  to     = "/fi/nuoret/"
   status = 301
+  # force: Astro tuottaa juureen index.html-ohjaussivun, ja ilman forcea
+  # Netlify näyttäisi sen (meta refresh) tämän 301-ohjauksen sijaan.
+  force  = true
 
 # HUOM: /se/* → /sv/* -uudelleenohjaukset on määritelty web/public/_redirects-
 # tiedostossa muiden polkuohjausten kanssa.

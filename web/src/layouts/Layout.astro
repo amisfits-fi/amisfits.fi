@@ -1,15 +1,16 @@
 ---
 import type { Language, Audience } from '@/lib/queries'
-import { LANGUAGES, LANG_LABEL, htmlLang, pagePath, t } from '@/lib/i18n'
+import { LANGUAGES, LANG_LABEL, htmlLang, pagePath, quizPath, t } from '@/lib/i18n'
 import '@/styles/global.css'
 
 interface Props {
   lang:     Language
   audience: Audience
   title?:   string
+  quiz?:    boolean   // testisivu: kieli- ja kohderyhmälinkit vievät vastaavaan testiin
 }
 
-const { lang, audience, title = 'amisfits.fi' } = Astro.props
+const { lang, audience, quiz = false } = Astro.props
 const tr = t(lang)
 
 // Kohderyhmävaihtoehto (sama kieli, eri kohderyhmä) – lokalisoitu slug + otsikko
@@ -17,12 +18,28 @@ const otherAudience      = audience === 'nuoret' ? 'aikuiset' : 'nuoret'
 const otherAudienceLabel = tr.audienceLabel[otherAudience]
 const currentLabel       = tr.audienceLabel[audience]
 
+// Sama sivutyyppi (pääsivu tai testi) toisella kielellä / kohderyhmällä
+const pathFor = (code: Language, aud: Audience) => (quiz ? quizPath(code, aud) : pagePath(code, aud))
+
 // Kielivalitsin – sama kohderyhmä, eri kieli (kunkin kielen oma slug)
 const languages = LANGUAGES.map((code) => ({
   code,
   label: LANG_LABEL[code],
-  href:  pagePath(code, audience),
+  href:  pathFor(code, audience),
 }))
+
+// ── Otsikko ja jakotiedot (Facebook, LinkedIn, WhatsApp, X) ─────────────────
+// Osoitteet muodostetaan astro.config.mjs:n site-asetuksesta: kun amisfits.fi
+// kytketään, ne vaihtuvat automaattisesti oikeaan domainiin.
+const title      = Astro.props.title ?? `${tr.slogan} – ${currentLabel} | amisfits.fi`
+const shareTitle = Astro.props.title ?? `${tr.slogan} | amisfits.fi`
+const canonical  = new URL(pathFor(lang, audience), Astro.site).href
+const ogImage    = new URL(`/og/og-${htmlLang(lang)}.png`, Astro.site).href
+const alternates = LANGUAGES.map((code) => ({
+  hreflang: htmlLang(code),
+  href:     new URL(pathFor(code, audience), Astro.site).href,
+}))
+const xDefault = new URL(pathFor('fi', audience), Astro.site).href
 ---
 
 <!doctype html>
@@ -32,6 +49,22 @@ const languages = LANGUAGES.map((code) => ({
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={tr.metaDescription} />
+    <link rel="canonical" href={canonical} />
+    {alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
+    <link rel="alternate" hreflang="x-default" href={xDefault} />
+
+    <meta property="og:type"         content="website" />
+    <meta property="og:site_name"    content="amisfits.fi" />
+    <meta property="og:locale"       content={tr.ogLocale} />
+    <meta property="og:title"        content={shareTitle} />
+    <meta property="og:description"  content={tr.metaDescription} />
+    <meta property="og:url"          content={canonical} />
+    <meta property="og:image"        content={ogImage} />
+    <meta property="og:image:width"  content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt"    content={tr.themeAlt[1]} />
+    <meta name="twitter:card"        content="summary_large_image" />
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <!-- CSS injected by Astro via import in frontmatter -->
   </head>
@@ -43,7 +76,7 @@ const languages = LANGUAGES.map((code) => ({
         <span class="nav__audience nav__audience--active">{currentLabel}</span>
         <a
           class="nav__audience"
-          href={pagePath(lang, otherAudience)}
+          href={pathFor(lang, otherAudience)}
         >{otherAudienceLabel}</a>
       </div>
 
@@ -52,6 +85,8 @@ const languages = LANGUAGES.map((code) => ({
           <a
             class:list={['nav__lang', { 'nav__lang--active': l.code === lang }]}
             href={l.href}
+            hreflang={htmlLang(l.code)}
+            lang={htmlLang(l.code)}
           >{l.label}</a>
         ))}
       </div>

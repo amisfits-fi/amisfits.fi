@@ -25,9 +25,10 @@ export function htmlLang(lang: Language): string {
   return PATH_LANG[lang]
 }
 
-/** Sivun polku: /<iso-kielikoodi>/<lokalisoitu kohderyhmäslug>. */
+/** Sivun polku: /<iso-kielikoodi>/<lokalisoitu kohderyhmäslug>/.
+ *  Loppukauttaviiva mukana, jotta linkit eivät kulje Netlifyn 301-ohjauksen kautta. */
 export function pagePath(lang: Language, audience: Audience): string {
-  return `/${pathLang(lang)}/${audienceSlug(lang, audience)}`
+  return `/${pathLang(lang)}/${audienceSlug(lang, audience)}/`
 }
 
 // ── Kohderyhmät ja lokalisoidut URL-slugit ───────────────────────────────────
@@ -56,9 +57,9 @@ export const QUIZ_SLUGS: Record<Language, string> = {
   en: 'test',
 }
 
-/** Testisivun polku: /<iso-kielikoodi>/<audience-slug>/<testi-slug>. */
+/** Testisivun polku: /<iso-kielikoodi>/<audience-slug>/<testi-slug>/. */
 export function quizPath(lang: Language, audience: Audience): string {
-  return `${pagePath(lang, audience)}/${QUIZ_SLUGS[lang]}`
+  return `${pagePath(lang, audience)}${QUIZ_SLUGS[lang]}/`
 }
 
 // ── Käännökset ───────────────────────────────────────────────────────────────
@@ -72,6 +73,9 @@ interface Dict {
   faqHeading:      string
   partnerLogoAlt:  string
   metaDescription: string
+  slogan:          string   // kampanjan pääviesti: sivun otsikko ja jakotiedot
+  themeAlt:        Record<1 | 2 | 3, string>  // teemagrafiikoiden koko teksti (alt), sama kuin SVG:ssä
+  ogLocale:        string
   footerPre:       string   // teksti ennen Sivista-linkkiä
   footerPost:      string   // teksti linkin jälkeen
   // Amisfits-testi
@@ -96,7 +100,14 @@ export const T: Record<Language, Dict> = {
     testButton:      'Tee 2 min AMISFITS-testi →',
     faqHeading:      'Usein kysyttyä amiksesta',
     partnerLogoAlt:  'Kumppanilogo',
-    metaDescription: 'Amisfits – ammatillinen tutkinto antaa etumatkaa',
+    metaDescription: 'Amis antaa suunnan – käytännön kokemus ja työelämätaidot ovat todellinen kilpailuetu. Tee 2 minuutin Amisfits-testi.',
+    slogan:          'Amis antaa suunnan',
+    themeAlt: {
+      1: 'Amis antaa suunnan. Käytännön kokemus ja työelämätaidot ovat todellinen kilpailuetu.',
+      2: 'Amis avaa ovia. Ammatillinen tutkinto antaa saman jatko-opintokelpoisuuden kuin lukio.',
+      3: 'Amis aktivoi unelmasi. Kurkistuskurssit, väyläopinnot ja avoin AMK tuovat varmuutta valintaan.',
+    },
+    ogLocale:        'fi_FI',
     footerPre:       'Sivustoa ylläpitää ',
     footerPost:      ' – ammatillisen koulutuksen työnantaja- ja toimialajärjestö.',
     quizQuestionWord: 'Kysymys',
@@ -118,7 +129,14 @@ export const T: Record<Language, Dict> = {
     testButton:      'Gör AMISFITS-testet på 2 min →',
     faqHeading:      'Vanliga frågor om yrkesutbildning',
     partnerLogoAlt:  'Partnerlogotyp',
-    metaDescription: 'Amisfits – en yrkesexamen ger dig ett försprång',
+    metaDescription: 'Amis visar vägen – praktisk erfarenhet och arbetslivsfärdigheter är en verklig konkurrensfördel. Gör Amisfits-testet på 2 minuter.',
+    slogan:          'Amis visar vägen',
+    themeAlt: {
+      1: 'Amis visar vägen. Praktisk erfarenhet och arbetslivsfärdigheter är en verklig konkurrensfördel.',
+      2: 'Amis öppnar dörrar. En yrkesexamen ger samma behörighet för fortsatta studier som gymnasiet.',
+      3: 'Amis aktiverar dina drömmar. Prova på-kurser, ledstudier samt öppna yrkeshögskole- och universitetsstudier ger trygghet inför ditt val.',
+    },
+    ogLocale:        'sv_FI',
     footerPre:       'Webbplatsen upprätthålls av ',
     footerPost:      ' – arbetsgivar- och branschorganisation för yrkesutbildning.',
     quizQuestionWord: 'Fråga',
@@ -140,7 +158,14 @@ export const T: Record<Language, Dict> = {
     testButton:      'Take the 2-min AMISFITS test →',
     faqHeading:      'Frequently asked questions about vocational school',
     partnerLogoAlt:  'Partner logo',
-    metaDescription: 'Amisfits – a vocational qualification gives you a head start',
+    metaDescription: 'Amis gives you direction – practical experience and working life skills are a real competitive edge. Take the 2-minute Amisfits test.',
+    slogan:          'Amis gives you direction',
+    themeAlt: {
+      1: 'Amis gives you direction. Practical experience and working life skills are a real competitive edge.',
+      2: 'Amis opens doors. A vocational qualification provides the same eligibility for further studies as general upper secondary school does.',
+      3: 'Amis activates your dreams. Introductory courses, path studies, open UAS and open university studies can help affirm your choice.',
+    },
+    ogLocale:        'en_GB',
     footerPre:       'This site is maintained by ',
     footerPost:      ' – the employer and industry association for vocational education.',
     quizQuestionWord: 'Question',

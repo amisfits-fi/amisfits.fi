@@ -1,4 +1,5 @@
 ---
 // Juurisivu ohjaa suoraan suomenkieliselle nuorten sivulle
-return Astro.redirect('/fi/nuoret', 301)
+// (Varsinainen ohjaus on netlify.toml:ssa force = true -säännöllä; tämä on varalla.)
+return Astro.redirect('/fi/nuoret/', 301)
 ---
