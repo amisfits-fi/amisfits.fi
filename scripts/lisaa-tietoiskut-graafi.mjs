@@ -152,6 +152,23 @@ const PLAN = {
     { field: 'expandedAdult', op: 'before',  key: '4fc030c5664d', expect: { text: 'Jos olet suorittanut sekä' },        item: 'huomio',   what: 'Huomio! → todistusvalinnan 3. kappaleen yläpuolelle' },
     { field: 'expandedAdult', op: 'unset',   key: 'f624197d4af5', expect: { text: 'Huomioi, että todistusvalinnan' },   removal: true, what: 'poista kappale "Huomioi, että todistusvalinnan kriteerit…" (sama asia laatikossa)' },
   ],
+  // sv/en lisätty 22.10.2026 (avaimet luettu julkaistuista onePager-se/-en:stä).
+  // Näillä sivuilla ei ole AMK_2-kuvaa eikä "Huomioi, että…"-kappaletta, joten
+  // kaavio tulee AMK-osion ensimmäisen kappaleen perään (sama kohta kuin fi:ssä).
+  se: [
+    { field: 'summaryYouth',  op: 'after',  key: '513a3ae0d348', expect: { text: 'Allmän behörighet för fortsatta studier' }, item: 'tiesitko', what: 'Visste du? → otsikon alle' },
+    { field: 'expandedYouth', op: 'after',  key: 'af879cd4621c', expect: { text: 'Efter att du har avlagt en yrkesinriktad' }, item: 'chart',    what: 'pylväskaavio → 1. kappaleen perään' },
+    { field: 'expandedYouth', op: 'before', key: '95514c6ed9a5', expect: { text: 'Om du har avlagt både' },                  item: 'huomio',   what: 'Observera! → betygsantagningens 3. stycket ovanför' },
+    { field: 'expandedAdult', op: 'after',  key: 'a432faaf2171', expect: { text: 'Efter att du har avlagt en yrkesinriktad' }, item: 'chart',    what: 'pylväskaavio → 1. kappaleen perään' },
+    { field: 'expandedAdult', op: 'before', key: '2937a88574b4', expect: { text: 'Om du har avlagt både' },                  item: 'huomio',   what: 'Observera! → betygsantagningens 3. stycket ovanför' },
+  ],
+  en: [
+    { field: 'summaryYouth',  op: 'after',  key: 'b0cbc02739fe', expect: { text: 'General Eligibility for Higher Education' }, item: 'tiesitko', what: 'Did you know? → otsikon alle' },
+    { field: 'expandedYouth', op: 'after',  key: 'f6d08c009917', expect: { text: 'After completing a vocational qualification' }, item: 'chart', what: 'pylväskaavio → 1. kappaleen perään' },
+    { field: 'expandedYouth', op: 'before', key: '25e67ecd2459', expect: { text: 'If you have completed both' },               item: 'huomio',   what: 'Attention! → todistusvalinnan 3. kappaleen yläpuolelle' },
+    { field: 'expandedAdult', op: 'after',  key: '7687240ed707', expect: { text: 'After completing a vocational qualification' }, item: 'chart', what: 'pylväskaavio → 1. kappaleen perään' },
+    { field: 'expandedAdult', op: 'before', key: '825142a27956', expect: { text: 'If you have completed both' },               item: 'huomio',   what: 'Attention! → todistusvalinnan 3. kappaleen yläpuolelle' },
+  ],
 }
 
 // ── Ajo ──────────────────────────────────────────────────────────────────────
@@ -222,19 +239,29 @@ async function main() {
   const args     = process.argv.slice(2)
   const execute  = args.includes('--toteuta')
   const keepText = args.includes('--ei-poistoja')
-  const lang     = 'fi'
+  // --kieli=fi|se|en (oletus fi)
+  const lang     = (args.find((a) => a.startsWith('--kieli=')) ?? '--kieli=fi').split('=')[1]
+  if (!PLAN[lang]) { console.error(`✖ Tuntematon kieli: ${lang} (fi, se, en)`); process.exit(1) }
   const docId    = `onePager-${lang}`
 
+  // Token .env-tiedostosta, tai Sanity CLI:n kirjautuminen:
+  //   cd studio && npx sanity exec ../scripts/lisaa-tietoiskut-graafi.mjs --with-user-token -- --kieli=se [--toteuta]
   const token = process.env.SANITY_TOKEN || process.env.SANITY_API_TOKEN
-  if (!token) {
-    console.error('✖ Token puuttuu. Aja repon juuresta: node --env-file=.env scripts/lisaa-tietoiskut-graafi.mjs')
-    process.exit(1)
+  let client
+  if (token) {
+    client = createClient({
+      projectId: 'l442zg5l', dataset: 'production', apiVersion: '2024-01-01',
+      token, useCdn: false, perspective: 'raw',
+    })
+  } else {
+    const mod = await import('sanity/cli')
+    const getCliClient = mod.getCliClient ?? mod.default?.getCliClient
+    if (!getCliClient) {
+      console.error('✖ Token puuttuu. Aja: cd studio && npx sanity exec ../scripts/lisaa-tietoiskut-graafi.mjs --with-user-token')
+      process.exit(1)
+    }
+    client = getCliClient({ apiVersion: '2024-01-01' }).withConfig({ useCdn: false, perspective: 'raw' })
   }
-
-  const client = createClient({
-    projectId: 'l442zg5l', dataset: 'production', apiVersion: '2024-01-01',
-    token, useCdn: false, perspective: 'raw',
-  })
 
   const [doc, draft] = await Promise.all([
     client.getDocument(docId),
