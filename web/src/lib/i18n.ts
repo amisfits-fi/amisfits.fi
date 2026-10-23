@@ -151,7 +151,7 @@ export const T: Record<Language, Dict> = {
   },
   en: {
     audienceLabel:   { nuoret: 'Comprehensive school students', aikuiset: 'Adult learners' },
-    pathUas:         'To a university of applied sciences',
+    pathUas:         'To university of applied sciences',
     pathUni:         'To university',
     videoComing:     'Video coming',
     testLead:        'Is vocational school right for you?',
