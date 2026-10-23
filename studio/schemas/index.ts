@@ -4,5 +4,6 @@ import faqItem  from './faqItem'
 import quiz     from './quiz'
 import infoBox  from './infoBox'
 import barChart from './barChart'
+import institutionList from './institutionList'
 
-export const schemaTypes = [onePager, section, faqItem, quiz, infoBox, barChart]
+export const schemaTypes = [onePager, section, faqItem, quiz, infoBox, barChart, institutionList]

@@ -2,8 +2,8 @@
 import Layout        from '@/layouts/Layout.astro'
 import Section       from '@/components/Section.astro'
 import FaqAccordion  from '@/components/FaqAccordion.astro'
-import PartnerLogos  from '@/components/PartnerLogos.astro'
-import { getOnePager } from '@/lib/queries'
+import Institutions  from '@/components/Institutions.astro'
+import { getOnePager, getInstitutions } from '@/lib/queries'
 import type { Language, Audience } from '@/lib/queries'
 import { LANGUAGES, AUDIENCES, audienceSlug, pathLang } from '@/lib/i18n'
 
@@ -19,9 +19,9 @@ export function getStaticPaths() {
   )
 }
 
-// ── Hae Sanitystä oikea dokumentti ───────────────────────────────────────────
+// ── Hae Sanitystä oikea dokumentti ja yhteinen oppilaitoslista ───────────────
 const { lang, audience } = Astro.props as { lang: Language; audience: Audience }
-const page = await getOnePager(lang)
+const [page, institutions] = await Promise.all([getOnePager(lang), getInstitutions()])
 ---
 
 <Layout lang={lang} audience={audience}>
@@ -36,9 +36,9 @@ const page = await getOnePager(lang)
     <FaqAccordion items={page.faq} audience={audience} lang={lang} />
   )}
 
-  {/* Kumppanilogot */}
-  {page.partnerLogos?.length > 0 && (
-    <PartnerLogos logos={page.partnerLogos} lang={lang} />
+  {/* Mukana olevat oppilaitokset – sama lista kaikilla kielillä */}
+  {institutions.length > 0 && (
+    <Institutions institutions={institutions} lang={lang} />
   )}
 
 </Layout>

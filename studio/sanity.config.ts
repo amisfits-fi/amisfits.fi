@@ -91,6 +91,16 @@ export default defineConfig({
                       ),
                   ])
               ),
+            S.divider(),
+            // Yhteinen kaikille kielille – näkyy sivun alaosassa
+            S.listItem()
+              .title('🏫 Oppilaitokset (kaikki kielet)')
+              .child(
+                S.document()
+                  .schemaType('institutionList')
+                  .documentId('institutionList')
+                  .title('Mukana olevat oppilaitokset')
+              ),
           ]),
     }),
     // Vision-työkalu GROQ-kyselyjen testaamiseen (vain dev)
@@ -99,4 +109,13 @@ export default defineConfig({
 
   // ── Skeematyypit ─────────────────────────────────────────────
   schema: { types: schemaTypes },
+
+  // Oppilaitokset on yksi dokumentti, joka avataan valikosta.
+  // Ei "Luo uusi" -valikkoon, ettei synny ylimääräisiä listoja.
+  document: {
+    newDocumentOptions: (prev, { creationContext }) =>
+      creationContext.type === 'global'
+        ? prev.filter((template) => template.templateId !== 'institutionList')
+        : prev,
+  },
 })

@@ -59,18 +59,22 @@ export interface FaqItem {
   answerAdult:  SanityBlock[]
 }
 
-export interface PartnerLogo {
-  _key:  string
-  asset: { _ref: string }
-  alt?:  string
+export interface OnePager {
+  _id:      string
+  language: Language
+  sections: Section[]
+  faq:      FaqItem[]
 }
 
-export interface OnePager {
-  _id:          string
-  language:     Language
-  sections:     Section[]
-  faq:          FaqItem[]
-  partnerLogos: PartnerLogo[]
+// ── Mukana olevat oppilaitokset (yhteinen kaikille kielille) ─────────────────
+
+export interface Institution {
+  _key:    string
+  name:    string
+  nameSv?: string   // tyhjä = ruotsinkielisellä sivulla suomenkielinen nimi
+  url:     string
+  urlSv?:  string   // tyhjä = suomenkielinen kotisivu
+  urlEn?:  string   // tyhjä = suomenkielinen kotisivu
 }
 
 // ── Amisfits-testi ───────────────────────────────────────────────────────────
@@ -160,11 +164,6 @@ const ONE_PAGER_QUERY = /* groq */ `
       answerYouth,
       sameAsYouth,
       answerAdult
-    },
-    partnerLogos[] {
-      _key,
-      asset,
-      alt
     }
   }
 `
@@ -175,11 +174,10 @@ const ONE_PAGER_QUERY = /* groq */ `
  */
 function emptyOnePager(language: Language): OnePager {
   return {
-    _id:          `onePager-${language}`,
+    _id:      `onePager-${language}`,
     language,
-    sections:     [],
-    faq:          [],
-    partnerLogos: [],
+    sections: [],
+    faq:      [],
   }
 }
 
@@ -236,4 +234,25 @@ const QUIZ_QUERY = /* groq */ `
  */
 export async function getQuiz(language: Language): Promise<Quiz | null> {
   return client.fetch<Quiz | null>(QUIZ_QUERY, { language })
+}
+
+const INSTITUTIONS_QUERY = /* groq */ `
+  *[_id == "institutionList"][0].institutions[] {
+    _key,
+    name,
+    nameSv,
+    url,
+    urlSv,
+    urlEn
+  }
+`
+
+/**
+ * Hakee mukana olevien oppilaitosten listan (sama kaikille kielille).
+ * Palauttaa tyhjän taulukon, jos listaa ei ole vielä julkaistu Sanityssä –
+ * osio jää silloin sivulta pois.
+ */
+export async function getInstitutions(): Promise<Institution[]> {
+  const data = await client.fetch<Institution[] | null>(INSTITUTIONS_QUERY)
+  return data ?? []
 }

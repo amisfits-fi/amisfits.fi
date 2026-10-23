@@ -71,7 +71,10 @@ interface Dict {
   testLead:        string
   testButton:      string
   faqHeading:      string
-  partnerLogoAlt:  string
+  // Mukana olevat oppilaitokset (sivun alaosa)
+  institutionsHeading: string
+  institutionsMore:    string   // linkki listan perässä: kaikki oppilaitokset Opintopolussa
+  institutionsMoreUrl: string   // Opintopolun etusivu sivun kielellä
   metaDescription: string
   slogan:          string   // kampanjan pääviesti: sivun otsikko ja jakotiedot
   themeAlt:        Record<1 | 2 | 3, string>  // teemagrafiikoiden koko teksti (alt), sama kuin SVG:ssä
@@ -99,7 +102,9 @@ export const T: Record<Language, Dict> = {
     testLead:        'Sopiiko amis sinulle?',
     testButton:      'Tee 2 min AMISFITS-testi →',
     faqHeading:      'Usein kysyttyä amiksesta',
-    partnerLogoAlt:  'Kumppanilogo',
+    institutionsHeading: 'Mukana olevat oppilaitokset',
+    institutionsMore:    'Kaikki ammatilliset oppilaitokset löydät Opintopolusta',
+    institutionsMoreUrl: 'https://opintopolku.fi/konfo/fi/',
     metaDescription: 'Amis antaa suunnan – käytännön kokemus ja työelämätaidot ovat todellinen kilpailuetu. Tee 2 minuutin Amisfits-testi.',
     slogan:          'Amis antaa suunnan',
     themeAlt: {
@@ -128,7 +133,9 @@ export const T: Record<Language, Dict> = {
     testLead:        'Passar yrkesutbildning dig?',
     testButton:      'Gör AMISFITS-testet på 2 min →',
     faqHeading:      'Vanliga frågor om yrkesutbildning',
-    partnerLogoAlt:  'Partnerlogotyp',
+    institutionsHeading: 'Medverkande läroanstalter',
+    institutionsMore:    'Alla yrkesläroanstalter hittar du på Studieinfo',
+    institutionsMoreUrl: 'https://opintopolku.fi/konfo/sv/',
     metaDescription: 'Amis visar vägen – praktisk erfarenhet och arbetslivsfärdigheter är en verklig konkurrensfördel. Gör Amisfits-testet på 2 minuter.',
     slogan:          'Amis visar vägen',
     themeAlt: {
@@ -157,7 +164,9 @@ export const T: Record<Language, Dict> = {
     testLead:        'Is vocational school right for you?',
     testButton:      'Take the 2-min AMISFITS test →',
     faqHeading:      'Frequently asked questions about vocational school',
-    partnerLogoAlt:  'Partner logo',
+    institutionsHeading: 'Participating institutions',
+    institutionsMore:    'Find all vocational institutions on Studyinfo',
+    institutionsMoreUrl: 'https://opintopolku.fi/konfo/en/',
     metaDescription: 'Amis gives you direction – practical experience and working life skills are a real competitive edge. Take the 2-minute Amisfits test.',
     slogan:          'Amis gives you direction',
     themeAlt: {

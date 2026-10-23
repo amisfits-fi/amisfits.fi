@@ -39,23 +39,8 @@ export default defineType({
       of:    [{ type: 'faqItem' }],
     }),
 
-    defineField({
-      name:        'partnerLogos',
-      title:       'Kumppanilogot',
-      type:        'array',
-      of: [{
-        type:   'image',
-        options: { hotspot: false },
-        fields: [
-          defineField({
-            name:  'alt',
-            title: 'Kuvausteksti (saavutettavuus)',
-            type:  'string',
-          }),
-        ],
-      }],
-      description: 'Logot näkyvät sivun alaosassa ruudukkona.',
-    }),
+    // Kumppanilogot-kenttä poistettu 23.10.2026: tilalla yhteinen
+    // oppilaitoslista kaikille kielille (schemas/institutionList.ts).
 
   ],
 

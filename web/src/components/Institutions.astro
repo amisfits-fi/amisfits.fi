@@ -1,0 +1,47 @@
+---
+// Mukana olevat oppilaitokset – sama lista kaikilla kielillä (Sanity: institutionList).
+// Nimet aakkosjärjestyksessä, kukin linkkinä oppilaitoksen kotisivulle.
+import { t } from '@/lib/i18n'
+import type { Institution, Language } from '@/lib/queries'
+
+interface Props {
+  institutions: Institution[]
+  lang:         Language
+}
+
+const { institutions, lang } = Astro.props
+const tr = t(lang)
+
+// Sivun kielen mukainen nimi ja kotisivu – tyhjä kenttä = suomenkielinen
+const clean = (s?: string) => s?.trim() || ''
+const nameFor = (i: Institution) => (lang === 'se' && clean(i.nameSv)) || clean(i.name)
+const hrefFor = (i: Institution) =>
+  (lang === 'se' && clean(i.urlSv)) || (lang === 'en' && clean(i.urlEn)) || clean(i.url)
+
+// Aakkosjärjestys näkyvän nimen mukaan (å, ä ja ö aakkosten loppuun).
+// Englanninkielisellä sivulla nimet ovat suomenkielisiä, joten suomen järjestys.
+const collator = new Intl.Collator(lang === 'se' ? 'sv-FI' : 'fi-FI')
+
+const items = institutions
+  .map((i) => ({ name: nameFor(i), href: hrefFor(i) }))
+  .filter((i) => i.name && /^https?:\/\//i.test(i.href))   // vain kokonaiset rivit
+  .sort((a, b) => collator.compare(a.name, b.name))
+---
+
+{items.length > 0 && (
+  <section class="institutions" aria-labelledby="institutions-heading">
+    <div class="institutions__inner">
+      <h2 class="institutions__heading" id="institutions-heading">{tr.institutionsHeading}</h2>
+
+      <ul class="institutions__list" role="list">
+        {items.map((i) => (
+          <li class="institutions__item"><a href={i.href}>{i.name}</a></li>
+        ))}
+      </ul>
+
+      <p class="institutions__more">
+        <a href={tr.institutionsMoreUrl}>{tr.institutionsMore}<span aria-hidden="true"> →</span></a>
+      </p>
+    </div>
+  </section>
+)}

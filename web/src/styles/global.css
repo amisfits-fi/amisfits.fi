@@ -661,39 +661,63 @@ details[open] .faq__icon { transform: rotate(180deg); }
   color:       rgba(255,255,255,0.8);
 }
 
-/* ── Kumppanilogot ───────────────────────────────────────────── */
-.partners {
+/* ── Mukana olevat oppilaitokset (FAQ:n ja footerin välissä) ─────
+   Nimet sivuston omalla tyylillä, kukin linkki oppilaitoksen sivulle.
+   Palstojen määrä mukautuu leveyteen: puhelimessa yksi, isolla
+   näytöllä kolme. Järjestys kulkee palstoittain ylhäältä alas. */
+.institutions {
   background: var(--color-white);
+  color:      var(--color-navy);
   padding:    var(--pad-section) var(--pad-content);
-  border-top: 1px solid rgba(0,32,76,0.1);
 }
 
-.partners__inner { max-width: var(--max-width); margin: 0 auto; }
+.institutions__inner { max-width: var(--max-width); margin: 0 auto; }
 
-.partners__grid {
-  display:               grid;
-  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-  gap:                   2.5rem;
-  align-items:           center;
-  justify-items:         center;
+/* Sama otsikkotyyli kuin FAQ:ssa, värit vaalealle taustalle */
+.institutions__heading {
+  font-family:   var(--font-display);
+  font-size:     clamp(1.9rem, 4.5vw, 3.2rem);
+  font-weight:   400;
+  margin-bottom: 2.5rem;
 }
 
-.partners__item img {
-  object-fit: contain;
-  max-height: 60px;
-  filter:     grayscale(100%);
-  opacity:    0.6;
-  transition: opacity 0.2s, filter 0.2s;
+.institutions__list {
+  columns:    15rem;
+  column-gap: 2.5rem;
 }
-.partners__item img:hover { opacity: 1; filter: none; }
 
-.partners__placeholder {
-  font-family:    var(--font-display);
-  font-size:      1.2rem;
-  font-weight:    900;
-  color:          var(--color-navy);
-  opacity:        0.2;
-  letter-spacing: 0.1em;
+.institutions__item { break-inside: avoid; }
+
+.institutions__item a,
+.institutions__more a {
+  color:                     inherit;
+  text-decoration-line:      underline;
+  text-decoration-color:     rgba(0, 32, 76, 0.3);
+  text-decoration-thickness: 1px;
+  text-underline-offset:     0.25em;
+  transition:                text-decoration-color 0.15s;
+}
+
+.institutions__item a {
+  display:     inline-block;   /* koko nimi kosketusalueena, väli riveille */
+  padding:     0.35rem 0;
+  font-size:   clamp(1rem, 1.5vw, 1.125rem);
+  line-height: 1.4;
+}
+
+.institutions__item a:hover,
+.institutions__more a:hover { text-decoration-color: currentColor; }
+
+.institutions__item a:focus-visible,
+.institutions__more a:focus-visible {
+  outline:        2px solid currentColor;
+  outline-offset: 3px;
+  border-radius:  2px;
+}
+
+.institutions__more {
+  margin-top:  2.5rem;
+  font-weight: 500;
 }
 
 /* ── Footer ──────────────────────────────────────────────────── */

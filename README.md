@@ -81,8 +81,11 @@ Sisältöä hallitaan Sanity Studiossa osoitteessa:
 ### Sisältörakenne
 
 - **One-pager** – Yksi dokumentti per kieli (fi / se / en)
-  - Jokainen dokumentti sisältää sektiot, FAQ:n ja logot
+  - Jokainen dokumentti sisältää sektiot ja FAQ:n
   - Jokaisessa sektiossa on erikseen sisältö nuorille ja aikuisopiskelijoille
+- **Oppilaitokset** – Yksi yhteinen dokumentti kaikille kielille (`institutionList`)
+  - Mukana olevien oppilaitosten nimet ja kotisivut, näkyvät sivun alaosassa
+  - Sivu järjestää nimet aakkosjärjestykseen; tyhjä lista = osio ei näy
 
 ### Uuden kielen lisääminen
 
