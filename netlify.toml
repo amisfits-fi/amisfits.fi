@@ -45,6 +45,13 @@
     # ensisijaiselle domainille, joten duplicate content -ongelmaa ei synny.)
     X-Robots-Tag           = "noindex, nofollow"
 
+# ── Fonttitiedostot: vuoden välimuisti ──────────────────────────────────────
+# Tiedostot eivät muutu. Jos fontti vaihdetaan, anna tiedostolle uusi nimi.
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
 # ── Node.js-versio ────────────────────────────────────────────────────────────
 [build.environment]
   NODE_VERSION = "20"
