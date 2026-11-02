@@ -992,8 +992,8 @@ details[open] .faq__icon { transform: rotate(180deg); }
 .quiz [hidden] { display: none !important; }
 
 /* ── Korjaukset 10/2026 (sivuston tarkistus) ─────────────────── */
-/* Sivun ensimmäinen teemagrafiikka on H1: otsikolla ei omaa typografiaa,
-   kuva määrää koon kuten ennenkin. */
+/* Teemagrafiikat ovat otsikoita (sivun ensimmäinen H1, muut H2): otsikolla
+   ei omaa typografiaa, kuva määrää koon kuten ennenkin. */
 .section__display-heading {
   font-size:   inherit;
   font-weight: inherit;
@@ -1003,3 +1003,20 @@ details[open] .faq__icon { transform: rotate(180deg); }
 /* Lyhyillä sivuilla (testi) footerin alle jäi valkoinen raita:
    sivun ulkopuolinen tausta samaa navya kuin footer ja navigaatio. */
 html { background: var(--color-navy); }
+
+/* ── Saavutettavuuskorjaukset 11/2026 (axe-tarkistus 2.11.) ──── */
+/* FAQ-vastausten linkit: selaimen oletussininen jäi navy-taustalla lähes
+   näkymättömäksi (kontrasti 1,7:1, vaatimus 4,5:1). Valkoinen ja
+   alleviivattu, kohdistus näkyy kehyksenä kuten oppilaitoslistassa. */
+.faq__answer a {
+  color:                     var(--color-white);
+  text-decoration-line:      underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset:     0.2em;
+}
+.faq__answer a:hover { text-decoration-thickness: 2px; }
+.faq__answer a:focus-visible {
+  outline:        2px solid currentColor;
+  outline-offset: 3px;
+  border-radius:  2px;
+}

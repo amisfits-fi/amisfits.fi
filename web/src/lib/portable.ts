@@ -38,8 +38,28 @@ function idFrom(prefix: string, key: unknown): string {
 // ── Tietolaatikon ja kaavion sisäinen teksti: vain perusmuotoilut ja linkit ──
 const innerComponents = {}
 
+// ── Tyhjät väliotsikot pois ──────────────────────────────────────────────────
+// Studioon jää helposti tyhjä "Väliotsikko"- tai "Pieni väliotsikko" -rivi.
+// Sivulla se olisi ruudunlukijalle nimetön otsikko, joten sitä ei renderöidä.
+type HeadingTag = 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
+// Pelkät välilyönnit renderöityvät muotoon &nbsp;, joten nekin lasketaan tyhjäksi.
+const hasText = (html = '') =>
+  html.replace(/<[^>]*>/g, '').replace(/&nbsp;|&#160;|&#xa0;/gi, ' ').trim() !== ''
+function heading(tag: HeadingTag) {
+  return ({ children }: { children?: string }) =>
+    hasText(children) ? `<${tag}>${children}</${tag}>` : ''
+}
+const headingBlocks = {
+  h2: heading('h2'),
+  h3: heading('h3'),
+  h4: heading('h4'),
+  h5: heading('h5'),
+  h6: heading('h6'),
+}
+
 function makeComponents(lang: Language) {
   return {
+    block: headingBlocks,
     types: {
       // Tekstin sisään upotettu kuva (sijoittelu: koko leveys / oikea / vasen)
       image: ({ value }: { value: any }) => {

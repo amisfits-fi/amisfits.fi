@@ -65,8 +65,10 @@ const graphicAlt = graphicNumber ? tr.themeAlt[graphicNumber] : (section.display
 // Ensimmäinen grafiikka näkyy heti sivun auetessa: ei viivästettyä latausta
 const imgLoading  = isFirst ? 'eager' : 'lazy'
 const imgPriority = isFirst ? 'high' : 'auto'
-// Grafiikan otsikkotaso: sivun ensimmäinen on sivun H1
-const GraphicTag  = isFirst ? 'h1' : 'div'
+// Grafiikan otsikkotaso: sivun ensimmäinen on sivun H1, muut osio-otsikoita (H2).
+// Grafiikka on osion näkyvä otsikko, joten myös "Amis avaa ovia" ja "Amis aktivoi
+// unelmasi" kuuluvat ruudunlukijan otsikkolistaan (WCAG 1.3.1).
+const GraphicTag  = isFirst ? 'h1' : 'h2'
 
 // Kohderyhmän video: aikuisille oma video, jos sellainen on, muuten nuorten video.
 // Jos videota ei ole, videopaikkaa ei näytetä lainkaan.
