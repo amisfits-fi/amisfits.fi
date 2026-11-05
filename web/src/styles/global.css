@@ -692,9 +692,11 @@ details[open] .faq__icon { transform: rotate(180deg); }
 /* ── Mukana olevat oppilaitokset (FAQ:n ja footerin välissä) ─────
    Nimet sivuston omalla tyylillä, kukin linkki oppilaitoksen sivulle.
    Palstojen määrä mukautuu leveyteen: puhelimessa yksi, isolla
-   näytöllä kolme. Järjestys kulkee palstoittain ylhäältä alas. */
+   näytöllä kolme. Järjestys kulkee palstoittain ylhäältä alas.
+   Tausta koralli kuten ensimmäisessä osiossa: sivu alkaa ja päättyy
+   samaan väriin, ja osio erottuu FAQ:n ja footerin navysta. */
 .institutions {
-  background: var(--color-white);
+  background: var(--color-coral);
   color:      var(--color-navy);
   padding:    var(--pad-section) var(--pad-content);
 }
