@@ -1,6 +1,7 @@
 ---
 // Mukana olevat oppilaitokset – sama lista kaikilla kielillä (Sanity: institutionList).
 // Nimet aakkosjärjestyksessä, kukin linkkinä oppilaitoksen kotisivulle.
+// Linkit avautuvat uuteen välilehteen; ruudunlukija kertoo sen (tr.newTab).
 import { t } from '@/lib/i18n'
 import type { Institution, Language } from '@/lib/queries'
 
@@ -35,12 +36,12 @@ const items = institutions
 
       <ul class="institutions__list" role="list">
         {items.map((i) => (
-          <li class="institutions__item"><a href={i.href}>{i.name}</a></li>
+          <li class="institutions__item"><a href={i.href} target="_blank" rel="noopener noreferrer">{i.name}<span class="visually-hidden"> {tr.newTab}</span></a></li>
         ))}
       </ul>
 
       <p class="institutions__more">
-        <a href={tr.institutionsMoreUrl}>{tr.institutionsMore}<span aria-hidden="true"> →</span></a>
+        <a href={tr.institutionsMoreUrl} target="_blank" rel="noopener noreferrer">{tr.institutionsMore}<span aria-hidden="true"> →</span><span class="visually-hidden"> {tr.newTab}</span></a>
       </p>
     </div>
   </section>

@@ -75,6 +75,7 @@ interface Dict {
   institutionsHeading: string
   institutionsMore:    string   // linkki listan perässä: kaikki oppilaitokset Opintopolussa
   institutionsMoreUrl: string   // Opintopolun etusivu sivun kielellä
+  newTab:          string   // ruudunlukijalle: linkki avautuu uuteen välilehteen
   metaDescription: string
   slogan:          string   // kampanjan pääviesti: sivun otsikko ja jakotiedot
   themeAlt:        Record<1 | 2 | 3, string>  // teemagrafiikoiden koko teksti (alt), sama kuin SVG:ssä
@@ -105,6 +106,7 @@ export const T: Record<Language, Dict> = {
     institutionsHeading: 'Mukana olevat oppilaitokset',
     institutionsMore:    'Kaikki ammatilliset oppilaitokset löydät Opintopolusta',
     institutionsMoreUrl: 'https://opintopolku.fi/konfo/fi/',
+    newTab:          '(avautuu uuteen välilehteen)',
     metaDescription: 'Amis antaa suunnan – käytännön kokemus ja työelämätaidot ovat todellinen kilpailuetu. Tee 2 minuutin Amisfits-testi.',
     slogan:          'Amis antaa suunnan',
     themeAlt: {
@@ -136,6 +138,7 @@ export const T: Record<Language, Dict> = {
     institutionsHeading: 'Medverkande läroanstalter',
     institutionsMore:    'Alla yrkesläroanstalter hittar du på Studieinfo',
     institutionsMoreUrl: 'https://opintopolku.fi/konfo/sv/',
+    newTab:          '(öppnas i en ny flik)',
     metaDescription: 'Amis visar vägen – praktisk erfarenhet och arbetslivsfärdigheter är en verklig konkurrensfördel. Gör Amisfits-testet på 2 minuter.',
     slogan:          'Amis visar vägen',
     themeAlt: {
@@ -167,6 +170,7 @@ export const T: Record<Language, Dict> = {
     institutionsHeading: 'Participating institutions',
     institutionsMore:    'Find all vocational institutions on Studyinfo',
     institutionsMoreUrl: 'https://opintopolku.fi/konfo/en/',
+    newTab:          '(opens in a new tab)',
     metaDescription: 'Amis gives you direction – practical experience and working life skills are a real competitive edge. Take the 2-minute Amisfits test.',
     slogan:          'Amis gives you direction',
     themeAlt: {
