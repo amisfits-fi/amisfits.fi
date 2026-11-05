@@ -75,12 +75,20 @@ export default defineType({
               description: 'Jos oppilaitoksella on englanninkielinen sivu. Tyhjänä käytetään suomenkielistä kotisivua.',
               validation:  urlRule,
             }),
+            defineField({
+              name:        'logo',
+              title:       'Logo',
+              type:        'image',
+              description: 'Vaakamallinen logo, mieluiten SVG tai läpinäkyvä PNG. Näkyy logoruudukossa valkoisella pohjalla, ja oppilaitoksen nimi on logon vaihtoehtoinen teksti. Ilman logoa ruudussa näkyy nimi.',
+              options:     { accept: 'image/svg+xml,image/png,image/jpeg,image/webp' },
+            }),
           ],
           preview: {
-            select:  { title: 'name', nameSv: 'nameSv', url: 'url' },
-            prepare: ({ title, nameSv, url }) => ({
+            select:  { title: 'name', nameSv: 'nameSv', url: 'url', media: 'logo' },
+            prepare: ({ title, nameSv, url, media }) => ({
               title:    title || 'Nimetön oppilaitos',
               subtitle: [nameSv, hostname(url)].filter(Boolean).join(' · '),
+              media,
             }),
           },
         }),

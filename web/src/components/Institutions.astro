@@ -3,6 +3,7 @@
 // Nimet aakkosjärjestyksessä, kukin linkkinä oppilaitoksen kotisivulle.
 // Linkit avautuvat uuteen välilehteen; ruudunlukija kertoo sen (tr.newTab).
 import { t } from '@/lib/i18n'
+import { urlFor } from '@/lib/sanity'
 import type { Institution, Language } from '@/lib/queries'
 
 interface Props {
@@ -23,8 +24,17 @@ const hrefFor = (i: Institution) =>
 // Englanninkielisellä sivulla nimet ovat suomenkielisiä, joten suomen järjestys.
 const collator = new Intl.Collator(lang === 'se' ? 'sv-FI' : 'fi-FI')
 
+// Logo Sanityn kuvapalvelusta: SVG sellaisenaan, muut pienennettyinä kevyeen muotoon
+const logoSrc = (i: Institution) => {
+  const ref = i.logo?.asset?._ref
+  if (!ref) return ''
+  return ref.endsWith('-svg')
+    ? urlFor(i.logo!).url()
+    : urlFor(i.logo!).height(160).fit('max').auto('format').url()
+}
+
 const items = institutions
-  .map((i) => ({ name: nameFor(i), href: hrefFor(i) }))
+  .map((i) => ({ name: nameFor(i), href: hrefFor(i), logo: logoSrc(i) }))
   .filter((i) => i.name && /^https?:\/\//i.test(i.href))   // vain kokonaiset rivit
   .sort((a, b) => collator.compare(a.name, b.name))
 ---
@@ -37,6 +47,21 @@ const items = institutions
       <ul class="institutions__list" role="list">
         {items.map((i) => (
           <li class="institutions__item"><a href={i.href} target="_blank" rel="noopener noreferrer">{i.name}<span class="visually-hidden"> {tr.newTab}</span></a></li>
+        ))}
+      </ul>
+
+      {/* KOKEILU 11/2026: logoruudukko nimilistan alla, jotta Sivista voi verrata
+          vaihtoehtoja. Kun valinta on tehty, jätetään vain toinen. */}
+      <ul class="institutions__logos" role="list">
+        {items.map((i) => (
+          <li>
+            <a class="institutions__logo-link" href={i.href} target="_blank" rel="noopener noreferrer">
+              {i.logo
+                ? <img src={i.logo} alt={i.name} loading="lazy" decoding="async" />
+                : <span class="institutions__logo-name">{i.name}</span>}
+              <span class="visually-hidden"> {tr.newTab}</span>
+            </a>
+          </li>
         ))}
       </ul>
 
