@@ -750,61 +750,6 @@ details[open] .faq__icon { transform: rotate(180deg); }
   font-weight: 500;
 }
 
-/* KOKEILU 11/2026: logoruudukko nimilistan alla. Valkoiset, samankokoiset
-   ruudut tasoittavat erilaiset logot. Ilman logoa ruudussa näkyy nimi. */
-.institutions__logos {
-  display:               grid;
-  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
-  gap:                   1rem;
-  margin-top:            3rem;
-}
-
-.institutions__logo-link {
-  position:        relative;
-  display:         flex;
-  align-items:     center;
-  justify-content: center;
-  height:          6.5rem;
-  padding:         1rem 1.25rem;
-  background:      var(--color-white);
-  border-radius:   4px;
-  color:           var(--color-navy);
-  text-decoration: none;
-  transition:      box-shadow 0.15s, transform 0.15s;
-}
-
-.institutions__logo-link:hover {
-  box-shadow: 0 4px 14px rgba(0, 32, 76, 0.18);
-  transform:  translateY(-2px);
-}
-
-.institutions__logo-link:focus-visible {
-  outline:        2px solid var(--color-navy);
-  outline-offset: 3px;
-}
-
-.institutions__logo-link img {
-  max-width:  100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-
-.institutions__logo-name {
-  font-size:   0.95rem;
-  font-weight: 500;
-  line-height: 1.3;
-  text-align:  center;
-}
-
-@media (max-width: 640px) {
-  .institutions__logo-link { height: 5.5rem; padding: 0.75rem 1rem; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .institutions__logo-link { transition: none; }
-  .institutions__logo-link:hover { transform: none; }
-}
-
 /* ── Footer ──────────────────────────────────────────────────── */
 .footer {
   background: var(--color-navy);

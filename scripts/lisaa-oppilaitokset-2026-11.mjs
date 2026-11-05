@@ -26,12 +26,16 @@ const DOC_ID = 'institutionList'
 // Sarin taulukko 5.11.2026. Ruotsin- tai englanninkielinen osoite vain, jos se
 // eroaa suomenkielisestä: tyhjänä sivu käyttää suomenkielistä kotisivua.
 // Ruotsinkielisiä nimiä taulukossa ei ollut, joten nameSv jää tyhjäksi.
+// Ammattiopisto Spesia lisätty 5.11.2026 (Sarin välittämä viesti, logo erikseen).
 const OPPILAITOKSET = [
+  { name: 'Ammattiopisto Luovi',                   url: 'https://luovi.fi/',      urlSv: 'https://luovi.fi/sv/', urlEn: 'https://luovi.fi/en/' },   // lisätty 5.11. (taulukon päivitys)
+  { name: 'Ammattiopisto Spesia',                  url: 'https://www.spesia.fi/', urlEn: 'https://www.spesia.fi/en/etusivu/' },
   { name: 'Business College Helsinki',             url: 'https://www.bc.fi/',   urlEn: 'https://www.bc.fi/en/' },
   { name: 'Helsingin Maalariammattikoulu',         url: 'https://hmak.com/' },
   { name: 'Ingmanedu Kulttuurialan ammattiopisto', url: 'https://ingmanedu.fi/' },
   { name: 'Perho Liiketalousopisto',               url: 'https://perho.fi/',    urlEn: 'https://perho.fi/en/' },
   { name: 'Suomen Diakoniaopisto',                 url: 'https://www.sdo.fi/' },
+  { name: 'TTS',                                   url: 'https://www.tts.fi/',    urlEn: 'https://www.tts.fi/en/home/' },   // lisätty 5.11. (taulukon päivitys)
 ]
 
 const nimiAvain = (s = '') => s.trim().toLowerCase().replace(/\s+/g, ' ')

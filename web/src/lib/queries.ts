@@ -75,7 +75,6 @@ export interface Institution {
   url:     string
   urlSv?:  string   // tyhjä = suomenkielinen kotisivu
   urlEn?:  string   // tyhjä = suomenkielinen kotisivu
-  logo?:   { asset?: { _ref?: string } }   // tyhjä = logoruudussa näkyy nimi
 }
 
 // ── Amisfits-testi ───────────────────────────────────────────────────────────
@@ -244,8 +243,7 @@ const INSTITUTIONS_QUERY = /* groq */ `
     nameSv,
     url,
     urlSv,
-    urlEn,
-    logo
+    urlEn
   }
 `
 

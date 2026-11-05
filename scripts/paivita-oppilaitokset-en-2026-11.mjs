@@ -26,6 +26,7 @@ const PAIVITYKSET = [
   { host: 'hmak.com',     urlEn: 'https://hmak.com/in-english/' },
   { host: 'ingmanedu.fi', urlEn: 'https://ingmanedu.fi/international-partnerships/' },
   { host: 'sdo.fi',       urlEn: 'https://sdo.fi/about-us/' },
+  { host: 'spesia.fi',    urlEn: 'https://www.spesia.fi/en/etusivu/' },   // lisätty 5.11.2026
 ]
 
 function hostAvain(url = '') {
