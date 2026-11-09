@@ -4,8 +4,9 @@
  *
  * Koko sisältö renderöidään serverillä (myös molemmat palautetekstit,
  * piilotettuina). Selaimen JS hoitaa vain askelluksen, pisteytyksen ja
- * oikean palautteen näyttämisen — mitään ei lähetetä minnekään,
- * joten testi ei käsittele henkilötietoja.
+ * oikean palautteen näyttämisen. Vastauksia ei lähetetä minnekään. Jos kävijä on
+ * hyväksynyt tilastoevästeet, Analyticsiin kirjataan vain testin tulosväri
+ * (amisfits_testi_valmis, CookieConsent.astro).
  *
  * Pisteytys: jokaisella vastausvaihtoehdolla on data-color (green/yellow),
  * joka on valittu kohderyhmän mukaan jo serverillä. Eniten värejä voittaa;
@@ -54,7 +55,7 @@ const results = (quiz.results ?? []).map((r) => ({
 const backHref = pagePath(lang, audience)
 ---
 
-<section class="quiz" data-quiz>
+<section class="quiz" data-quiz data-audience={audience}>
   <div class="quiz__inner">
 
     <h1 class="quiz__title">{title}</h1>
@@ -202,6 +203,13 @@ const backHref = pagePath(lang, audience)
       form.hidden = true
       progress.hidden = true
       if (lead) lead.hidden = true
+
+      // Tilastoon vain tulosväri, kieli ja kohderyhmä (ei vastauksia); ilman suostumusta ei mitään
+      ;(window as any).amisfitsTapahtuma?.('amisfits_testi_valmis', {
+        testin_tulos: winner,
+        kieli: document.documentElement.lang,
+        kohderyhma: root.dataset.audience ?? '',
+      })
 
       const target =
         results.find((r) => r.dataset.quizResult === winner) ?? results[0]

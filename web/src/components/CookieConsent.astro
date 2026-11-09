@@ -1,0 +1,151 @@
+---
+/**
+ * CookieConsent — evästebanneri ja suostumukseen sidottu Google Analytics (GA4).
+ *
+ * - Käytössä vain, kun ympäristömuuttuja PUBLIC_GA_ID on asetettu (Netlify → Environment
+ *   variables). Ilman sitä komponentti ei tulosta mitään: ei banneria, ei skriptejä.
+ * - Analyticsin skripti ladataan vasta, kun kävijä hyväksyy tilastoevästeet. Ennen sitä
+ *   Googlelle ei lähetetä mitään. Valinta tallennetaan selaimeen (localStorage) 12 kuukaudeksi.
+ * - "Vain välttämättömät" ja "Hyväksy" ovat yhtä näkyviä (Traficomin ohje).
+ * - Footerin "Evästeasetukset" avaa bannerin uudelleen. Suostumuksen peruminen poistaa
+ *   _ga-evästeet ja lataa sivun uudelleen ilman Analyticsia.
+ * - Muut skriptit lähettävät tapahtumia window.amisfitsTapahtuma(nimi, tiedot) -funktiolla,
+ *   joka ei tee mitään ilman suostumusta.
+ */
+import { t } from '@/lib/i18n'
+import type { Language } from '@/lib/queries'
+
+interface Props {
+  lang: Language
+}
+
+const { lang } = Astro.props
+const tr = t(lang)
+const gaId = (import.meta.env.PUBLIC_GA_ID ?? '').trim()
+---
+
+{gaId && (
+  <div class="consent" data-consent data-ga-id={gaId} role="region" aria-label={tr.consentTitle} hidden>
+    <div class="consent__inner">
+      <h2 class="consent__title">{tr.consentTitle}</h2>
+      <p class="consent__text">
+        {tr.consentText}
+        {tr.consentPolicyUrl && (
+          <>
+            {' '}<a href={tr.consentPolicyUrl}>{tr.consentPolicyLink}</a>
+          </>
+        )}
+      </p>
+      <div class="consent__buttons">
+        <button type="button" class="consent__button" data-consent-deny>{tr.consentDeny}</button>
+        <button type="button" class="consent__button" data-consent-accept>{tr.consentAccept}</button>
+      </div>
+    </div>
+  </div>
+)}
+
+<script>
+    const KEY = 'amisfits-suostumus'
+    const VERSION = 1
+    const MAX_AGE = 365 * 24 * 60 * 60 * 1000   // valinta kysytään uudelleen vuoden päästä
+
+    type Choice = { v: number; tilastot: boolean; aika: number }
+
+    // Ilman PUBLIC_GA_ID:tä banneria ei ole sivulla, eikä tämä skripti tee mitään
+    const box = document.querySelector<HTMLElement>('[data-consent]')
+    const gaId = box?.dataset.gaId ?? ''
+
+    function readChoice(): Choice | null {
+      try {
+        const c = JSON.parse(localStorage.getItem(KEY) ?? 'null') as Choice | null
+        if (!c || c.v !== VERSION || Date.now() - c.aika > MAX_AGE) return null
+        return c
+      } catch {
+        return null
+      }
+    }
+
+    function saveChoice(tilastot: boolean) {
+      try {
+        localStorage.setItem(KEY, JSON.stringify({ v: VERSION, tilastot, aika: Date.now() }))
+      } catch {
+        // tallennus estetty (yksityinen tila tms.): valinta pätee tämän sivulatauksen ajan
+      }
+    }
+
+    let gaLoaded = false
+    function loadAnalytics() {
+      if (gaLoaded || !gaId) return
+      gaLoaded = true
+      const w = window as any
+      w.dataLayer = w.dataLayer || []
+      w.gtag = function () { w.dataLayer.push(arguments) }
+      // Vain tilastointi; mainonta- ja personointievästeet aina kielletty
+      w.gtag('consent', 'default', {
+        analytics_storage: 'granted',
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+      })
+      w.gtag('js', new Date())
+      w.gtag('config', gaId, { allow_google_signals: false, allow_ad_personalization_signals: false })
+      const s = document.createElement('script')
+      s.async = true
+      s.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaId)}`
+      document.head.appendChild(s)
+    }
+
+    function removeGaCookies() {
+      const host = location.hostname
+      const domains = ['', host, `.${host}`, `.${host.split('.').slice(-2).join('.')}`]
+      document.cookie.split(';').map((c) => c.split('=')[0].trim())
+        .filter((name) => name === '_ga' || name.startsWith('_ga_') || name === '_gid')
+        .forEach((name) => {
+          domains.forEach((d) => {
+            document.cookie = `${name}=; Max-Age=0; path=/${d ? `; domain=${d}` : ''}`
+          })
+        })
+    }
+
+    function show() {
+      if (box) box.hidden = false
+    }
+    function hide() {
+      if (box) box.hidden = true
+    }
+
+    // Tapahtumat muista skripteistä (esim. Amisfits-testin tulos). Ilman suostumusta ei tee mitään.
+    ;(window as any).amisfitsTapahtuma = (name: string, params: Record<string, unknown> = {}) => {
+      const w = window as any
+      if (gaLoaded && typeof w.gtag === 'function') w.gtag('event', name, params)
+    }
+
+    box?.querySelector('[data-consent-accept]')?.addEventListener('click', () => {
+      saveChoice(true)
+      hide()
+      loadAnalytics()
+    })
+
+    box?.querySelector('[data-consent-deny]')?.addEventListener('click', () => {
+      const wasLoaded = gaLoaded
+      saveChoice(false)
+      hide()
+      removeGaCookies()
+      if (wasLoaded) location.reload()   // Analytics pois käytöstä myös tältä sivulataukselta
+    })
+
+    if (box) document.querySelectorAll<HTMLElement>('[data-consent-open]').forEach((el) => {
+      el.hidden = false
+      el.addEventListener('click', (e) => {
+        e.preventDefault()
+        show()
+        box?.querySelector<HTMLButtonElement>('[data-consent-deny]')?.focus()
+      })
+    })
+
+    if (box) {
+      const choice = readChoice()
+      if (!choice) show()
+      else if (choice.tilastot) loadAnalytics()
+    }
+  </script>

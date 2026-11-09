@@ -14,6 +14,9 @@
 #   PUBLIC_SANITY_PROJECT_ID   = sanity-projektin id
 #   PUBLIC_SANITY_DATASET      = production
 #   PUBLIC_SANITY_API_VERSION  = 2024-01-01
+#   PUBLIC_GA_ID               = Google Analytics 4 -mittaustunnus (G-…), Sivistan GA-tili.
+#                                Tyhjänä/puuttuessa evästebanneria ja Analyticsia ei ole sivulla
+#                                (web/src/components/CookieConsent.astro). Asetetaan julkaisussa.
 
 # ── Uudelleenohjaukset ────────────────────────────────────────────────────────
 [[redirects]]

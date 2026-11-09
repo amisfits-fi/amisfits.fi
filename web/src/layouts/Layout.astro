@@ -1,6 +1,7 @@
 ---
 import type { Language, Audience } from '@/lib/queries'
 import { AUDIENCES, LANGUAGES, LANG_LABEL, htmlLang, pagePath, quizPath, t } from '@/lib/i18n'
+import CookieConsent from '@/components/CookieConsent.astro'
 import '@/styles/global.css'
 
 interface Props {
@@ -117,8 +118,14 @@ const xDefault = new URL(pathFor('fi', audience), Astro.site).href
             </a>
             {tr.footerPost}
           </p>
+          <!-- Näkyy vain, kun Analytics on käytössä (CookieConsent paljastaa linkin) -->
+          <p class="footer__text footer__consent" hidden data-consent-open>
+            <a href="#" style="color: inherit;">{tr.consentSettings}</a>
+          </p>
         </div>
       </div>
     </footer>
+
+    <CookieConsent lang={lang} />
   </body>
 </html>

@@ -92,6 +92,14 @@ interface Dict {
   quizRestart:      string
   quizBackToPage:   string
   quizComing:       string  // näytetään jos testiä ei vielä ole Sanityssä
+  // Evästebanneri (CookieConsent.astro)
+  consentTitle:      string
+  consentText:       string
+  consentPolicyLink: string
+  consentPolicyUrl:  string   // tietosuojaseloste sivun kielellä; tyhjänä linkkiä ei näytetä
+  consentAccept:     string
+  consentDeny:       string
+  consentSettings:   string   // footerin linkki, avaa bannerin uudelleen
 }
 
 export const T: Record<Language, Dict> = {
@@ -126,6 +134,13 @@ export const T: Record<Language, Dict> = {
     quizRestart:      'Tee testi uudelleen',
     quizBackToPage:   'Takaisin etusivulle',
     quizComing:       'Testi julkaistaan pian – tervetuloa takaisin!',
+    consentTitle:      'Evästeet',
+    consentText:       'Käytämme Google Analyticsia sivuston kehittämiseen, jos hyväksyt tilastoevästeet. Tiedot ovat tilastollisia, eikä niitä käytetä mainontaan. Voit muuttaa valintaasi milloin tahansa sivun alareunan Evästeasetukset-linkistä.',
+    consentPolicyLink: 'Lue tietosuojaseloste',
+    consentPolicyUrl:  '',
+    consentAccept:     'Hyväksy tilastoevästeet',
+    consentDeny:       'Vain välttämättömät',
+    consentSettings:   'Evästeasetukset',
   },
   se: {
     audienceLabel:   { nuoret: 'Grundskoleelever', aikuiset: 'Vuxenstuderande' },
@@ -158,6 +173,13 @@ export const T: Record<Language, Dict> = {
     quizRestart:      'Gör om testet',
     quizBackToPage:   'Tillbaka till startsidan',
     quizComing:       'Testet publiceras snart – välkommen tillbaka!',
+    consentTitle:      'Kakor',
+    consentText:       'Om du godkänner statistikkakor använder vi Google Analytics för att utveckla webbplatsen. Uppgifterna är statistiska och används inte för marknadsföring. Du kan ändra ditt val när som helst via länken Kakinställningar längst ner på sidan.',
+    consentPolicyLink: 'Läs dataskyddsbeskrivningen',
+    consentPolicyUrl:  '',
+    consentAccept:     'Godkänn statistikkakor',
+    consentDeny:       'Endast nödvändiga',
+    consentSettings:   'Kakinställningar',
   },
   en: {
     audienceLabel:   { nuoret: 'Comprehensive school students', aikuiset: 'Adult learners' },
@@ -190,6 +212,13 @@ export const T: Record<Language, Dict> = {
     quizRestart:      'Retake the test',
     quizBackToPage:   'Back to the main page',
     quizComing:       'The test will be published soon – check back later!',
+    consentTitle:      'Cookies',
+    consentText:       'If you accept statistics cookies, we use Google Analytics to improve this website. The data is statistical and is not used for advertising. You can change your choice at any time via the Cookie settings link at the bottom of the page.',
+    consentPolicyLink: 'Read the privacy notice',
+    consentPolicyUrl:  '',
+    consentAccept:     'Accept statistics cookies',
+    consentDeny:       'Necessary only',
+    consentSettings:   'Cookie settings',
   },
 }
 
