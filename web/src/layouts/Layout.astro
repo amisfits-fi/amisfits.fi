@@ -1,6 +1,7 @@
 ---
 import type { Language, Audience } from '@/lib/queries'
-import { AUDIENCES, LANGUAGES, LANG_LABEL, htmlLang, pagePath, quizPath, t } from '@/lib/i18n'
+import { AUDIENCES, LANGUAGES, LANG_LABEL, htmlLang, infoPath, pagePath, quizPath, t } from '@/lib/i18n'
+import type { InfoPage } from '@/lib/i18n'
 import CookieConsent from '@/components/CookieConsent.astro'
 import '@/styles/global.css'
 
@@ -9,22 +10,24 @@ interface Props {
   audience: Audience
   title?:   string
   quiz?:    boolean   // testisivu: kieli- ja kohderyhmälinkit vievät vastaavaan testiin
+  info?:    InfoPage  // tietosivu (seloste): kielilinkit vievät samaan selosteeseen, kohderyhmälinkit etusivuille
 }
 
-const { lang, audience, quiz = false } = Astro.props
+const { lang, audience, quiz = false, info } = Astro.props
 const tr = t(lang)
 
 const currentLabel = tr.audienceLabel[audience]
 
 // Sama sivutyyppi (pääsivu tai testi) toisella kielellä / kohderyhmällä
-const pathFor = (code: Language, aud: Audience) => (quiz ? quizPath(code, aud) : pagePath(code, aud))
+const pathFor = (code: Language, aud: Audience) =>
+  info ? infoPath(code, info) : quiz ? quizPath(code, aud) : pagePath(code, aud)
 
 // Kohderyhmävalitsin – aina sama järjestys (nuoret, aikuiset), valittu korostetaan.
 // Järjestys ei vaihdu valinnan mukaan (Sampsan palaute 23.10.2026).
 const audiences = AUDIENCES.map((aud) => ({
   label:  tr.audienceLabel[aud],
-  href:   pathFor(lang, aud),
-  active: aud === audience,
+  href:   info ? pagePath(lang, aud) : pathFor(lang, aud),
+  active: !info && aud === audience,
 }))
 
 // Kielivalitsin – sama kohderyhmä, eri kieli (kunkin kielen oma slug)
@@ -117,6 +120,10 @@ const xDefault = new URL(pathFor('fi', audience), Astro.site).href
               Sivistysala ry (Sivista)<span class="visually-hidden"> {tr.newTab}</span>
             </a>
             {tr.footerPost}
+          </p>
+          <p class="footer__text footer__links">
+            <a href={infoPath(lang, 'privacy')} style="color: inherit;">{tr.privacyLink}</a>
+            <a href={infoPath(lang, 'accessibility')} style="color: inherit;">{tr.accessibilityLink}</a>
           </p>
           <!-- Näkyy vain, kun Analytics on käytössä (CookieConsent paljastaa linkin) -->
           <p class="footer__text footer__consent" hidden data-consent-open>

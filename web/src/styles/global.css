@@ -1131,3 +1131,37 @@ html { background: var(--color-navy); }
 
 .footer__consent[hidden] { display: none; }
 .footer__consent { margin-top: 0.75rem; }
+
+.footer__links { margin-top: 0.75rem; display: flex; flex-wrap: wrap; gap: 0.25rem 1.5rem; }
+
+/* ── Tietosivut: tietosuoja- ja saavutettavuusseloste (InfoPage.astro) ────── */
+.info {
+  background: var(--color-white);
+  color:      var(--color-navy);
+  padding:    clamp(3rem, 8vw, 6rem) var(--pad-content) var(--pad-section);
+}
+.info__inner { max-width: var(--max-content); margin: 0 auto; overflow-wrap: break-word; }
+.info h1, .info h2 { hyphens: auto; }
+.info h1 {
+  font-family: var(--font-display);
+  font-size:   clamp(2rem, 5vw, 2.8rem);
+  font-weight: 700;
+  line-height: 1.15;
+  margin:      0 0 0.5rem;
+}
+.info__updated { font-size: 0.95rem; margin: 0 0 2rem; }
+.info h2 {
+  font-size:   clamp(1.35rem, 2.6vw, 1.6rem);
+  font-weight: 700;
+  line-height: 1.25;
+  margin:      2.5rem 0 0.75rem;
+}
+.info p, .info li { font-size: 1.05rem; line-height: 1.65; }
+.info p  { margin: 0 0 1rem; }
+.info ul { margin: 0 0 1rem; padding-left: 1.4rem; }
+.info li { margin-bottom: 0.4rem; }
+.info address { font-style: normal; margin: 0 0 1rem; line-height: 1.65; font-size: 1.05rem; }
+.info a { color: inherit; text-decoration: underline; text-underline-offset: 0.15em; }
+.info a:hover { text-decoration-thickness: 2px; }
+.info a:focus-visible { outline: 3px solid var(--color-navy); outline-offset: 2px; }
+.info__back { margin-top: 3rem; font-weight: 500; }

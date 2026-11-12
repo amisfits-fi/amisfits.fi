@@ -62,6 +62,20 @@ export function quizPath(lang: Language, audience: Audience): string {
   return `${pagePath(lang, audience)}${QUIZ_SLUGS[lang]}/`
 }
 
+// ── Tietosivut (tietosuojaseloste, saavutettavuusseloste) ───────────────────
+export type InfoPage = 'privacy' | 'accessibility'
+
+export const INFO_SLUGS: Record<Language, Record<InfoPage, string>> = {
+  fi: { privacy: 'tietosuoja', accessibility: 'saavutettavuus' },
+  se: { privacy: 'dataskydd',  accessibility: 'tillganglighet' },
+  en: { privacy: 'privacy',    accessibility: 'accessibility'  },
+}
+
+/** Tietosivun polku: /<iso-kielikoodi>/<slug>/ (staattiset sivut src/pages/<kieli>/). */
+export function infoPath(lang: Language, page: InfoPage): string {
+  return `/${pathLang(lang)}/${INFO_SLUGS[lang][page]}/`
+}
+
 // ── Käännökset ───────────────────────────────────────────────────────────────
 interface Dict {
   audienceLabel:   Record<Audience, string>
@@ -100,6 +114,10 @@ interface Dict {
   consentAccept:     string
   consentDeny:       string
   consentSettings:   string   // footerin linkki, avaa bannerin uudelleen
+  // Footerin linkit tietosivuille
+  privacyLink:       string
+  accessibilityLink: string
+  backToFront:       string   // tietosivun lopussa: takaisin etusivulle
 }
 
 export const T: Record<Language, Dict> = {
@@ -137,10 +155,13 @@ export const T: Record<Language, Dict> = {
     consentTitle:      'Evästeet',
     consentText:       'Käytämme Google Analyticsia sivuston kehittämiseen, jos hyväksyt tilastoevästeet. Tiedot ovat tilastollisia, eikä niitä käytetä mainontaan. Voit muuttaa valintaasi milloin tahansa sivun alareunan Evästeasetukset-linkistä.',
     consentPolicyLink: 'Lue tietosuojaseloste',
-    consentPolicyUrl:  '',
+    consentPolicyUrl:  '/fi/tietosuoja/',
     consentAccept:     'Hyväksy tilastoevästeet',
     consentDeny:       'Vain välttämättömät',
     consentSettings:   'Evästeasetukset',
+    privacyLink:       'Tietosuojaseloste',
+    accessibilityLink: 'Saavutettavuusseloste',
+    backToFront:       '← Takaisin etusivulle',
   },
   se: {
     audienceLabel:   { nuoret: 'Grundskoleelever', aikuiset: 'Vuxenstuderande' },
@@ -176,10 +197,13 @@ export const T: Record<Language, Dict> = {
     consentTitle:      'Kakor',
     consentText:       'Om du godkänner statistikkakor använder vi Google Analytics för att utveckla webbplatsen. Uppgifterna är statistiska och används inte för marknadsföring. Du kan ändra ditt val när som helst via länken Kakinställningar längst ner på sidan.',
     consentPolicyLink: 'Läs dataskyddsbeskrivningen',
-    consentPolicyUrl:  '',
+    consentPolicyUrl:  '/sv/dataskydd/',
     consentAccept:     'Godkänn statistikkakor',
     consentDeny:       'Endast nödvändiga',
     consentSettings:   'Kakinställningar',
+    privacyLink:       'Dataskyddsbeskrivning',
+    accessibilityLink: 'Tillgänglighetsutlåtande',
+    backToFront:       '← Tillbaka till startsidan',
   },
   en: {
     audienceLabel:   { nuoret: 'Comprehensive school students', aikuiset: 'Adult learners' },
@@ -215,10 +239,13 @@ export const T: Record<Language, Dict> = {
     consentTitle:      'Cookies',
     consentText:       'If you accept statistics cookies, we use Google Analytics to improve this website. The data is statistical and is not used for advertising. You can change your choice at any time via the Cookie settings link at the bottom of the page.',
     consentPolicyLink: 'Read the privacy notice',
-    consentPolicyUrl:  '',
+    consentPolicyUrl:  '/en/privacy/',
     consentAccept:     'Accept statistics cookies',
     consentDeny:       'Necessary only',
     consentSettings:   'Cookie settings',
+    privacyLink:       'Privacy notice',
+    accessibilityLink: 'Accessibility statement',
+    backToFront:       '← Back to the front page',
   },
 }
 

@@ -1,0 +1,39 @@
+---
+/**
+ * InfoPage — tietosuoja- ja saavutettavuusselosteen sivupohja.
+ * Sisältö: src/lib/info/<kieli>.ts. Sivut: src/pages/<fi|sv|en>/<slug>.astro
+ * (staattiset reitit; slugit i18n.ts → INFO_SLUGS).
+ */
+import Layout from '@/layouts/Layout.astro'
+import type { Language } from '@/lib/queries'
+import type { InfoPage } from '@/lib/i18n'
+import { pagePath, t } from '@/lib/i18n'
+import fi from '@/lib/info/fi'
+import sv from '@/lib/info/sv'
+import en from '@/lib/info/en'
+
+interface Props {
+  lang: Language
+  page: InfoPage
+}
+
+const { lang, page } = Astro.props
+const doc = { fi, se: sv, en }[lang][page]
+const tr = t(lang)
+---
+
+<Layout lang={lang} audience="nuoret" info={page} title={`${doc.title} | amisfits.fi`}>
+  <article class="info">
+    <div class="info__inner">
+      <h1>{doc.title}</h1>
+      <p class="info__updated">{doc.updated}</p>
+      {doc.sections.map((s) => (
+        <section>
+          {s.h && <h2>{s.h}</h2>}
+          <Fragment set:html={s.html} />
+        </section>
+      ))}
+      <p class="info__back"><a href={pagePath(lang, 'nuoret')}>{tr.backToFront}</a></p>
+    </div>
+  </article>
+</Layout>
