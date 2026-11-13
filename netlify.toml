@@ -39,14 +39,6 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy        = "strict-origin-when-cross-origin"
     Permissions-Policy     = "camera=(), microphone=(), geolocation=()"
-    # ⚠️ VÄLIAIKAINEN – POISTA JULKAISUN YHTEYDESSÄ! ⚠️
-    # Estää hakukoneindeksoinnin, kunnes oikea sisältö ja amisfits.fi-domain
-    # ovat paikallaan (keskeneräinen lorem ipsum -sivusto ei saa päätyä
-    # Googleen). Kun amisfits.fi kytketään Netlifyn ensisijaiseksi domainiksi,
-    # POISTA tämä rivi — muuten myös tuotantosivusto jää pois hakukoneista.
-    # (Netlify ohjaa amisfits.netlify.app-osoitteen automaattisesti
-    # ensisijaiselle domainille, joten duplicate content -ongelmaa ei synny.)
-    X-Robots-Tag           = "noindex, nofollow"
 
 # ── Fonttitiedostot: vuoden välimuisti ──────────────────────────────────────
 # Tiedostot eivät muutu. Jos fontti vaihdetaan, anna tiedostolle uusi nimi.
