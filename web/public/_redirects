@@ -1,3 +1,10 @@
+# ── Muut osoitteet → amisfits.fi ─────────────────────────────────────────────
+# amisfits.com (ja www) sekä Netlifyn oma osoite ohjataan pysyvästi pääosoitteeseen.
+# Näiden pitää olla tiedoston alussa: Netlify käyttää ensimmäistä osuvaa sääntöä.
+https://amisfits.com/*          https://amisfits.fi/:splat  301!
+https://www.amisfits.com/*      https://amisfits.fi/:splat  301!
+https://amisfits.netlify.app/*  https://amisfits.fi/:splat  301!
+
 # Netlify-uudelleenohjaukset
 # i18n-kierros lokalisoi audience-slugit. Vanhat suomenkieliset slugit
 # ruotsin/englannin reiteillä ohjataan pysyvästi (301) uusiin osoitteisiin.
