@@ -105,6 +105,7 @@ interface Dict {
   quizChooseOne:    string  // validointiviesti
   quizRestart:      string
   quizBackToPage:   string
+  quizSkip:         string  // testisivun linkki pääsivulle niille, jotka eivät tee testiä
   quizComing:       string  // näytetään jos testiä ei vielä ole Sanityssä
   // Evästebanneri (CookieConsent.astro)
   consentTitle:      string
@@ -151,6 +152,7 @@ export const T: Record<Language, Dict> = {
     quizChooseOne:    'Valitse yksi vaihtoehto ennen jatkamista.',
     quizRestart:      'Tee testi uudelleen',
     quizBackToPage:   'Takaisin etusivulle',
+    quizSkip:         'Ohita testi ja tutustu sivustoon →',
     quizComing:       'Testi julkaistaan pian – tervetuloa takaisin!',
     consentTitle:      'Evästeet',
     consentText:       'Käytämme Google Analyticsia sivuston kehittämiseen, jos hyväksyt tilastoevästeet. Tiedot ovat tilastollisia, eikä niitä käytetä mainontaan. Voit muuttaa valintaasi milloin tahansa sivun alareunan Evästeasetukset-linkistä.',
@@ -193,6 +195,7 @@ export const T: Record<Language, Dict> = {
     quizChooseOne:    'Välj ett alternativ innan du fortsätter.',
     quizRestart:      'Gör om testet',
     quizBackToPage:   'Tillbaka till startsidan',
+    quizSkip:         'Hoppa över testet och utforska webbplatsen →',
     quizComing:       'Testet publiceras snart – välkommen tillbaka!',
     consentTitle:      'Kakor',
     consentText:       'Om du godkänner statistikkakor använder vi Google Analytics för att utveckla webbplatsen. Uppgifterna är statistiska och används inte för marknadsföring. Du kan ändra ditt val när som helst via länken Kakinställningar längst ner på sidan.',
@@ -235,6 +238,7 @@ export const T: Record<Language, Dict> = {
     quizChooseOne:    'Please choose one option before continuing.',
     quizRestart:      'Retake the test',
     quizBackToPage:   'Back to the main page',
+    quizSkip:         'Skip the test and explore the site →',
     quizComing:       'The test will be published soon – check back later!',
     consentTitle:      'Cookies',
     consentText:       'If you accept statistics cookies, we use Google Analytics to improve this website. The data is statistical and is not used for advertising. You can change your choice at any time via the Cookie settings link at the bottom of the page.',

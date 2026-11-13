@@ -1165,3 +1165,16 @@ html { background: var(--color-navy); }
 .info a:hover { text-decoration-thickness: 2px; }
 .info a:focus-visible { outline: 3px solid var(--color-navy); outline-offset: 2px; }
 .info__back { margin-top: 3rem; font-weight: 500; }
+
+/* ── Testisivu: linkki pääsivulle ilman testiä ───────────────── */
+.quiz__skip {
+  margin-top:  2.5rem;
+  padding-top: 1.5rem;
+  border-top:  1px solid rgba(0, 32, 76, 0.2);
+  font-size:   1.05rem;
+  font-weight: 500;
+}
+.quiz__skip a { color: inherit; text-decoration: underline; text-underline-offset: 0.15em; }
+.quiz__skip a:hover { text-decoration-thickness: 2px; }
+.quiz__skip a:focus-visible { outline: 3px solid var(--color-navy); outline-offset: 2px; }
+.quiz__form[hidden] + .quiz__skip { display: none; }

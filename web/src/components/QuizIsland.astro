@@ -113,6 +113,10 @@ const backHref = pagePath(lang, audience)
       </noscript>
     </form>
 
+    <!-- QR-koodilla suoraan testiin tulleille: selkeä reitti pääsivulle ilman testiä.
+         Piilotetaan CSS:llä, kun lomake on piilossa (tulosnäkymässä on oma paluulinkki). -->
+    <p class="quiz__skip"><a href={backHref}>{tr.quizSkip}</a></p>
+
     <div class="quiz__results" aria-live="polite">
       {results.map((r) => (
         <div class="quiz__result" data-quiz-result={r.category} hidden>
