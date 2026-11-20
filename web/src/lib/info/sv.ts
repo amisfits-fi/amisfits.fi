@@ -39,7 +39,7 @@ const docs: InfoDocs = {
 
   accessibility: {
     title: 'Tillgänglighetsutlåtande',
-    updated: 'Upprättat 12.11.2026',
+    updated: 'Upprättat 12.11.2026, uppdaterat 20.11.2026',
     sections: [
       { h: '', html: `
 <p>Det här utlåtandet gäller webbplatsen amisfits.fi. Målet är att webbplatsen uppfyller tillgänglighetskraven i lagen om tillhandahållande av digitala tjänster (306/2019), det vill säga nivå A och AA i WCAG 2.1.</p>` },
@@ -50,7 +50,7 @@ const docs: InfoDocs = {
 <li><strong>Videor.</strong> Videorna har inbränd textning men ingen syntolkning. Frågerubrikerna och de intervjuades namn syns bara i bild och når därför inte tittare med synnedsättning (WCAG 1.2.5).</li>
 <li><strong>Rubrikgrafik.</strong> Avsnittens huvudrubriker är bilder. De har textalternativ, men textens utseende kan inte ändras med webbläsarens inställningar (WCAG 1.4.5).</li>
 </ul>
-<p>Dessutom hoppar rubriknivån i det första avsnittet från huvudrubriken till den tredje nivån, vilket kan göra sidans struktur svårare att uppfatta med skärmläsare. YouTubes inbäddade videospelare är en tjänst från tredje part vars tillgänglighet vi inte kan påverka.</p>` },
+<p>YouTubes inbäddade videospelare är en tjänst från tredje part vars tillgänglighet vi inte kan påverka.</p>` },
       { h: 'Hur tillgängligheten har bedömts', html: `
 <p>Bedömningen är en självbedömning som gjorts av den som har byggt webbplatsen. Sidorna har kontrollerats 2.11.2026 med det automatiska verktyget axe-core på alla tre språk. Dessutom har tangentbordsanvändning, kontraster, textalternativ och Amisfits-testets funktion kontrollerats manuellt. Testning med skärmläsare och extern granskning har inte gjorts.</p>` },
       { h: 'Upptäckte du en brist? Ge respons', html: `

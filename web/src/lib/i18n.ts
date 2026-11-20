@@ -82,6 +82,7 @@ interface Dict {
   pathUas:         string   // polku ammattikorkeakouluun
   pathUni:         string   // polku yliopistoon
   videoComing:     string
+  playVideo:       string   // videon käynnistyspainikkeen nimi ruudunlukijalle
   testLead:        string
   testButton:      string
   faqHeading:      string
@@ -127,6 +128,7 @@ export const T: Record<Language, Dict> = {
     pathUas:         'Ammattikorkeakouluun',
     pathUni:         'Yliopistoon',
     videoComing:     'Video tulossa',
+    playVideo:       'Toista video',
     testLead:        'Sopiiko amis sinulle?',
     testButton:      'Tee 2 min AMISFITS-testi →',
     faqHeading:      'Usein kysyttyä amiksesta',
@@ -170,6 +172,7 @@ export const T: Record<Language, Dict> = {
     pathUas:         'Till yrkeshögskolan',
     pathUni:         'Till universitetet',
     videoComing:     'Video kommer',
+    playVideo:       'Spela upp videon',
     testLead:        'Passar yrkesutbildning dig?',
     testButton:      'Gör AMISFITS-testet på 2 min →',
     faqHeading:      'Vanliga frågor om yrkesutbildning',
@@ -213,6 +216,7 @@ export const T: Record<Language, Dict> = {
     pathUas:         'To university of applied sciences',
     pathUni:         'To university',
     videoComing:     'Video coming',
+    playVideo:       'Play video',
     testLead:        'Is vocational school right for you?',
     testButton:      'Take the 2-min AMISFITS test →',
     faqHeading:      'Frequently asked questions about vocational school',

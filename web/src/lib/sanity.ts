@@ -39,3 +39,25 @@ export function fileUrl(ref?: string): string {
   if (!id || !ext) return ''
   return `https://cdn.sanity.io/files/${projectId}/${dataset}/${id}.${ext}`
 }
+
+/**
+ * Kuvan leveys ja korkeus img-elementin width/height-attribuuteiksi.
+ * Mitat luetaan asset-viitteestä (image-<id>-<leveys>x<korkeus>-<pääte>) ja
+ * skaalataan samaan enimmäisleveyteen kuin kuvan URL. Kun mitat ovat HTML:ssä,
+ * selain varaa kuvalle tilan etukäteen eikä sivu hypähdä kuvan latautuessa.
+ * Palauttaa tyhjän objektin, jos mittoja ei saada selville.
+ */
+export function imageDims(image: any, maxWidth: number): { width?: number; height?: number } {
+  const m = String(image?.asset?._ref ?? '').match(/-(\d+)x(\d+)-[a-z0-9]+$/i)
+  if (!m) return {}
+  let w = Number(m[1])
+  let h = Number(m[2])
+  const c = image?.crop
+  if (c) {
+    w *= 1 - (c.left ?? 0) - (c.right ?? 0)
+    h *= 1 - (c.top ?? 0) - (c.bottom ?? 0)
+  }
+  if (!(w > 0) || !(h > 0)) return {}
+  const scale = w > maxWidth ? maxWidth / w : 1
+  return { width: Math.round(w * scale), height: Math.round(h * scale) }
+}

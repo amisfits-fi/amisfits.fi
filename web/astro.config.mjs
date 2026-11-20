@@ -5,5 +5,8 @@ export default defineConfig({
   site: 'https://amisfits.fi',
   // Kaikki sivut buildataan staattisiksi HTML-tiedostoiksi
   output: 'static',
+  // Tyylit upotetaan suoraan HTML:ään: selain ei odota erillistä CSS-tiedostoa
+  // ennen kuin piirtää sivun (PageSpeed: renderöinnin estävä pyyntö).
+  build: { inlineStylesheets: 'always' },
   // Sivukartta: src/pages/sitemap.xml.ts
 })

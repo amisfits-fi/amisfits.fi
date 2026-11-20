@@ -39,7 +39,7 @@ const docs: InfoDocs = {
 
   accessibility: {
     title: 'Accessibility statement',
-    updated: 'Prepared on 12 November 2026',
+    updated: 'Prepared on 12 November 2026, updated on 20 November 2026',
     sections: [
       { h: '', html: `
 <p>This statement applies to the website amisfits.fi. The aim is for the site to meet the accessibility requirements of the Finnish Act on the Provision of Digital Services (306/2019), that is, levels A and AA of WCAG 2.1.</p>` },
@@ -50,7 +50,7 @@ const docs: InfoDocs = {
 <li><strong>Videos.</strong> The videos have burned-in subtitles but no audio description. The question titles and the interviewees' names appear only on screen, so they are not available to viewers with visual impairments (WCAG 1.2.5).</li>
 <li><strong>Heading graphics.</strong> The main headings of the sections are images. They have text alternatives, but the appearance of the text cannot be changed with browser settings (WCAG 1.4.5).</li>
 </ul>
-<p>In addition, in the first section the heading level jumps from the main heading to the third level, which can make the page structure harder to follow with a screen reader. The embedded YouTube player is a third-party service whose accessibility we cannot control.</p>` },
+<p>The embedded YouTube player is a third-party service whose accessibility we cannot control.</p>` },
       { h: 'How accessibility was assessed', html: `
 <p>This is a self-assessment made by the developer of the site. The pages were checked on 2 November 2026 with the automated axe-core tool in all three languages. Keyboard use, contrast, text alternatives and the Amisfits test were also checked manually. Screen reader testing and an external audit have not been carried out.</p>` },
       { h: 'Did you notice a problem? Give us feedback', html: `

@@ -1,6 +1,6 @@
 ---
 import { renderPT } from '@/lib/portable'
-import { urlFor } from '@/lib/sanity'
+import { urlFor, imageDims } from '@/lib/sanity'
 import { t, quizPath } from '@/lib/i18n'
 import type { Section, Audience, Language } from '@/lib/queries'
 
@@ -23,9 +23,11 @@ const summary = useYouth ? section.summaryYouth     : section.summaryAdult
 const uas     = useYouth ? section.expandedYouth    : section.expandedAdult     // polku ammattikorkeakouluun
 const uni     = useYouth ? section.expandedYouthUni : section.expandedAdultUni  // polku yliopistoon
 
-const summaryHTML = renderPT(summary, lang)
-const uasHTML     = renderPT(uas, lang)
-const uniHTML     = renderPT(uni, lang)
+// Ensimmäisessä osiossa osion otsikko on sivun H1, joten väliotsikot nousevat tason (H2, H3)
+const pt = { headingShift: isFirst }
+const summaryHTML = renderPT(summary, lang, pt)
+const uasHTML     = renderPT(uas, lang, pt)
+const uniHTML     = renderPT(uni, lang, pt)
 
 // Polkupainikkeiden lokalisoidut otsikot
 // hidePaths = Sanityn valinta "Piilota polkupainikkeet" (esim. yleisluontoinen aloitusosio)
@@ -74,13 +76,23 @@ const GraphicTag  = isFirst ? 'h1' : 'h2'
 // Jos videota ei ole, videopaikkaa ei näytetä lainkaan.
 const videoUrl = audience === 'aikuiset' ? (section.videoAdult || section.video) : section.video
 
-// YouTube-URL embed-muotoon: tukee watch?v=ID, youtu.be/ID, /embed/ID ja /shorts/ID.
-// youtube-nocookie = YouTuben yksityisyyttä suojaava tila (ei evästeitä ennen toistoa),
+// YouTube-video: tukee osoitemuotoja watch?v=ID, youtu.be/ID, /embed/ID ja /shorts/ID.
+// Sivulle tulee aluksi vain videon pikkukuva ja toistopainike. YouTuben soitin
+// (yli 500 kt JavaScriptiä) ladataan vasta, kun kävijä painaa painiketta: sivu
+// aukeaa nopeammin, eikä YouTubeen oteta yhteyttä soittimen osalta ennen toistoa.
+// youtube-nocookie = YouTuben yksityisyyttä suojaava tila,
 // rel=0 = videon lopussa ehdotetaan vain saman kanavan videoita.
-function toEmbed(url: string): string {
-  const ytMatch = url.match(/(?:v=|youtu\.be\/|\/embed\/|\/shorts\/)([A-Za-z0-9_-]{11})/)
-  return ytMatch ? `https://www.youtube-nocookie.com/embed/${ytMatch[1]}?rel=0` : url
-}
+// Ilman JavaScriptiä painike on tavallinen linkki videoon YouTubessa.
+const ytId = videoUrl?.match(/(?:v=|youtu\.be\/|\/embed\/|\/shorts\/)([A-Za-z0-9_-]{11})/)?.[1]
+const video = ytId
+  ? {
+      embed:    `https://www.youtube-nocookie.com/embed/${ytId}?rel=0&autoplay=1`,
+      watch:    `https://www.youtube.com/watch?v=${ytId}`,
+      thumb:    `https://i.ytimg.com/vi/${ytId}/maxresdefault.jpg`,
+      fallback: `https://i.ytimg.com/vi/${ytId}/hqdefault.jpg`,
+    }
+  : undefined
+const videoTitle = `Video: ${tr.slogan}`
 
 // Tiedostokoko luettavaan muotoon
 function fmtSize(bytes?: number): string {
@@ -100,10 +112,12 @@ function fmtSize(bytes?: number): string {
       {graphic.mobile ? (
         /* Desktop + mobiili eri kuva — <picture> lataa vain tarvittavan */
         <picture>
-          <source media="(min-width: 641px)" srcset={graphic.desktop} />
+          <source media="(min-width: 641px)" srcset={graphic.desktop} width="820" height="350" />
           <img
             src={graphic.mobile}
             alt={graphicAlt}
+            width="440"
+            height="520"
             class="section__display-img"
             loading={imgLoading}
             fetchpriority={imgPriority}
@@ -115,6 +129,8 @@ function fmtSize(bytes?: number): string {
         <img
           src={graphic.desktop}
           alt={graphicAlt}
+          width="820"
+          height="350"
           class="section__display-img"
           loading={imgLoading}
           fetchpriority={imgPriority}
@@ -130,16 +146,35 @@ function fmtSize(bytes?: number): string {
     {/* YouTube-video (valinnainen) – tyhjänä videopaikkaa ei näytetä */}
     {videoUrl && (
       <div class="section__video-area">
-        <div class="section__video">
-          <iframe
-            src={toEmbed(videoUrl)}
-            title={`Video: ${tr.slogan}`}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin"
-            allowfullscreen
-            loading="lazy"
-          />
-        </div>
+        {video ? (
+          <div class="section__video" data-video data-embed={video.embed} data-title={videoTitle}>
+            <a class="section__video-link" href={video.watch} data-video-play>
+              <img
+                src={video.thumb}
+                data-fallback={video.fallback}
+                alt=""
+                width="1280"
+                height="720"
+                loading="lazy"
+                decoding="async"
+              />
+              <span class="section__video-play" aria-hidden="true"></span>
+              <span class="visually-hidden">{tr.playVideo}: {tr.slogan}</span>
+            </a>
+          </div>
+        ) : (
+          /* Muu kuin YouTube-osoite: upotetaan sellaisenaan */
+          <div class="section__video">
+            <iframe
+              src={videoUrl}
+              title={videoTitle}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+              loading="lazy"
+            />
+          </div>
+        )}
       </div>
     )}
 
@@ -178,6 +213,7 @@ function fmtSize(bytes?: number): string {
             <img
               src={urlFor(img).width(1200).fit('max').auto('format').url()}
               alt={img.alt ?? ''}
+              {...imageDims(img, 1200)}
               loading="lazy"
               decoding="async"
             />
@@ -218,3 +254,38 @@ function fmtSize(bytes?: number): string {
 
   </div>
 </section>
+
+<script>
+  // Videon toistopainike: vaihtaa pikkukuvan tilalle YouTube-soittimen ja käynnistää videon.
+  document.querySelectorAll<HTMLAnchorElement>('[data-video-play]').forEach((link) => {
+    // Jos videolla ei ole täysikokoista pikkukuvaa, YouTube palauttaa 120 px:n
+    // paikkamerkin. Silloin vaihdetaan pienempään kuvaan, joka on aina olemassa.
+    const img = link.querySelector('img')
+    const checkThumb = () => {
+      if (img && img.naturalWidth > 0 && img.naturalWidth <= 120 && img.dataset.fallback) {
+        const fallback = img.dataset.fallback
+        delete img.dataset.fallback
+        img.src = fallback
+      }
+    }
+    if (img) {
+      if (img.complete) checkThumb()
+      img.addEventListener('load', checkThumb)
+    }
+
+    link.addEventListener('click', (e) => {
+      const box = link.closest<HTMLElement>('[data-video]')
+      const src = box?.dataset.embed
+      if (!box || !src) return   // ei upotusosoitetta: linkki vie YouTubeen
+      e.preventDefault()
+      const frame = document.createElement('iframe')
+      frame.src = src
+      frame.title = box.dataset.title ?? ''
+      frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+      frame.referrerPolicy = 'strict-origin-when-cross-origin'
+      frame.allowFullscreen = true
+      box.replaceChildren(frame)
+      frame.focus()
+    })
+  })
+</script>

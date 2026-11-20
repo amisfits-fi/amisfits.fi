@@ -1,5 +1,5 @@
 import { toHTML } from '@portabletext/to-html'
-import { urlFor, fileUrl } from './sanity'
+import { urlFor, fileUrl, imageDims } from './sanity'
 import type { SanityBlock, Language } from './queries'
 
 // ── HTML-escape – estetään attribuuttien rikkoutuminen / injektio ─────────────
@@ -35,9 +35,6 @@ function idFrom(prefix: string, key: unknown): string {
   return k.startsWith(`${prefix}-`) ? k : `${prefix}-${k}`
 }
 
-// ── Tietolaatikon ja kaavion sisäinen teksti: vain perusmuotoilut ja linkit ──
-const innerComponents = {}
-
 // ── Tyhjät väliotsikot pois ──────────────────────────────────────────────────
 // Studioon jää helposti tyhjä "Väliotsikko"- tai "Pieni väliotsikko" -rivi.
 // Sivulla se olisi ruudunlukijalle nimetön otsikko, joten sitä ei renderöidä.
@@ -45,21 +42,30 @@ type HeadingTag = 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
 // Pelkät välilyönnit renderöityvät muotoon &nbsp;, joten nekin lasketaan tyhjäksi.
 const hasText = (html = '') =>
   html.replace(/<[^>]*>/g, '').replace(/&nbsp;|&#160;|&#xa0;/gi, ' ').trim() !== ''
-function heading(tag: HeadingTag) {
+function heading(tag: HeadingTag, cls: string) {
   return ({ children }: { children?: string }) =>
-    hasText(children) ? `<${tag}>${children}</${tag}>` : ''
+    hasText(children) ? `<${tag} class="${cls}">${children}</${tag}>` : ''
 }
-const headingBlocks = {
-  h2: heading('h2'),
-  h3: heading('h3'),
-  h4: heading('h4'),
-  h5: heading('h5'),
-  h6: heading('h6'),
+// Ulkoasu tulee luokasta (rt-h3 = Väliotsikko, rt-h4 = Pieni väliotsikko), ei tagista.
+// shift = true nostaa väliotsikot yhden tason ylemmäs: sivun ensimmäisessä osiossa
+// osion otsikko on sivun H1, joten sen väliotsikot ovat H2 ja H3. Näin otsikkotasot
+// etenevät järjestyksessä (H1 → H2 → H3) eikä yhtään tasoa jää väliin (WCAG 1.3.1).
+function headingBlocks(shift = false) {
+  return {
+    h2: heading('h2', 'rt-h2'),
+    h3: heading(shift ? 'h2' : 'h3', 'rt-h3'),
+    h4: heading(shift ? 'h3' : 'h4', 'rt-h4'),
+    h5: heading('h5', 'rt-h5'),
+    h6: heading('h6', 'rt-h6'),
+  }
 }
 
-function makeComponents(lang: Language) {
+// ── Tietolaatikon ja kaavion sisäinen teksti: vain perusmuotoilut ja linkit ──
+const innerComponents = { block: headingBlocks() }
+
+function makeComponents(lang: Language, shift = false) {
   return {
-    block: headingBlocks,
+    block: headingBlocks(shift),
     types: {
       // Tekstin sisään upotettu kuva (sijoittelu: koko leveys / oikea / vasen)
       image: ({ value }: { value: any }) => {
@@ -68,10 +74,12 @@ function makeComponents(lang: Language) {
         const width = place === 'full' ? 1200 : 800
         const src = urlFor(value).width(width).fit('max').auto('format').url()
         const alt = esc(value.alt)
+        const { width: w, height: h } = imageDims(value, width)
+        const size = w && h ? ` width="${w}" height="${h}"` : ''
         const caption = value.alt
           ? `<figcaption class="rt-image__caption">${alt}</figcaption>`
           : ''
-        return `<figure class="rt-image rt-image--${place}"><img src="${src}" alt="${alt}" loading="lazy" decoding="async" />${caption}</figure>`
+        return `<figure class="rt-image rt-image--${place}"><img src="${src}" alt="${alt}"${size} loading="lazy" decoding="async" />${caption}</figure>`
       },
 
       // Tekstin sisään upotettu tiedostoliite (PDF tms.)
@@ -153,8 +161,15 @@ function makeComponents(lang: Language) {
  * Renderöi Portable Text -lohkot HTML:ksi, mukaan lukien tekstin sisäiset
  * kuvat, tiedostoliitteet, tietolaatikot ja pylväskaaviot.
  * Kieli vaikuttaa kaavioiden lukujen muotoiluun (14 682 vs. 14,682).
+ * headingShift nostaa väliotsikot yhden otsikkotason ylemmäs (sivun ensimmäinen osio).
  * Palauttaa tyhjän merkkijonon jos lohkoja ei ole.
  */
-export function renderPT(blocks?: SanityBlock[], lang: Language = 'fi'): string {
-  return blocks?.length ? toHTML(blocks as any, { components: makeComponents(lang) }) : ''
+export function renderPT(
+  blocks?: SanityBlock[],
+  lang: Language = 'fi',
+  opts: { headingShift?: boolean } = {},
+): string {
+  return blocks?.length
+    ? toHTML(blocks as any, { components: makeComponents(lang, opts.headingShift === true) })
+    : ''
 }

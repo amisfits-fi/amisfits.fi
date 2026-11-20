@@ -40,7 +40,7 @@ const docs: InfoDocs = {
 
   accessibility: {
     title: 'Saavutettavuusseloste',
-    updated: 'Laadittu 12.11.2026',
+    updated: 'Laadittu 12.11.2026, päivitetty 20.11.2026',
     sections: [
       { h: '', html: `
 <p>Tämä seloste koskee verkkosivustoa amisfits.fi. Sivuston tavoitteena on täyttää digitaalisten palvelujen tarjoamisesta annetun lain (306/2019) saavutettavuusvaatimukset eli WCAG 2.1 -kriteeristön A- ja AA-taso.</p>` },
@@ -51,7 +51,7 @@ const docs: InfoDocs = {
 <li><strong>Videot.</strong> Videoissa on kuvaan poltettu tekstitys, mutta ei kuvailutulkkausta. Kysymysotsikot ja haastateltavien nimet näkyvät vain kuvassa, joten ne eivät välity näkövammaiselle katsojalle (WCAG 1.2.5).</li>
 <li><strong>Otsikkografiikat.</strong> Osioiden pääotsikot ovat kuvia. Niillä on tekstivastine, mutta tekstin ulkoasua ei voi muuttaa selaimen asetuksilla (WCAG 1.4.5).</li>
 </ul>
-<p>Lisäksi ensimmäisessä osiossa väliotsikoiden taso hyppää pääotsikosta kolmannelle tasolle, mikä voi hankaloittaa sivun rakenteen hahmottamista ruudunlukijalla. YouTuben upotettu videosoitin on kolmannen osapuolen palvelu, jonka saavutettavuuteen emme voi vaikuttaa.</p>` },
+<p>YouTuben upotettu videosoitin on kolmannen osapuolen palvelu, jonka saavutettavuuteen emme voi vaikuttaa.</p>` },
       { h: 'Miten saavutettavuus on arvioitu', html: `
 <p>Arvio on sivuston toteuttajan tekemä itsearvio. Sivut on tarkistettu 2.11.2026 automaattisella axe-core-työkalulla kaikilla kolmella kielellä, ja lisäksi on tarkistettu käsin näppäimistökäyttö, kontrastit, tekstivastineet ja Amisfits-testin toiminta. Ruudunlukijalla tehtyä testausta ja ulkopuolista auditointia ei ole tehty.</p>` },
       { h: 'Huomasitko puutteen? Anna palautetta', html: `
