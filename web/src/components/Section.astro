@@ -80,13 +80,16 @@ const videoUrl = audience === 'aikuiset' ? (section.videoAdult || section.video)
 // Sivulle tulee aluksi vain videon pikkukuva ja toistopainike. YouTuben soitin
 // (yli 500 kt JavaScriptiä) ladataan vasta, kun kävijä painaa painiketta: sivu
 // aukeaa nopeammin, eikä YouTubeen oteta yhteyttä soittimen osalta ennen toistoa.
-// youtube-nocookie = YouTuben yksityisyyttä suojaava tila,
+// Upotus käyttää tavallista youtube.com-osoitetta: evästeetön youtube-nocookie.com
+// pysäytti osan kävijöistä YouTuben "Sign in to confirm you're not a bot"
+// -tarkistukseen (20.11.2026). YouTube voi asettaa evästeitä, kun video käynnistetään;
+// tämä on kerrottu tietosuojaselosteessa.
 // rel=0 = videon lopussa ehdotetaan vain saman kanavan videoita.
 // Ilman JavaScriptiä painike on tavallinen linkki videoon YouTubessa.
 const ytId = videoUrl?.match(/(?:v=|youtu\.be\/|\/embed\/|\/shorts\/)([A-Za-z0-9_-]{11})/)?.[1]
 const video = ytId
   ? {
-      embed:    `https://www.youtube-nocookie.com/embed/${ytId}?rel=0&autoplay=1`,
+      embed:    `https://www.youtube.com/embed/${ytId}?rel=0&autoplay=1`,
       watch:    `https://www.youtube.com/watch?v=${ytId}`,
       thumb:    `https://i.ytimg.com/vi/${ytId}/maxresdefault.jpg`,
       fallback: `https://i.ytimg.com/vi/${ytId}/hqdefault.jpg`,
@@ -147,6 +150,7 @@ function fmtSize(bytes?: number): string {
     {videoUrl && (
       <div class="section__video-area">
         {video ? (
+          <>
           <div class="section__video" data-video data-embed={video.embed} data-title={videoTitle}>
             <a class="section__video-link" href={video.watch} data-video-play>
               <img
@@ -162,6 +166,10 @@ function fmtSize(bytes?: number): string {
               <span class="visually-hidden">{tr.playVideo}: {tr.slogan}</span>
             </a>
           </div>
+          <p class="section__video-alt">
+            <a href={video.watch} target="_blank" rel="noopener noreferrer">{tr.watchOnYoutube}<span class="visually-hidden"> {tr.newTab}</span></a>
+          </p>
+          </>
         ) : (
           /* Muu kuin YouTube-osoite: upotetaan sellaisenaan */
           <div class="section__video">

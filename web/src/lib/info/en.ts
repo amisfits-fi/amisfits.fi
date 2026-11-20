@@ -4,7 +4,7 @@ import type { InfoDocs } from './types'
 const docs: InfoDocs = {
   privacy: {
     title: 'Privacy notice',
-    updated: 'Updated 12 November 2026',
+    updated: 'Updated 20 November 2026',
     sections: [
       { h: '', html: `
 <p>This notice explains what data is processed about visitors to amisfits.fi and why. The site has no login and no forms, and you do not need to give any information about yourself to use it.</p>` },
@@ -16,12 +16,13 @@ const docs: InfoDocs = {
 <li><strong>Technical delivery of the site.</strong> When you open a page, your browser sends the server your IP address, the time, the address of the requested page and information about your browser. This is needed to show the page and to keep the service secure. The site is hosted on Netlify's servers, and images and files from the content management system may be delivered from Sanity's servers.</li>
 <li><strong>Visitor statistics, only with your consent.</strong> If you accept statistics cookies, we use Google Analytics. It collects information such as which pages are viewed, where visitors come from, which device and browser are used and the visitor's approximate region. The data is statistical and we cannot identify individual people from it. It is not used for advertising.</li>
 <li><strong>The Amisfits test.</strong> Your answers are processed only in your own browser. They are not stored or sent anywhere. If you have accepted statistics cookies, the statistics record that the test was completed, together with the colour of the result, the page language and the audience (youth or adults). Individual answers are not recorded.</li>
-<li><strong>Videos.</strong> Videos on the site are shown in an embedded YouTube player (youtube-nocookie.com). The player is loaded from Google's servers, so Google receives your IP address. When you start a video, YouTube may store data on your device and process viewing data under its own terms.</li>
+<li><strong>Videos.</strong> The videos on the site are hosted on YouTube. At first the page shows only a preview image of the video, which is loaded from Google's servers, so Google receives your IP address. The YouTube player is loaded only when you start the video. YouTube may then set cookies and store other data on your device and process viewing data under its own terms.</li>
 </ul>` },
       { h: 'Cookies and browser storage', html: `
 <ul>
 <li><strong>Your cookie choice</strong> is saved in your browser's local storage (amisfits-suostumus) for 12 months, so that we do not ask on every visit. It stays on your device.</li>
 <li><strong>Statistics cookies</strong> (_ga and cookies starting with _ga_) are set only if you accept them. They are kept for up to two years.</li>
+<li><strong>YouTube cookies</strong> are set only if you start a video. They are managed by Google.</li>
 </ul>
 <p>You can change your choice at any time via the Cookie settings link at the bottom of the page. When you withdraw your consent, the statistics cookies are removed from your browser.</p>` },
       { h: 'Legal basis', html: `

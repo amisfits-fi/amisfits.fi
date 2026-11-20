@@ -5,7 +5,7 @@ import type { InfoDocs } from './types'
 const docs: InfoDocs = {
   privacy: {
     title: 'Tietosuojaseloste',
-    updated: 'Päivitetty 12.11.2026',
+    updated: 'Päivitetty 20.11.2026',
     sections: [
       { h: '', html: `
 <p>Tässä selosteessa kerrotaan, mitä tietoja amisfits.fi-sivuston kävijöistä käsitellään ja miksi. Sivustolla ei ole kirjautumista eikä lomakkeita, eikä sinun tarvitse antaa itsestäsi mitään tietoja käyttääksesi sitä.</p>` },
@@ -17,12 +17,13 @@ const docs: InfoDocs = {
 <li><strong>Sivuston tekninen toimittaminen.</strong> Kun avaat sivun, selaimesi lähettää palvelimelle IP-osoitteen, ajankohdan, pyydetyn sivun osoitteen ja selaimen tiedot. Tietoja tarvitaan sivun näyttämiseen ja palvelun tietoturvaan. Sivusto on Netlifyn palvelimilla, ja sisällönhallinnan kuvat ja tiedostot voidaan toimittaa Sanityn palvelimilta.</li>
 <li><strong>Kävijätilastot, vain suostumuksellasi.</strong> Jos hyväksyt tilastoevästeet, käytämme Google Analyticsia. Se kerää tietoja esimerkiksi siitä, mitä sivuja katsotaan, mistä sivustolle tullaan, millä laitteella ja selaimella sivustoa käytetään ja miltä alueelta kävijä on karkealla tasolla. Tiedot ovat tilastollisia, emmekä pysty tunnistamaan niistä yksittäistä henkilöä. Tietoja ei käytetä mainontaan.</li>
 <li><strong>Amisfits-testi.</strong> Vastauksesi käsitellään vain omassa selaimessasi. Niitä ei tallenneta eikä lähetetä mihinkään. Jos olet hyväksynyt tilastoevästeet, tilastoon kirjataan, että testi on tehty, sekä tuloksen väri, sivun kieli ja kohderyhmä (nuoret tai aikuiset). Yksittäisiä vastauksia ei kirjata.</li>
-<li><strong>Videot.</strong> Sivuston videot näytetään YouTuben upotettuna soittimena (youtube-nocookie.com). Soitin ladataan Googlen palvelimilta, jolloin Google saa IP-osoitteesi. Kun käynnistät videon, YouTube voi tallentaa tietoja laitteellesi ja käsitellä katselutietoja omien ehtojensa mukaisesti.</li>
+<li><strong>Videot.</strong> Sivuston videot ovat YouTubessa. Sivulla näkyy aluksi vain videon esikatselukuva, joka ladataan Googlen palvelimilta, jolloin Google saa IP-osoitteesi. YouTuben soitin ladataan vasta, kun käynnistät videon. Silloin YouTube voi asettaa evästeitä ja tallentaa muita tietoja laitteellesi sekä käsitellä katselutietoja omien ehtojensa mukaisesti.</li>
 </ul>` },
       { h: 'Evästeet ja selaimen tallennustila', html: `
 <ul>
 <li><strong>Evästevalintasi</strong> tallennetaan selaimesi paikalliseen tallennustilaan (amisfits-suostumus) 12 kuukaudeksi, jotta sitä ei kysytä joka käynnillä. Tieto pysyy laitteellasi.</li>
 <li><strong>Tilastoevästeet</strong> (_ga ja _ga_-alkuiset) asetetaan vain, jos hyväksyt ne. Ne säilyvät enintään kaksi vuotta.</li>
+<li><strong>YouTuben evästeet</strong> asetetaan vain, jos käynnistät videon. Niitä hallinnoi Google.</li>
 </ul>
 <p>Voit muuttaa valintaasi milloin tahansa sivun alareunan Evästeasetukset-linkistä. Kun perut suostumuksen, tilastoevästeet poistetaan selaimestasi.</p>` },
       { h: 'Käsittelyn peruste', html: `

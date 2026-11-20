@@ -4,7 +4,7 @@ import type { InfoDocs } from './types'
 const docs: InfoDocs = {
   privacy: {
     title: 'Dataskyddsbeskrivning',
-    updated: 'Uppdaterad 12.11.2026',
+    updated: 'Uppdaterad 20.11.2026',
     sections: [
       { h: '', html: `
 <p>I den här beskrivningen berättar vi vilka uppgifter som behandlas om besökarna på webbplatsen amisfits.fi och varför. Webbplatsen har ingen inloggning och inga formulär, och du behöver inte lämna några uppgifter om dig själv för att använda den.</p>` },
@@ -16,12 +16,13 @@ const docs: InfoDocs = {
 <li><strong>Teknisk leverans av webbplatsen.</strong> När du öppnar en sida skickar din webbläsare IP-adress, tidpunkt, den begärda sidans adress och uppgifter om webbläsaren till servern. Uppgifterna behövs för att visa sidan och för tjänstens informationssäkerhet. Webbplatsen finns på Netlifys servrar, och bilder och filer från innehållshanteringen kan levereras från Sanitys servrar.</li>
 <li><strong>Besöksstatistik, endast med ditt samtycke.</strong> Om du godkänner statistikkakor använder vi Google Analytics. Tjänsten samlar in uppgifter om till exempel vilka sidor som visas, varifrån besökarna kommer, vilken enhet och webbläsare som används och från vilket område besökaren kommer på en grov nivå. Uppgifterna är statistiska och vi kan inte identifiera enskilda personer utifrån dem. Uppgifterna används inte för marknadsföring.</li>
 <li><strong>Amisfits-testet.</strong> Dina svar behandlas bara i din egen webbläsare. De sparas inte och skickas inte någonstans. Om du har godkänt statistikkakor registreras det i statistiken att testet har gjorts samt resultatets färg, sidans språk och målgruppen (unga eller vuxna). Enskilda svar registreras inte.</li>
-<li><strong>Videor.</strong> Webbplatsens videor visas med YouTubes inbäddade spelare (youtube-nocookie.com). Spelaren laddas från Googles servrar, och då får Google din IP-adress. När du startar en video kan YouTube lagra uppgifter på din enhet och behandla uppgifter om visningen enligt sina egna villkor.</li>
+<li><strong>Videor.</strong> Webbplatsens videor finns på YouTube. På sidan visas först bara videons förhandsbild, som laddas från Googles servrar, och då får Google din IP-adress. YouTubes spelare laddas först när du startar videon. Då kan YouTube sätta kakor och lagra andra uppgifter på din enhet samt behandla uppgifter om visningen enligt sina egna villkor.</li>
 </ul>` },
       { h: 'Kakor och webbläsarens lagringsutrymme', html: `
 <ul>
 <li><strong>Ditt kakval</strong> sparas i webbläsarens lokala lagringsutrymme (amisfits-suostumus) i 12 månader, så att vi inte behöver fråga vid varje besök. Uppgiften stannar på din enhet.</li>
 <li><strong>Statistikkakor</strong> (_ga och kakor som börjar med _ga_) sätts bara om du godkänner dem. De sparas i högst två år.</li>
+<li><strong>YouTubes kakor</strong> sätts bara om du startar en video. De administreras av Google.</li>
 </ul>
 <p>Du kan ändra ditt val när som helst via länken Kakinställningar längst ner på sidan. När du återkallar ditt samtycke tas statistikkakorna bort från din webbläsare.</p>` },
       { h: 'Grund för behandlingen', html: `

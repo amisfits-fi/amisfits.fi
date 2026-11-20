@@ -263,6 +263,13 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .section__video-play { transition: none; }
 }
+/* Varalinkki videon alla: jos soitin ei käynnisty, videon voi katsoa YouTubessa */
+.section__video-alt {
+  margin-top: 0.6rem;
+  font-size:  0.9rem;
+  text-align: right;
+}
+.section__video-alt a { color: var(--color-navy); }
 
 /* Sisältöotsikko */
 .section__headline {
