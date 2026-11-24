@@ -4,7 +4,7 @@ import type { InfoDocs } from './types'
 const docs: InfoDocs = {
   privacy: {
     title: 'Privacy notice',
-    updated: 'Updated 20 November 2026',
+    updated: 'Updated 24 November 2026',
     sections: [
       { h: '', html: `
 <p>This notice explains what data is processed about visitors to amisfits.fi and why. The site has no login and no forms, and you do not need to give any information about yourself to use it.</p>` },
@@ -33,6 +33,7 @@ const docs: InfoDocs = {
 <p>Visitor-level data in Google Analytics is kept for up to 14 months. Server logs are kept for a limited time in line with the service provider's practice.</p>` },
       { h: 'Your rights', html: `
 <p>You have the right to know whether data about you is processed, to ask for it to be corrected or erased or for processing to be restricted, and to object to processing. You can withdraw your consent at any time. Requests can be sent to <a href="mailto:toimisto@sivista.fi">toimisto@sivista.fi</a>.</p>
+<p>The site does not collect names or contact details, so we usually cannot identify individual visitors. If you want the data collected about you in the visitor statistics to be erased, include the identifier from your browser's statistics cookie in your request.</p>
 <p>If you believe your data is being processed unlawfully, you can notify the Office of the Data Protection Ombudsman:</p>
 <address>Office of the Data Protection Ombudsman<br>P.O. Box 800, FI-00531 Helsinki, Finland<br><a href="mailto:tietosuoja@om.fi">tietosuoja@om.fi</a>, switchboard +358 29 566 6700<br><a href="https://tietosuoja.fi/en">tietosuoja.fi/en</a></address>` },
     ],

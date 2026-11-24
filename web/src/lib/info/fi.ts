@@ -5,7 +5,7 @@ import type { InfoDocs } from './types'
 const docs: InfoDocs = {
   privacy: {
     title: 'Tietosuojaseloste',
-    updated: 'Päivitetty 20.11.2026',
+    updated: 'Päivitetty 24.11.2026',
     sections: [
       { h: '', html: `
 <p>Tässä selosteessa kerrotaan, mitä tietoja amisfits.fi-sivuston kävijöistä käsitellään ja miksi. Sivustolla ei ole kirjautumista eikä lomakkeita, eikä sinun tarvitse antaa itsestäsi mitään tietoja käyttääksesi sitä.</p>` },
@@ -34,6 +34,7 @@ const docs: InfoDocs = {
 <p>Google Analyticsin kävijäkohtaiset tiedot säilytetään enintään 14 kuukautta. Palvelinten lokitiedot säilyvät palveluntarjoajan käytännön mukaisen rajatun ajan.</p>` },
       { h: 'Oikeutesi', html: `
 <p>Sinulla on oikeus saada tietää, käsitelläänkö sinua koskevia tietoja, ja pyytää niiden oikaisemista, poistamista tai käsittelyn rajoittamista sekä vastustaa käsittelyä. Voit perua suostumuksesi milloin tahansa. Pyynnöt voi lähettää osoitteeseen <a href="mailto:toimisto@sivista.fi">toimisto@sivista.fi</a>.</p>
+<p>Sivusto ei kerää nimiä eikä yhteystietoja, joten emme yleensä pysty tunnistamaan yksittäistä kävijää. Jos haluat kävijätilastoihin kertyneet tietosi poistettavaksi, kerro pyynnössäsi selaimesi tilastoevästeen tunniste.</p>
 <p>Jos katsot, että tietojasi käsitellään lainvastaisesti, voit tehdä ilmoituksen tietosuojavaltuutetun toimistoon:</p>
 <address>Tietosuojavaltuutetun toimisto<br>PL 800, 00531 Helsinki<br><a href="mailto:tietosuoja@om.fi">tietosuoja@om.fi</a>, puhelinvaihde 029 566 6700<br><a href="https://tietosuoja.fi">tietosuoja.fi</a></address>` },
     ],
