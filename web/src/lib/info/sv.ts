@@ -33,7 +33,7 @@ const docs: InfoDocs = {
 <p>Besökarspecifika uppgifter i Google Analytics sparas i högst 14 månader. Serverloggarna sparas under en begränsad tid enligt tjänsteleverantörens praxis.</p>` },
       { h: 'Dina rättigheter', html: `
 <p>Du har rätt att få veta om uppgifter om dig behandlas och att begära att de rättas, raderas eller att behandlingen begränsas samt att invända mot behandlingen. Du kan när som helst återkalla ditt samtycke. Begäranden kan skickas till <a href="mailto:toimisto@sivista.fi">toimisto@sivista.fi</a>.</p>
-<p>Webbplatsen samlar inte in namn eller kontaktuppgifter, och därför kan vi i allmänhet inte identifiera enskilda besökare. Om du vill att de uppgifter om dig som har samlats in för besöksstatistiken ska raderas, ange i din begäran den identifierare som finns i din webbläsares statistikkaka.</p>
+<p>Webbplatsen samlar inte in namn eller kontaktuppgifter, och därför kan vi i allmänhet inte identifiera enskilda besökare. Om du vill att de uppgifter om dig som har samlats in för besöksstatistiken ska raderas, ange i din begäran den identifierare som finns i din webbläsares statistikkaka (värdet i kakan _ga). Spara identifieraren innan du återkallar ditt samtycke, eftersom kakan då tas bort från din webbläsare.</p>
 <p>Om du anser att dina uppgifter behandlas i strid med lagen kan du göra en anmälan till Dataombudsmannens byrå:</p>
 <address>Dataombudsmannens byrå<br>PB 800, 00531 Helsingfors<br><a href="mailto:tietosuoja@om.fi">tietosuoja@om.fi</a>, telefonväxel 029 566 6700<br><a href="https://tietosuoja.fi/sv">tietosuoja.fi/sv</a></address>` },
     ],

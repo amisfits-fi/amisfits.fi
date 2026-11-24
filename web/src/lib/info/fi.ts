@@ -34,7 +34,7 @@ const docs: InfoDocs = {
 <p>Google Analyticsin kävijäkohtaiset tiedot säilytetään enintään 14 kuukautta. Palvelinten lokitiedot säilyvät palveluntarjoajan käytännön mukaisen rajatun ajan.</p>` },
       { h: 'Oikeutesi', html: `
 <p>Sinulla on oikeus saada tietää, käsitelläänkö sinua koskevia tietoja, ja pyytää niiden oikaisemista, poistamista tai käsittelyn rajoittamista sekä vastustaa käsittelyä. Voit perua suostumuksesi milloin tahansa. Pyynnöt voi lähettää osoitteeseen <a href="mailto:toimisto@sivista.fi">toimisto@sivista.fi</a>.</p>
-<p>Sivusto ei kerää nimiä eikä yhteystietoja, joten emme yleensä pysty tunnistamaan yksittäistä kävijää. Jos haluat kävijätilastoihin kertyneet tietosi poistettavaksi, kerro pyynnössäsi selaimesi tilastoevästeen tunniste.</p>
+<p>Sivusto ei kerää nimiä eikä yhteystietoja, joten emme yleensä pysty tunnistamaan yksittäistä kävijää. Jos haluat kävijätilastoihin kertyneet tietosi poistettavaksi, kerro pyynnössäsi selaimesi tilastoevästeen tunniste (_ga-evästeen arvo). Ota tunniste talteen ennen kuin perut suostumuksesi, sillä peruminen poistaa evästeen selaimestasi.</p>
 <p>Jos katsot, että tietojasi käsitellään lainvastaisesti, voit tehdä ilmoituksen tietosuojavaltuutetun toimistoon:</p>
 <address>Tietosuojavaltuutetun toimisto<br>PL 800, 00531 Helsinki<br><a href="mailto:tietosuoja@om.fi">tietosuoja@om.fi</a>, puhelinvaihde 029 566 6700<br><a href="https://tietosuoja.fi">tietosuoja.fi</a></address>` },
     ],
